@@ -6,7 +6,7 @@ sentence-transformers<3.0.0,>=2.7.0
 # PyTorch - install separately with: pip install torch==2.2.2 torchvision==0.17.2 --index-url https://download.pytorch.org/whl/cpu
 # torch==2.2.2
 # torchvision==0.17.2
-numpy<2.0.0
+numpy>=1.26.0
 faiss-cpu>=1.8.0
 google-generativeai>=0.7.0
 openai>=1.0.0

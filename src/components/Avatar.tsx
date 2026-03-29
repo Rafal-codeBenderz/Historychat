@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Character } from '../types';
-import { Loader2, Volume2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { StatusBadge } from './StatusBadge';
+import { RealTimeVoiceVisualizer } from './RealTimeVoiceVisualizer';
 
 interface AvatarProps {
   character: Character;
   isSpeaking: boolean;
   volume: number;
-  onPermissionError?: () => void;
 }
 
-export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume, onPermissionError }) => {
+export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('Inicjalizacja...');
@@ -30,22 +31,22 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume, o
       <AnimatePresence>
         {isSpeaking && (
           <motion.div
-            animate={{ 
+            animate={{
               scale: [1, 1.2 + volume * 0.5, 1],
-              opacity: [0.2, 0.4 + volume * 0.3, 0.2]
+              opacity: [0.2, 0.4 + volume * 0.3, 0.2],
             }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
             className="absolute inset-0 rounded-full blur-3xl"
             style={{ backgroundColor: accentColor }}
           />
         )}
       </AnimatePresence>
 
-      <div 
+      <div
         className="relative w-full h-full rounded-full overflow-hidden border-4 shadow-2xl transition-all duration-500"
-        style={{ 
+        style={{
           borderColor: accentColor,
-          transform: `scale(${1 + volume * 0.05})`
+          transform: `scale(${1 + volume * 0.05})`,
         }}
       >
         {loading ? (
@@ -54,7 +55,7 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume, o
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold leading-relaxed mb-4">
               {status}
             </p>
-            <button 
+            <button
               onClick={() => {
                 setLoading(false);
                 setStatus('Tryb emoji');
@@ -65,29 +66,33 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume, o
             </button>
           </div>
         ) : imageUrl ? (
-          <motion.div 
-            animate={isSpeaking ? {
-              y: [0, -2, 0, 2, 0],
-              rotate: [0, -0.5, 0, 0.5, 0],
-            } : {}}
-            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+          <motion.div
+            animate={
+              isSpeaking
+                ? {
+                    y: [0, -2, 0, 2, 0],
+                    rotate: [0, -0.5, 0, 0.5, 0],
+                  }
+                : {}
+            }
+            transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
             className="w-full h-full relative"
           >
-            <img 
-              src={imageUrl} 
-              alt={character.name} 
+            <img
+              src={imageUrl}
+              alt={character.name}
               className="w-full h-full object-cover"
-              style={{ 
-                filter: isSpeaking ? `brightness(${1 + volume * 0.3}) contrast(1.1)` : 'brightness(1)'
+              style={{
+                filter: isSpeaking ? `brightness(${1 + volume * 0.3}) contrast(1.1)` : 'brightness(1)',
               }}
             />
-            
+
             {/* Simulated Lip-Sync / Mouth Pulse */}
             {isSpeaking && (
-              <motion.div 
-                animate={{ 
+              <motion.div
+                animate={{
                   scaleY: [1, 1 + volume * 2, 1],
-                  opacity: [0.3, 0.6, 0.3]
+                  opacity: [0.3, 0.6, 0.3],
                 }}
                 transition={{ duration: 0.1, repeat: Infinity }}
                 className="absolute top-[60%] left-1/2 -translate-x-1/2 w-12 h-6 blur-xl rounded-full"
@@ -96,7 +101,7 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume, o
             )}
           </motion.div>
         ) : (
-          <div 
+          <div
             className="w-full h-full flex items-center justify-center text-8xl"
             style={{ backgroundColor: `${accentColor}20` }}
           >
@@ -113,42 +118,10 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume, o
         </div>
 
         {/* Real-time Voice Visualizer Overlay */}
-        {isSpeaking && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-end gap-1.5 h-16">
-            {[...Array(12)].map((_, i) => (
-              <motion.div
-                key={i}
-                animate={{ 
-                  height: [8, (Math.random() * 40 + 10) * (volume + 0.5), 8],
-                  opacity: [0.4, 1, 0.4]
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 0.2 + Math.random() * 0.2, 
-                  ease: "easeInOut" 
-                }}
-                className="w-1.5 rounded-full shadow-lg"
-                style={{ backgroundColor: accentColor }}
-              />
-            ))}
-          </div>
-        )}
+        {isSpeaking && <RealTimeVoiceVisualizer volume={volume} accentColor={accentColor} />}
       </div>
 
-      {/* Status Badge */}
-      <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-black/80 backdrop-blur-xl border border-white/10 text-[10px] uppercase tracking-[0.3em] font-black text-white whitespace-nowrap shadow-2xl">
-        {loading ? (
-          <span className="flex items-center gap-2">
-            <Loader2 className="w-3 h-3 animate-spin" /> Generowanie...
-          </span>
-        ) : isSpeaking ? (
-          <span className="text-emerald-500 flex items-center gap-2">
-            <Volume2 className="w-3 h-3" /> Mówi
-          </span>
-        ) : (
-          'Gotowy'
-        )}
-      </div>
+      <StatusBadge loading={loading} isSpeaking={isSpeaking} />
     </div>
   );
 };
