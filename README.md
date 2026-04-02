@@ -13,6 +13,13 @@ HistoryChat pozwala rozmawiać z postaciami historycznymi (m.in. Kopernik, Maria
 - **7 postaci** i **sugerowane tematy** (z opcjonalnym `sourceStem` dla węższego retrievalu)
 - **UI** — React, Framer Motion, style m.in. z Tailwind (`index.css`)
 
+## Dokumentacja
+
+- `docs/ARCHITEKTURA.md` — opis architektury po refaktorze (warstwy, przepływy)
+- `docs/STRUKTURA.md` — aktualna struktura katalogów (drzewo + odpowiedzialności)
+- `docs/api_contract.md` — kontrakt API (frontend ↔ backend)
+- `docs/REFAKTORYZACJA_PLAN_v2.md` — plan refaktoryzacji (notatki techniczne)
+
 ## Architektura
 
 ```
@@ -75,10 +82,10 @@ Copy-Item .env.example .env
 Uzupełnij `.env` — zobacz sekcję [Klucze API](#klucze-api) poniżej.
 
 ```bash
-python backend/server.py
+python -m backend.server
 ```
 
-Backend: `http://localhost:8000`. Ścieżki `data/` i `logs/` są liczone względem katalogu projektu (`Path` od `backend/server.py`), więc **nie musisz** ustawiać `cd` na `backend/`, byle uruchamiać polecenie z rootu projektu.
+Backend: `http://localhost:8000`. Ścieżki `data/` i `logs/` są liczone względem katalogu projektu (`ROOT` w `backend/config/paths.py`), więc uruchamiaj polecenie z rootu projektu.
 
 Przy starcie ładowane są pliki `.txt` z `data/knowledge_base/<id_postaci>/` i — gdy działa embedder — budowany jest indeks FAISS.
 
@@ -121,6 +128,11 @@ pytest backend/tests/
 
 ```
 <katalog-projektu>/
+├── docs/
+│   ├── ARCHITEKTURA.md
+│   ├── STRUKTURA.md
+│   ├── api_contract.md
+│   └── REFAKTORYZACJA_PLAN_v2.md
 ├── backend/
 │   ├── api/                   # routing Flask (endpoints)
 │   ├── config/                # ścieżki i konfiguracja
@@ -154,7 +166,6 @@ pytest backend/tests/
 ├── tsconfig.json
 ├── requirements.txt
 ├── .env.example
-├── api_contract.md
 └── README.md
 ```
 
