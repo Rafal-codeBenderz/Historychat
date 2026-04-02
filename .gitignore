@@ -8,7 +8,10 @@ venv/
 *.egg-info/
 
 # Dane generowane w runtime
+data/*.db
 data/chat_history.jsonl
+logs/
+*.log
 logs/retrieval.log
 history_chat.db
 

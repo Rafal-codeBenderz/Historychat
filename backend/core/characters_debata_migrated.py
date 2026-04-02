@@ -2026,3 +2026,11 @@ CHARACTERS = {
     "voiceName": "Zephyr"
   }
 }
+
+# Backward/forward compatibility: expose `voice_id` on characters at source.
+# The frontend refactor expects `voice_id` (see api_contract.md). Some older
+# /api/characters implementations returned only `voiceName`, so we add the
+# derived field here as well to make the data self-contained.
+for _cid, _ch in CHARACTERS.items():
+  _vn = _ch.get("voiceName")
+  _ch["voice_id"] = VOICE_MAP.get(_vn) if isinstance(_vn, str) and _vn else None

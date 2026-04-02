@@ -2,14 +2,6 @@ import { Character, Message, Fragment } from '@types';
 
 export const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-export const VOICE_MAP: Record<string, 'alloy' | 'echo' | 'fable' | 'onyx' | 'nova' | 'shimmer'> = {
-  Charon: 'echo',
-  Kore: 'nova',
-  Fenrir: 'fable',
-  Zephyr: 'shimmer',
-  Puck: 'alloy',
-};
-
 export async function fetchCharacters(): Promise<Character[]> {
   const res = await fetch(`${API}/api/characters`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -42,20 +34,21 @@ export async function sendMessage(
   return res.json();
 }
 
-export async function generateTTS(text: string, voiceName?: string): Promise<string | null> {
+export async function generateTTS(text: string, voice_id?: string | null): Promise<string | null> {
   try {
-    const voice = voiceName ? VOICE_MAP[voiceName] || 'nova' : 'nova';
     const res = await fetch(`${API}/api/tts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, voice }),
+      body: JSON.stringify({ text, voice_id }),
     });
 
     if (!res.ok) return null;
 
     const data = await res.json();
     // Konwertuj base64 na blob URL
-    const audioBytes = Uint8Array.from(atob(data.audio), (c) => c.charCodeAt(0));
+    const b64 = (data.audio_base64 || data.audio) as string | undefined;
+    if (!b64) return null;
+    const audioBytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
     const blob = new Blob([audioBytes], { type: 'audio/mpeg' });
     return URL.createObjectURL(blob);
   } catch (e) {

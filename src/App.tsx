@@ -1,217 +1,30 @@
-import { useState, useEffect, useRef } from 'react';
-import { Character, Message, SuggestedTopic } from '@types';
+import { useEffect } from 'react';
 import { Sidebar, AvatarSection, ChatSection, WelcomeSection } from '@components';
-import { API, fetchCharacters, sendMessage, generateTTS } from '@utils';
+import { useAudioPlayer } from './hooks/useAudioPlayer';
+import { useCharactersLoader } from './hooks/useCharactersLoader';
+import { useChat } from './hooks/useChat';
 
 export default function App() {
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [selectedChar, setSelectedChar] = useState<Character | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [backendError, setBackendError] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [volume, setVolume] = useState(0);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    const delayMs = 2500;
-    const maxAttempts = 150;
-
-    const load = (attempt: number) => {
-      fetchCharacters()
-        .then((data) => {
-          if (cancelled) return;
-          setCharacters(Array.isArray(data) ? data : []);
-          setBackendError(false);
-        })
-        .catch(() => {
-          if (cancelled) return;
-          if (attempt + 1 >= maxAttempts) {
-            setBackendError(true);
-            return;
-          }
-          window.setTimeout(() => load(attempt + 1), delayMs);
-        });
-    };
-
-    load(0);
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { playAudio, stopAudio, isSpeaking, volume } = useAudioPlayer();
+  const { characters, backendError } = useCharactersLoader();
+  const {
+    selectedChar,
+    messages,
+    input,
+    loading,
+    messagesEndRef,
+    inputRef,
+    suggestedQuestions,
+    setInput,
+    selectChar,
+    sendMsg,
+    sendSuggestedTopic,
+    handleKeyDown,
+  } = useChat({ playAudio });
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
-
-  const selectChar = (char: Character) => {
-    setSelectedChar(char);
-    setMessages([]);
-    setInput('');
-    // Add welcome message
-    setMessages([
-      {
-        role: 'assistant',
-        content: `Witajcie. Jestem ${char.name}. Gotów odpowiedzieć na Wasze pytania, bazując na moich pismach i wspomnieniach. O co chcecie zapytać?`,
-        timestamp: new Date(),
-        fragments: [],
-      },
-    ]);
-    // W tle: uruchom generowanie awatara (best-effort, nie blokuje UI)
-    if (char.id) {
-      fetch(`${API}/api/generate-avatar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ character_id: char.id }),
-      }).catch((err) => console.log('Avatar generation (background):', err));
-    }
-    setTimeout(() => inputRef.current?.focus(), 100);
-  };
-
-  const submitChat = async (content: string, options?: { sourceStem?: string }) => {
-    if (!selectedChar || loading) return;
-
-    const userMsg: Message = {
-      role: 'user',
-      content,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-    setInput('');
-    setLoading(true);
-
-    try {
-      const { answer, fragments: rawFragments } = await sendMessage(selectedChar.id, content, messages, options);
-      const fragments = Array.isArray(rawFragments) ? rawFragments : [];
-
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: answer,
-        fragments,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
-
-      if (selectedChar.voiceName) {
-        const audioUrl = await generateTTS(answer, selectedChar.voiceName);
-        if (audioUrl) {
-          assistantMessage.audioUrl = audioUrl;
-          setMessages((prev) => prev.map((m) => (m === assistantMessage ? { ...m, audioUrl } : m)));
-          playAudio(audioUrl);
-        }
-      }
-    } catch (e) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: 'Przepraszam, wystąpił błąd połączenia z serwerem.',
-          timestamp: new Date(),
-          fragments: [],
-        },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const sendMsg = async () => {
-    if (!input.trim() || !selectedChar || loading) return;
-    await submitChat(input.trim());
-  };
-
-  const sendSuggestedTopic = (topic: SuggestedTopic) => {
-    if (!selectedChar || loading) return;
-    void submitChat(topic.question, { sourceStem: topic.sourceStem });
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMsg();
-    }
-  };
-
-  const stopAudio = () => {
-    const a = audioRef.current;
-    if (!a) return;
-
-    a.pause();
-    try {
-      a.currentTime = 0;
-    } catch {
-      // ignore (some streams can throw)
-    }
-
-    setIsSpeaking(false);
-    setVolume(0);
-  };
-
-  const playAudio = async (audioUrl: string) => {
-    try {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-        analyserRef.current = audioContextRef.current.createAnalyser();
-        analyserRef.current.fftSize = 256;
-      }
-
-      if (audioContextRef.current.state === 'suspended') {
-        await audioContextRef.current.resume();
-      }
-
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-
-      const source = audioContextRef.current.createMediaElementSource(audio);
-      source.connect(analyserRef.current!);
-      analyserRef.current!.connect(audioContextRef.current.destination);
-
-      const updateVolume = () => {
-        if (audio.paused) return;
-        const dataArray = new Uint8Array(analyserRef.current!.frequencyBinCount);
-        analyserRef.current!.getByteFrequencyData(dataArray);
-        const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
-        setVolume(average / 128);
-        requestAnimationFrame(updateVolume);
-      };
-
-      audio.onplay = () => {
-        setIsSpeaking(true);
-        updateVolume();
-      };
-
-      audio.onended = () => {
-        setIsSpeaking(false);
-        setVolume(0);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      audio.onerror = () => {
-        setIsSpeaking(false);
-        setVolume(0);
-      };
-
-      await audio.play();
-    } catch (err) {
-      console.error('Audio error:', err);
-      setIsSpeaking(false);
-      setVolume(0);
-    }
-  };
-
-  const suggestedQuestions = selectedChar?.suggestedTopics || [];
 
   return (
     <>

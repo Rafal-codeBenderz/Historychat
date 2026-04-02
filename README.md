@@ -8,8 +8,8 @@ HistoryChat pozwala rozmawiać z postaciami historycznymi (m.in. Kopernik, Maria
 
 ## Funkcje (v2)
 
-- **Text-to-Speech (TTS)** — odczyt odpowiedzi (OpenAI `tts-1`)
-- **Awatary** — placeholdery z ikoną / gradientem i animacją przy odtwarzaniu audio (bez generowania obrazów AI w repozytorium)
+- **Text-to-Speech (TTS)** — odczyt odpowiedzi (OpenAI `tts-1`, sterowane flagą `ENABLE_TTS`)
+- **Awatary** — placeholdery z ikoną / gradientem i animacją przy odtwarzaniu audio + opcjonalne generowanie obrazów (sterowane flagą `ENABLE_AVATAR_GENERATION`)
 - **7 postaci** i **sugerowane tematy** (z opcjonalnym `sourceStem` dla węższego retrievalu)
 - **UI** — React, Framer Motion, style m.in. z Tailwind (`index.css`)
 
@@ -99,22 +99,35 @@ Domyślnie frontend woła API pod `http://localhost:8000`. Możesz nadpisać zmi
 npm run start
 ```
 
-## Klucze API
+## Klucze API i feature flagi
 
 | Zmienna | Rola |
 |--------|------|
 | `OPENAI_API_KEY` | Jeśli ustawione — **czat** idzie przez OpenAI (`OPENAI_CHAT_MODEL`, domyślnie `gpt-4o-mini`). **TTS** wymaga tego klucza. |
 | `GEMINI_API_KEY` | Używane **tylko gdy brak** `OPENAI_API_KEY` — czat przez Gemini 2.0 Flash. |
 | `OPENAI_CHAT_MODEL` | Opcjonalnie inny model czatu OpenAI. |
+| `ENABLE_TTS` | `true/false` — gdy `false`, endpoint `/api/tts` zwraca `503`. |
+| `ENABLE_AVATAR_GENERATION` | `true/false` — gdy `false`, endpoint `/api/generate-avatar` zwraca `503`. |
 
 Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`).
+
+## Testy
+
+```bash
+pytest backend/tests/
+```
 
 ## Struktura projektu
 
 ```
 <katalog-projektu>/
 ├── backend/
-│   └── server.py              # Flask, RAG, LLM, TTS
+│   ├── api/                   # routing Flask (endpoints)
+│   ├── config/                # ścieżki i konfiguracja
+│   ├── core/                  # RAG + prompting + characters
+│   ├── services/              # LLM/TTS (logika bez Flask)
+│   ├── tests/                 # pytest baseline
+│   └── server.py              # entrypoint Flask (create_app + blueprint)
 ├── data/
 │   ├── knowledge_base/        # Źródła: wyłącznie .txt (PDF nie są czytane automatycznie)
 │   │   ├── copernicus/
@@ -129,6 +142,7 @@ Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`)
 │   └── retrieval.log          # Runtime
 ├── src/
 │   ├── App.tsx
+│   ├── hooks/
 │   ├── main.tsx
 │   ├── types.ts
 │   ├── index.css              # Tailwind directives
@@ -140,6 +154,7 @@ Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`)
 ├── tsconfig.json
 ├── requirements.txt
 ├── .env.example
+├── api_contract.md
 └── README.md
 ```
 
@@ -156,8 +171,9 @@ Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`)
 
 1. Folder `data/knowledge_base/<id_postaci>/`
 2. Pliki `.txt` z treścią źródeł
-3. Wpis w słowniku `CHARACTERS` w `backend/server.py` (opcjonalnie `suggestedTopics` z `sourceStem` zgodnym z nazwą pliku bez `.txt`)
-4. Restart backendu
+3. Konfiguracja postaci jest generowana w `backend/core/characters_debata_migrated.py` (patrz nagłówek pliku; regeneracja przez `python scripts/regen_characters_module.py`)
+4. Upewnij się, że postać ma `voice_id` (backend wylicza je z `voiceName` + `VOICE_MAP`)
+5. Restart backendu
 
 ## Jak działa RAG?
 

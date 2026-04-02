@@ -1,3 +1,5 @@
+"""Backend core modules."""
+
 """
 Core backend package for HistoryChat main project.
 
