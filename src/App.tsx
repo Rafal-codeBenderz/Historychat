@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Character, Message, SuggestedTopic } from '@types';
 import { Sidebar, AvatarSection, ChatSection, WelcomeSection } from '@components';
-import { fetchCharacters, sendMessage, generateTTS } from '@utils';
+import { API, fetchCharacters, sendMessage, generateTTS } from '@utils';
 
 export default function App() {
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -63,6 +63,14 @@ export default function App() {
         fragments: [],
       },
     ]);
+    // W tle: uruchom generowanie awatara (best-effort, nie blokuje UI)
+    if (char.id) {
+      fetch(`${API}/api/generate-avatar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ character_id: char.id }),
+      }).catch((err) => console.log('Avatar generation (background):', err));
+    }
     setTimeout(() => inputRef.current?.focus(), 100);
   };
 
@@ -130,6 +138,21 @@ export default function App() {
       e.preventDefault();
       sendMsg();
     }
+  };
+
+  const stopAudio = () => {
+    const a = audioRef.current;
+    if (!a) return;
+
+    a.pause();
+    try {
+      a.currentTime = 0;
+    } catch {
+      // ignore (some streams can throw)
+    }
+
+    setIsSpeaking(false);
+    setVolume(0);
   };
 
   const playAudio = async (audioUrl: string) => {
@@ -248,6 +271,7 @@ export default function App() {
                   input={input}
                   setInput={setInput}
                   playAudio={playAudio}
+                  stopAudio={stopAudio}
                 />
               </div>
             </>

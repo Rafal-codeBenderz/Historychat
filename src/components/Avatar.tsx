@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Character } from '../types';
 import { Loader2 } from 'lucide-react';
@@ -15,12 +15,60 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume })
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('Inicjalizacja...');
+  const skippedRef = useRef(false);
 
   useEffect(() => {
-    // Avatar używa emoji jako głównego wyświetlania
-    // W przyszłości można dodać endpoint backendu do generowania obrazów DALL-E
-    setLoading(false);
-    setStatus('');
+    let cancelled = false;
+    let timeoutId: number | null = null;
+
+    skippedRef.current = false;
+    setImageUrl(null);
+    setLoading(true);
+    setStatus('Tworzenie wizerunku...');
+
+    const baseUrl = `/avatars/${character.id}.jpg`;
+    const maxAttempts = 10;
+    const retryDelayMs = 2000;
+
+    const tryLoad = (attempt: number) => {
+      if (cancelled) return;
+      if (skippedRef.current) {
+        setLoading(false);
+        setStatus('Tryb emoji');
+        return;
+      }
+
+      const img = new Image();
+      img.onload = () => {
+        if (cancelled) return;
+        // Cache-bust, żeby nie utkwić na zcache'owanym 404
+        setImageUrl(`${baseUrl}?v=${Date.now()}`);
+        setLoading(false);
+        setStatus('');
+      };
+      img.onerror = () => {
+        if (cancelled) return;
+        if (attempt + 1 >= maxAttempts) {
+          setImageUrl(null);
+          setLoading(false);
+          setStatus('');
+          return;
+        }
+        setStatus('Oczekiwanie na wizerunek...');
+        timeoutId = window.setTimeout(() => tryLoad(attempt + 1), retryDelayMs);
+      };
+
+      img.src = `${baseUrl}?try=${attempt}&ts=${Date.now()}`;
+    };
+
+    tryLoad(0);
+
+    return () => {
+      cancelled = true;
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+    };
   }, [character]);
 
   const accentColor = character.accentColor || character.avatar_color || '#6b9ec4';
@@ -57,6 +105,7 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume })
             </p>
             <button
               onClick={() => {
+                skippedRef.current = true;
                 setLoading(false);
                 setStatus('Tryb emoji');
               }}

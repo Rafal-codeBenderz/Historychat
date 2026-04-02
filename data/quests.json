@@ -1,0 +1,530 @@
+[
+  {
+    "id": "copernicus_heliocentrism",
+    "character_id": "copernicus",
+    "objective": "Przekonaj Kopernika, że jego teoria heliocentryczna jest słuszna, posługując się tylko argumentami z jego epoki",
+    "success_criteria": [
+      "Użytkownik wspomniał o obserwacjach planet",
+      "Użytkownik użył argumentów matematycznych",
+      "Kopernik potwierdził słuszność teorii"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zastanów się nad obserwacjami ruchu planet",
+      "Użyj argumentów matematycznych z epoki Kopernika"
+    ]
+  },
+  {
+    "id": "freud_surprise",
+    "character_id": "freud",
+    "objective": "Zadaj Freudowi pytanie, które go zaskoczy",
+    "success_criteria": [
+      "Pytanie dotyczy tematu spoza głównych zainteresowań Freuda",
+      "Freud wyraził zaskoczenie lub zainteresowanie",
+      "Freud odpowiedział szczegółowo na pytanie"
+    ],
+    "points": 80,
+    "difficulty": "hard",
+    "hints": [
+      "Pomyśl o tematach, które Freud rzadko poruszał",
+      "Spróbuj zapytać o coś nieoczekiwanego"
+    ]
+  },
+  {
+    "id": "da_vinci_mona_lisa",
+    "character_id": "da_vinci",
+    "objective": "Dowiedz się od Leonarda da Vinci, dlaczego Mona Lisa się uśmiecha - ale bez zadawania pytania wprost",
+    "success_criteria": [
+      "Użytkownik nie zadał pytania wprost o uśmiech",
+      "Leonardo wyjaśnił coś o Monie Lisie",
+      "Użytkownik dowiedział się o uśmiechu"
+    ],
+    "points": 120,
+    "difficulty": "hard",
+    "hints": [
+      "Zapytaj o technikę malarską lub kompozycję",
+      "Porozmawiaj o emocjach w sztuce"
+    ]
+  },
+  {
+    "id": "einstein_relativity",
+    "character_id": "einstein",
+    "objective": "Zrozum podstawy teorii względności od Einsteina",
+    "success_criteria": [
+      "Użytkownik zadał pytanie o teorię względności",
+      "Einstein wyjaśnił podstawowe koncepty",
+      "Użytkownik wykazał zrozumienie"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o czas i przestrzeń",
+      "Porozmawiaj o prędkości światła"
+    ]
+  },
+  {
+    "id": "napoleon_strategy",
+    "character_id": "napoleon",
+    "objective": "Dowiedz się o strategii wojennej Napoleona",
+    "success_criteria": [
+      "Użytkownik zapytał o strategię",
+      "Napoleon opowiedział o bitwie lub kampanii",
+      "Użytkownik zrozumiał kluczowe elementy strategii"
+    ],
+    "points": 90,
+    "difficulty": "easy",
+    "hints": [
+      "Zapytaj o konkretną bitwę",
+      "Porozmawiaj o taktyce wojskowej"
+    ]
+  },
+  {
+    "id": "curie_radioactivity",
+    "character_id": "marie_curie",
+    "objective": "Zrozum odkrycie promieniotwórczości przez Marię Skłodowską-Curie",
+    "success_criteria": [
+      "Użytkownik zapytał o promieniotwórczość",
+      "Maria wyjaśniła swoje odkrycia",
+      "Użytkownik wspomniał o polonie lub radzie"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o polon i rad",
+      "Porozmawiaj o Nagrodzie Nobla"
+    ]
+  },
+  {
+    "id": "newton_gravity",
+    "character_id": "newton",
+    "objective": "Zrozum prawo powszechnego ciążenia Newtona",
+    "success_criteria": [
+      "Użytkownik zapytał o grawitację",
+      "Newton wyjaśnił swoje prawo",
+      "Użytkownik wspomniał o jabłku lub matematyce"
+    ],
+    "points": 90,
+    "difficulty": "easy",
+    "hints": [
+      "Zapytaj o historię odkrycia",
+      "Porozmawiaj o matematycznym opisie"
+    ]
+  },
+  {
+    "id": "darwin_evolution",
+    "character_id": "darwin",
+    "objective": "Zrozum teorię ewolucji Darwina",
+    "success_criteria": [
+      "Użytkownik zapytał o ewolucję",
+      "Darwin wyjaśnił podstawy teorii",
+      "Użytkownik wspomniał o doborze naturalnym"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o podróż na Beagle",
+      "Porozmawiaj o obserwacjach w przyrodzie"
+    ]
+  },
+  {
+    "id": "tesla_invention",
+    "character_id": "tesla",
+    "objective": "Dowiedz się o najważniejszym wynalazku Tesli",
+    "success_criteria": [
+      "Użytkownik zapytał o wynalazki",
+      "Tesla opowiedział o prądzie zmiennym lub innym wynalazku",
+      "Użytkownik zrozumiał znaczenie wynalazku"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o prąd zmienny",
+      "Porozmawiaj o elektryczności"
+    ]
+  },
+  {
+    "id": "chopin_music",
+    "character_id": "chopin",
+    "objective": "Zrozum styl muzyczny Chopina",
+    "success_criteria": [
+      "Użytkownik zapytał o muzykę",
+      "Chopin opowiedział o swoim stylu",
+      "Użytkownik wspomniał o fortepianie lub kompozycji"
+    ],
+    "points": 80,
+    "difficulty": "easy",
+    "hints": [
+      "Zapytaj o kompozycje",
+      "Porozmawiaj o fortepianie"
+    ]
+  },
+  {
+    "id": "joan_of_arc_vision",
+    "character_id": "joan_of_arc",
+    "objective": "Dowiedz się o wizjach Joanny d'Arc bez zadawania pytania wprost o głosy",
+    "success_criteria": [
+      "Użytkownik nie zapytał wprost o głosy",
+      "Joanna opowiedziała o swoich doświadczeniach",
+      "Użytkownik zrozumiał źródło jej motywacji"
+    ],
+    "points": 100,
+    "difficulty": "hard",
+    "hints": [
+      "Zapytaj o jej misję",
+      "Porozmawiaj o Orleanie"
+    ]
+  },
+  {
+    "id": "galileo_telescope",
+    "character_id": "galileo",
+    "objective": "Zrozum jak Galileusz używał teleskopu do odkryć",
+    "success_criteria": [
+      "Użytkownik zapytał o teleskop",
+      "Galileusz opowiedział o obserwacjach",
+      "Użytkownik wspomniał o księżycach Jowisza lub fazach Wenus"
+    ],
+    "points": 90,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o obserwacje nieba",
+      "Porozmawiaj o nowych odkryciach"
+    ]
+  },
+  {
+    "id": "churchill_speech",
+    "character_id": "churchill",
+    "objective": "Dowiedz się o najsłynniejszym przemówieniu Churchilla",
+    "success_criteria": [
+      "Użytkownik zapytał o przemówienia",
+      "Churchill wspomniał o konkretnym przemówieniu",
+      "Użytkownik zrozumiał kontekst historyczny"
+    ],
+    "points": 90,
+    "difficulty": "easy",
+    "hints": [
+      "Zapytaj o II wojnę światową",
+      "Porozmawiaj o retoryce"
+    ]
+  },
+  {
+    "id": "caesar_gaul",
+    "character_id": "caesar",
+    "objective": "Zrozum kampanię Cezara w Galii",
+    "success_criteria": [
+      "Użytkownik zapytał o Galę",
+      "Cezar opowiedział o kampanii",
+      "Użytkownik wspomniał o konkretnej bitwie lub plemieniu"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o podboje",
+      "Porozmawiaj o strategii wojskowej"
+    ]
+  },
+  {
+    "id": "hippocrates_oath",
+    "character_id": "hippocrates",
+    "objective": "Zrozum etykę medyczną Hipokratesa",
+    "success_criteria": [
+      "Użytkownik zapytał o etykę lub przysięgę",
+      "Hipokrates wyjaśnił zasady",
+      "Użytkownik zrozumiał znaczenie dla medycyny"
+    ],
+    "points": 80,
+    "difficulty": "easy",
+    "hints": [
+      "Zapytaj o zasady medyczne",
+      "Porozmawiaj o odpowiedzialności lekarza"
+    ]
+  },
+  {
+    "id": "aristotle_logic",
+    "character_id": "aristotle",
+    "objective": "Zrozum podstawy logiki Arystotelesa",
+    "success_criteria": [
+      "Użytkownik zapytał o logikę",
+      "Arystoteles wyjaśnił podstawowe zasady",
+      "Użytkownik wspomniał o sylogizmie lub kategorii"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o filozofię",
+      "Porozmawiaj o rozumowaniu"
+    ]
+  },
+  {
+    "id": "fibonacci_sequence",
+    "character_id": "fibonacci",
+    "objective": "Zrozum ciąg Fibonacciego i jego zastosowania",
+    "success_criteria": [
+      "Użytkownik zapytał o ciąg",
+      "Fibonacci wyjaśnił zasadę",
+      "Użytkownik wspomniał o zastosowaniu w przyrodzie"
+    ],
+    "points": 90,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o matematykę",
+      "Porozmawiaj o liczbach"
+    ]
+  },
+  {
+    "id": "montessori_education",
+    "character_id": "montessori",
+    "objective": "Zrozum metodę edukacyjną Montessori",
+    "success_criteria": [
+      "Użytkownik zapytał o edukację",
+      "Montessori wyjaśniła swoją metodę",
+      "Użytkownik zrozumiał kluczowe zasady"
+    ],
+    "points": 90,
+    "difficulty": "easy",
+    "hints": [
+      "Zapytaj o nauczanie",
+      "Porozmawiaj o dzieciach"
+    ]
+  },
+  {
+    "id": "lovelace_programming",
+    "character_id": "lovelace",
+    "objective": "Dowiedz się o wkładzie Lovelace w programowanie",
+    "success_criteria": [
+      "Użytkownik zapytał o programowanie",
+      "Lovelace opowiedziała o swojej pracy",
+      "Użytkownik wspomniał o maszynie analitycznej"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o Babbage",
+      "Porozmawiaj o algorytmach"
+    ]
+  },
+  {
+    "id": "confucius_wisdom",
+    "character_id": "confucius",
+    "objective": "Zrozum jedną z najważniejszych zasad Konfucjusza",
+    "success_criteria": [
+      "Użytkownik zapytał o filozofię",
+      "Konfucjusz wyjaśnił zasadę",
+      "Użytkownik zrozumiał znaczenie"
+    ],
+    "points": 80,
+    "difficulty": "easy",
+    "hints": [
+      "Zapytaj o mądrość",
+      "Porozmawiaj o etyce"
+    ]
+  },
+  {
+    "id": "antoinette_revolution",
+    "character_id": "antoinette",
+    "objective": "Zrozum perspektywę Marii Antoniny na rewolucję",
+    "success_criteria": [
+      "Użytkownik zapytał o rewolucję",
+      "Antonina opowiedziała o swoich doświadczeniach",
+      "Użytkownik zrozumiał jej punkt widzenia"
+    ],
+    "points": 100,
+    "difficulty": "hard",
+    "hints": [
+      "Zapytaj o Francję",
+      "Porozmawiaj o zmianach"
+    ]
+  },
+  {
+    "id": "vangogh_art",
+    "character_id": "vangogh",
+    "objective": "Zrozum technikę malarską van Gogha",
+    "success_criteria": [
+      "Użytkownik zapytał o malarstwo",
+      "Van Gogh opowiedział o technice",
+      "Użytkownik wspomniał o kolorystyce lub pociągnięciach pędzla"
+    ],
+    "points": 90,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o obrazy",
+      "Porozmawiaj o sztuce"
+    ]
+  },
+  {
+    "id": "kahlo_identity",
+    "character_id": "kahlo",
+    "objective": "Zrozum jak Frida Kahlo wyrażała swoją tożsamość w sztuce",
+    "success_criteria": [
+      "Użytkownik zapytał o tożsamość lub kulturę",
+      "Kahlo opowiedziała o swoim podejściu",
+      "Użytkownik zrozumiał znaczenie w jej twórczości"
+    ],
+    "points": 100,
+    "difficulty": "hard",
+    "hints": [
+      "Zapytaj o Meksyk",
+      "Porozmawiaj o autoportretach"
+    ]
+  },
+  {
+    "id": "cleopatra_power",
+    "character_id": "cleopatra",
+    "objective": "Dowiedz się jak Kleopatra zdobywała i utrzymywała władzę",
+    "success_criteria": [
+      "Użytkownik zapytał o władzę lub politykę",
+      "Kleopatra opowiedziała o strategii",
+      "Użytkownik zrozumiał jej metody"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o Egipt",
+      "Porozmawiaj o Cezarze lub Antoniuszu"
+    ]
+  },
+  {
+    "id": "einstein_quantum",
+    "character_id": "einstein",
+    "objective": "Zrozum podejście Einsteina do mechaniki kwantowej",
+    "success_criteria": [
+      "Użytkownik zapytał o mechanikę kwantową",
+      "Einstein wyraził swoje poglądy",
+      "Użytkownik zrozumiał jego sceptycyzm"
+    ],
+    "points": 120,
+    "difficulty": "hard",
+    "hints": [
+      "Zapytaj o fizykę kwantową",
+      "Porozmawiaj o determinizmie"
+    ]
+  },
+  {
+    "id": "newton_optics",
+    "character_id": "newton",
+    "objective": "Zrozum eksperymenty Newtona z optyką",
+    "success_criteria": [
+      "Użytkownik zapytał o optykę",
+      "Newton opowiedział o eksperymentach",
+      "Użytkownik wspomniał o pryzmacie lub kolorach"
+    ],
+    "points": 90,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o światło",
+      "Porozmawiaj o eksperymentach"
+    ]
+  },
+  {
+    "id": "darwin_galapagos",
+    "character_id": "darwin",
+    "objective": "Dowiedz się o obserwacjach Darwina na Galapagos",
+    "success_criteria": [
+      "Użytkownik zapytał o Galapagos",
+      "Darwin opowiedział o obserwacjach",
+      "Użytkownik wspomniał o konkretnym gatunku"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o podróż",
+      "Porozmawiaj o zwierzętach"
+    ]
+  },
+  {
+    "id": "tesla_vision",
+    "character_id": "tesla",
+    "objective": "Zrozum wizję Tesli dotyczącą przyszłości technologii",
+    "success_criteria": [
+      "Użytkownik zapytał o przyszłość",
+      "Tesla opowiedział o swoich wizjach",
+      "Użytkownik zrozumiał jego przewidywania"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o przyszłość",
+      "Porozmawiaj o innowacjach"
+    ]
+  },
+  {
+    "id": "freud_dreams",
+    "character_id": "freud",
+    "objective": "Zrozum teorię snów Freuda",
+    "success_criteria": [
+      "Użytkownik zapytał o sny",
+      "Freud wyjaśnił swoją teorię",
+      "Użytkownik zrozumiał podstawowe koncepty"
+    ],
+    "points": 90,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o interpretację snów",
+      "Porozmawiaj o podświadomości"
+    ]
+  },
+  {
+    "id": "copernicus_opposition",
+    "character_id": "copernicus",
+    "objective": "Dowiedz się o opozycji wobec teorii Kopernika",
+    "success_criteria": [
+      "Użytkownik zapytał o opozycję lub krytykę",
+      "Kopernik opowiedział o reakcjach",
+      "Użytkownik zrozumiał kontekst historyczny"
+    ],
+    "points": 100,
+    "difficulty": "hard",
+    "hints": [
+      "Zapytaj o reakcje na teorię",
+      "Porozmawiaj o Kościele"
+    ]
+  },
+  {
+    "id": "marie_curie_lab",
+    "character_id": "marie_curie",
+    "objective": "Zrozum warunki pracy Marii Curie w laboratorium",
+    "success_criteria": [
+      "Użytkownik zapytał o laboratorium",
+      "Curie opowiedziała o warunkach",
+      "Użytkownik zrozumiał wyzwania"
+    ],
+    "points": 90,
+    "difficulty": "easy",
+    "hints": [
+      "Zapytaj o pracę",
+      "Porozmawiaj o eksperymentach"
+    ]
+  },
+  {
+    "id": "napoleon_code",
+    "character_id": "napoleon",
+    "objective": "Zrozum wpływ Kodeksu Napoleona na prawo",
+    "success_criteria": [
+      "Użytkownik zapytał o Kodeks",
+      "Napoleon opowiedział o jego znaczeniu",
+      "Użytkownik zrozumiał wpływ"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o prawo",
+      "Porozmawiaj o reformach"
+    ]
+  },
+  {
+    "id": "da_vinci_anatomy",
+    "character_id": "da_vinci",
+    "objective": "Dowiedz się o studiach anatomicznych Leonarda",
+    "success_criteria": [
+      "Użytkownik zapytał o anatomię",
+      "Leonardo opowiedział o badaniach",
+      "Użytkownik wspomniał o konkretnym odkryciu"
+    ],
+    "points": 100,
+    "difficulty": "medium",
+    "hints": [
+      "Zapytaj o ciało ludzkie",
+      "Porozmawiaj o rysunkach"
+    ]
+  }
+]

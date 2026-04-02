@@ -15,7 +15,7 @@ export function CharacterList({
   selectChar,
 }: CharacterListProps) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minHeight: 0, flex: 1 }}>
       <div
         style={{
           fontSize: '10px',
@@ -41,6 +41,7 @@ export function CharacterList({
             color: 'rgba(255,150,150,0.8)',
             fontFamily: "'EB Garamond', serif",
             fontStyle: 'italic',
+            flexShrink: 0,
           }}
         >
           ⚠ Brak połączenia z serwerem. Uruchom{' '}
@@ -50,18 +51,29 @@ export function CharacterList({
         </div>
       )}
 
-      {characters.length === 0 && !backendError && (
-        <div style={{ color: 'rgba(255,255,255,0.2)', fontSize: '13px', padding: '8px 4px' }}>Ładowanie postaci...</div>
+      {characters.length === 0 && !backendError ? (
+        <div style={{ color: 'rgba(255,255,255,0.2)', fontSize: '13px', padding: '8px 4px', flexShrink: 0 }}>
+          Ładowanie postaci...
+        </div>
+      ) : (
+        <div
+          style={{
+            flex: 1,
+            minHeight: 0,
+            overflowY: 'auto',
+            paddingRight: 4,
+          }}
+        >
+          {characters.map((char) => (
+            <CharacterCard
+              key={char.id}
+              char={char}
+              selected={selectedChar?.id === char.id}
+              onClick={() => selectChar(char)}
+            />
+          ))}
+        </div>
       )}
-
-      {characters.map((char) => (
-        <CharacterCard
-          key={char.id}
-          char={char}
-          selected={selectedChar?.id === char.id}
-          onClick={() => selectChar(char)}
-        />
-      ))}
     </div>
   );
 }

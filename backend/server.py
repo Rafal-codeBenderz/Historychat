@@ -343,140 +343,9 @@ class RAGEngine:
 
 
 # ─────────────────────────────────────────────
-# Voice Mapping for TTS
+# Characters Config (migrated from debata project)
 # ─────────────────────────────────────────────
-VOICE_MAP = {
-    "Charon": "echo",      # Kopernik
-    "Kore": "nova",        # Curie, Kleopatra, Joanna
-    "Fenrir": "fable",     # Napoleon
-    "Zephyr": "shimmer",   # da Vinci
-    "Puck": "alloy"        # Einstein
-}
-
-# ─────────────────────────────────────────────
-# Characters Config
-# ─────────────────────────────────────────────
-CHARACTERS = {
-    "copernicus": {
-        "id": "copernicus",
-        "name": "Mikołaj Kopernik",
-        "era": "Renesans (1473–1543)",
-        "bio": "Polski astronom i kanonik, twórca rewolucyjnej teorii heliocentrycznej. Autor dzieła 'De revolutionibus orbium coelestium'.",
-        "style": "Mów spokojnie, z głęboką erudycją renesansowego uczonego. Używaj łacińskich wtrąceń. Powołuj się na obserwacje astronomiczne i matematykę. Jesteś ostrożny w formułowaniu rewolucyjnych tez – wiesz, jakie ryzyko niosą.",
-        "avatar_prompt": "Realistic historical portrait of Nicolaus Copernicus, Polish Renaissance astronomer, holding astronomical instruments, oil painting style, 15th-16th century, candlelight, scholarly robes, Toruń cathedral background",
-        "avatar_color": "#1a3a5c",
-        "icon": "🌍",
-        "voiceName": "Charon",
-        "suggestedTopics": [
-            {"question": "Co sądzisz o teorii heliocentrycznej?", "sourceStem": "de_revolutionibus"},
-            {"question": "Jak doszedłeś do swoich odkryć?", "sourceStem": "de_revolutionibus"},
-            {"question": "Dlaczego bałeś się opublikować swoje dzieło?", "sourceStem": "de_revolutionibus"},
-            {"question": "Jakie były Twoje obserwacje we Fromborku?", "sourceStem": "de_revolutionibus"},
-        ]
-    },
-    "marie_curie": {
-        "id": "marie_curie",
-        "name": "Maria Skłodowska-Curie",
-        "era": "Przełom XIX/XX wieku (1867–1934)",
-        "bio": "Fizyczka i chemiczka polskiego pochodzenia. Dwukrotna laureatka Nagrody Nobla. Odkryła polon i rad, stworzyła teorię promieniotwórczości.",
-        "style": "Mów rzeczowo, naukowo, z pasją do odkryć. Jesteś z Polski, co jest dla Ciebie ważne. Odnoś się do konkretnych eksperymentów i danych. Jesteś skromna, ale pewna wartości swojej pracy.",
-        "avatar_prompt": "Realistic historical portrait of Marie Curie, Polish-French physicist and chemist, in a 19th century laboratory, oil painting style, scientific equipment visible, determined expression, Victorian era dress",
-        "avatar_color": "#2d4a3e",
-        "icon": "⚗️",
-        "voiceName": "Kore",
-        "suggestedTopics": [
-            {"question": "Jak odkryłaś promieniotwórczość?", "sourceStem": "pisma_i_listy"},
-            {"question": "Jak to było być kobietą-naukowcem?", "sourceStem": "pisma_i_listy"},
-            {"question": "Opowiedz o odkryciu polonu i radu.", "sourceStem": "pisma_i_listy"},
-            {"question": "Jak wyglądała Twoja praca podczas I wojny światowej?", "sourceStem": "pisma_i_listy"},
-        ]
-    },
-    "napoleon": {
-        "id": "napoleon",
-        "name": "Napoleon Bonaparte",
-        "era": "Epoka napoleońska (1769–1821)",
-        "bio": "Cesarz Francuzów, wybitny strateg wojskowy i prawodawca. Twórca Kodeksu Napoleona, zdobywca Europy.",
-        "style": "Mów z imperatorską pewnością siebie. Jesteś bezpośredni, konkretny, czasem poetycki. Masz wizję wielkiej Francji i Europy. Lubisz odwoływać się do historii i strategii.",
-        "avatar_prompt": "Realistic historical portrait of Napoleon Bonaparte, Emperor of France, in military uniform with medals, oil painting style, 19th century, commanding presence, French imperial court background",
-        "avatar_color": "#3d2a1a",
-        "icon": "⚔️",
-        "voiceName": "Fenrir",
-        "suggestedTopics": [
-            {"question": "Dlaczego kampania rosyjska się nie powiodła?", "sourceStem": "korespondencja_wspomnienia"},
-            {"question": "Co uważasz za swoje największe osiągnięcie?", "sourceStem": "korespondencja_wspomnienia"},
-            {"question": "Jak wyglądało Twoje wygnanie na Świętej Helenie?", "sourceStem": "korespondencja_wspomnienia"},
-            {"question": "Opowiedz o Kodeksie Napoleona.", "sourceStem": "korespondencja_wspomnienia"},
-        ]
-    },
-    "da_vinci": {
-        "id": "da_vinci",
-        "name": "Leonardo da Vinci",
-        "era": "Renesans (1452–1519)",
-        "bio": "Polihistor Renesansu, malarz, wynalazca i wizjoner wyprzedzający swoją epokę. Autor Mony Lisy i Ostatniej Wieczerzy.",
-        "style": "Mów z nieskończoną ciekawością świata i artystyczną wrażliwością. Jesteś ciekaw wszystkiego - od anatomii po maszyny latające. Używasz metafor i obrazów. Jesteś skromny, ale świadomy swojego geniuszu.",
-        "avatar_prompt": "Realistic historical portrait of Leonardo da Vinci, 60-year-old artist and inventor, long white beard, wise eyes, Renaissance velvet robes, studio background with flying machine sketches, oil painting style, soft natural lighting",
-        "avatar_color": "#8b7355",
-        "icon": "🎨",
-        "voiceName": "Zephyr",
-        "suggestedTopics": [
-            {"question": "Tajemnica uśmiechu Mony Lisy", "sourceStem": "notatniki_i_dzieła"},
-            {"question": "Twoje projekty maszyn latających", "sourceStem": "notatniki_i_dzieła"},
-            {"question": "Studia nad anatomią człowieka", "sourceStem": "notatniki_i_dzieła"},
-            {"question": "Ostatnia Wieczerza i jej symbolika", "sourceStem": "notatniki_i_dzieła"},
-        ]
-    },
-    "cleopatra": {
-        "id": "cleopatra",
-        "name": "Kleopatra VII",
-        "era": "Starożytność (69–30 p.n.e.)",
-        "bio": "Ostatnia władczyni hellenistycznego Egiptu, ikona inteligencji i władzy. Znana z sojuszy z Juliuszem Cezarem i Markiem Antoniuszem.",
-        "style": "Mów z godnością królowej i bystrością polityka. Jesteś wykształcona, władcza, ale też kobieca. Używasz retoryki i perswazji. Jesteś świadoma swojej pozycji i władzy.",
-        "avatar_prompt": "Realistic historical portrait of Cleopatra VII, 30-year-old Egyptian queen, regal expression, gold jewelry with lapis lazuli, Ptolemaic crown, palace balcony overlooking the Nile at sunset, oil painting style, golden hour lighting",
-        "avatar_color": "#d4af37",
-        "icon": "👑",
-        "voiceName": "Kore",
-        "suggestedTopics": [
-            {"question": "Sojusz z Juliuszem Cezarem", "sourceStem": "historia_i_legenda"},
-            {"question": "Twoja flota pod Akcjum", "sourceStem": "historia_i_legenda"},
-            {"question": "Nauka języków i wykształcenie", "sourceStem": "historia_i_legenda"},
-            {"question": "Relacja z Markiem Antoniuszem", "sourceStem": "historia_i_legenda"},
-        ]
-    },
-    "einstein": {
-        "id": "einstein",
-        "name": "Albert Einstein",
-        "era": "XX wiek (1879–1955)",
-        "bio": "Twórca teorii względności, symbol geniuszu i pacyfizmu. Laureat Nagrody Nobla z fizyki. Autor słynnego równania E=mc².",
-        "style": "Mów z humorem, skromnością i głębokim zrozumieniem wszechświata. Używasz prostych analogii do wyjaśniania skomplikowanych konceptów. Jesteś pacyfistą i humanistą. Lubisz żartować.",
-        "avatar_prompt": "Realistic historical portrait of Albert Einstein, 70-year-old scientist, iconic wild hair, gentle eyes, simple sweater, blackboard with complex equations background, oil painting style, warm indoor lighting",
-        "avatar_color": "#5f9ea0",
-        "icon": "🧪",
-        "voiceName": "Puck",
-        "suggestedTopics": [
-            {"question": "Teoria względności (E=mc²)", "sourceStem": "teoria_i_życie"},
-            {"question": "Efekt fotoelektryczny i Nobel", "sourceStem": "teoria_i_życie"},
-            {"question": "Twoje poglądy na pacyfizm", "sourceStem": "teoria_i_życie"},
-            {"question": "Gra na skrzypcach i miłość do muzyki", "sourceStem": "teoria_i_życie"},
-        ]
-    },
-    "joan_of_arc": {
-        "id": "joan_of_arc",
-        "name": "Joanna d'Arc",
-        "era": "Średniowiecze (1412–1431)",
-        "bio": "Dziewica Orleańska, która poprowadziła armię francuską do zwycięstwa podczas Wojny Stuletniej. Spalona na stosie jako heretyczka, później kanonizowana.",
-        "style": "Mów z niezłomną wiarą i odwagą. Jesteś prosta, bezpośrednia, ale głęboko wierząca. Odwołujesz się do wizji i głosów świętych. Jesteś gotowa na poświęcenie dla Francji.",
-        "avatar_prompt": "Realistic historical portrait of Joan of Arc, 19-year-old warrior, short hair, shining steel armor, holding a white banner, battlefield background with medieval flags, oil painting style, dramatic overcast lighting",
-        "avatar_color": "#c0c0c0",
-        "icon": "⚔️",
-        "voiceName": "Kore",
-        "suggestedTopics": [
-            {"question": "Głosy świętych w Domrémy", "sourceStem": "życie_i_męczeństwo"},
-            {"question": "Oblężenie Orleanu", "sourceStem": "życie_i_męczeństwo"},
-            {"question": "Spotkanie z Karolem VII w Chinon", "sourceStem": "życie_i_męczeństwo"},
-            {"question": "Twoja zbroja i sztandar", "sourceStem": "życie_i_męczeństwo"},
-        ]
-    }
-}
+from core.characters_debata_migrated import CHARACTERS, VOICE_MAP  # noqa: E402
 
 
 def validate_suggested_topic_sources():
@@ -732,6 +601,89 @@ def clear_history(char_id):
             f.writelines(lines)
     return jsonify({"success": True})
 
+@app.route("/api/generate-avatar", methods=["POST"])
+def generate_avatar():
+    """Generuje obraz DALL-E dla postaci i zapisuje w public/avatars/."""
+    try:
+        import openai
+        import base64
+
+        data = request.json or {}
+        character_id = data.get("character_id")
+        if not character_id or not isinstance(character_id, str):
+            return jsonify({"error": "Brak character_id"}), 400
+        character_id = character_id.strip()
+
+        if character_id not in CHARACTERS:
+            return jsonify({"error": "Nieznana postać"}), 400
+
+        character = CHARACTERS[character_id]
+        avatar_prompt = (character.get("avatar_prompt") or "").strip()
+        if not avatar_prompt:
+            return jsonify({"error": "Brak avatar_prompt dla postaci"}), 400
+
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            logger.warning("Brak OPENAI_API_KEY dla generowania avatara")
+            return jsonify({"error": "Brak OPENAI_API_KEY"}), 400
+
+        avatars_dir = _ROOT / "public" / "avatars"
+        avatars_dir.mkdir(parents=True, exist_ok=True)
+
+        avatar_path = avatars_dir / f"{character_id}.jpg"
+        if avatar_path.exists():
+            logger.info("[AVATAR] Obraz już istnieje: %s", avatar_path)
+            return jsonify(
+                {
+                    "success": True,
+                    "image_url": f"/avatars/{character_id}.jpg",
+                    "cached": True,
+                }
+            )
+
+        logger.info("[AVATAR] Generowanie obrazu dla %s...", character_id)
+        openai_client = openai.OpenAI(api_key=api_key)
+
+        response = openai_client.images.generate(
+            model="dall-e-3",
+            prompt=(
+                f"{avatar_prompt}. Portrait, looking at the camera, cinematic lighting, "
+                "high detail, professional photography, historical style."
+            ),
+            size="1024x1024",
+            quality="standard",
+            response_format="b64_json",
+            n=1,
+        )
+
+        img_b64 = None
+        if getattr(response, "data", None):
+            img_b64 = getattr(response.data[0], "b64_json", None) or None
+
+        if img_b64:
+            avatar_path.write_bytes(base64.b64decode(img_b64))
+        else:
+            # Fallback for older/alternate responses that return a URL
+            image_url = getattr(response.data[0], "url", None) if getattr(response, "data", None) else None
+            if not image_url:
+                return jsonify({"error": "Nie udało się wygenerować obrazu (brak url/b64_json)"}), 500
+            import requests
+            img_response = requests.get(image_url, timeout=90)
+            img_response.raise_for_status()
+            avatar_path.write_bytes(img_response.content)
+
+        logger.info("[AVATAR] Obraz zapisany: %s", avatar_path)
+        return jsonify(
+            {
+                "success": True,
+                "image_url": f"/avatars/{character_id}.jpg",
+                "cached": False,
+            }
+        )
+    except Exception as e:
+        logger.error("Błąd generowania avatara: %s", e)
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/api/tts", methods=["POST"])
 def generate_tts():
     """Generuje audio TTS dla odpowiedzi."""
@@ -782,6 +734,18 @@ def health():
         "kb_path": str(KB_PATH),
         "kb_exists": KB_PATH.is_dir(),
     })
+
+@app.route("/api/routes", methods=["GET"])
+def list_routes():
+    """Debug endpoint: list registered routes."""
+    rules = []
+    for r in app.url_map.iter_rules():
+        if r.endpoint == "static":
+            continue
+        methods = sorted(m for m in r.methods if m not in {"HEAD", "OPTIONS"})
+        rules.append({"rule": r.rule, "methods": methods})
+    rules.sort(key=lambda x: x["rule"])
+    return jsonify(rules)
 
 if __name__ == "__main__":
     logger.info("Uruchamianie HistoryChat RAG Backend...")

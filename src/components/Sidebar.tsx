@@ -16,6 +16,8 @@ export function Sidebar({ backendError, characters, selectedChar, selectChar }: 
       style={{
         width: '280px',
         flexShrink: 0,
+        height: '100vh',
+        minHeight: 0,
         borderRight: '1px solid rgba(255,255,255,0.07)',
         display: 'flex',
         flexDirection: 'column',

@@ -7,10 +7,12 @@ export function MessageBubble({
   message,
   char,
   onPlayAudio,
+  onStopAudio,
 }: {
   message: Message;
   char: Character;
   onPlayAudio?: (audioUrl: string) => void;
+  onStopAudio?: () => void;
 }) {
   const isUser = message.role === 'user';
   const [showSources, setShowSources] = useState(false);
@@ -135,7 +137,7 @@ export function MessageBubble({
         )}
 
         {!isUser && message.audioUrl && onPlayAudio && (
-          <div style={{ marginLeft: '4px', marginTop: '6px' }}>
+          <div style={{ marginLeft: '4px', marginTop: '6px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button
               onClick={() => onPlayAudio(message.audioUrl!)}
               style={{
@@ -153,6 +155,28 @@ export function MessageBubble({
               }}
             >
               🔊 Odtwórz ponownie
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onStopAudio?.()}
+              disabled={!onStopAudio}
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '6px',
+                padding: '4px 10px',
+                fontSize: '11px',
+                color: 'rgba(255,255,255,0.6)',
+                fontFamily: "'Outfit', sans-serif",
+                cursor: onStopAudio ? 'pointer' : 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                opacity: onStopAudio ? 1 : 0.55,
+              }}
+            >
+              ⏹ Zatrzymaj rozmowę
             </button>
           </div>
         )}

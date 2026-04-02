@@ -1,0 +1,128 @@
+Źródło: Wikipedia (pl)
+Hasło: psychoanaliza
+Postać: freud (Freud)
+Dokument: psychoanaliza.txt
+Opis: Podstawy psychoanalizy
+
+Psychoanaliza (od gr. ψυχη = „psyche”, „dusza” i ανάλυσις = „analiza”) – metoda poznania i leczenia człowieka, teoria psychopatologii i teoria pozwalająca wyjaśnić różne zjawiska społeczne i kulturowe. Została zapoczątkowana na przełomie XIX i XX wieku przez wiedeńskiego lekarza Sigmunda Freuda.
+Psychoanaliza zainspirowała rozwój innych szkół terapii, a sama współcześnie funkcjonuje jako dziedzina złożona z wielu nurtów myślenia. Ta różnorodność dotyczy założeń na temat źródeł i patomechanizmu rozwoju zaburzeń psychicznych oraz sposobu prowadzenia analizy czy terapii. Wśród tych nurtów najczęściej wymienia się: psychologię ego, podejście oparte na teorii relacji z obiektem, Niezależną Szkołę Brytyjską i Nurt Francuski.
+
+Historia pojęcia
+Sam termin „psychoanaliza” wywodzi się z lat współpracy Freuda z Josefem Breuerem. Ci dwaj wiedeńscy lekarze, próbując leczyć chorych metodą polegającą na odszyfrowywaniu sensu objawów traktowanych jako forma wyrazu nieświadomego życia psychicznego i uświadamianiu ich znaczenia pacjentowi, posługiwali się początkowo określeniem „metoda katartyczna” (od gr. katharsis = „oczyszczenie”) – w nawiązaniu do terminu znanego w teorii i praktyce dramatu greckiego. W liście do Freuda Breuer zaproponował mu, by na podstawie Króla Edypa Sofoklesa – tragedii określonej przez Friedricha Schillera mianem „tragicznej analizy” – nazwać wynalezioną przez nich obu metodę katartyczną „psychoanalizą”, albowiem oni obaj – podobnie jak Edyp zwalczył dręczącą Teby zarazę, tropiąc i wypowiadając prawdę – sprowadzili „histeryczne” objawy swej pacjentki do ich genezy tkwiącej w przeżyciu traumatycznym z wczesnych lat życia (list ten, przechowywany w Archiwum Freuda w Nowym Jorku, do dzisiaj nie został opublikowany w żadnym wydaniu jego korespondencji). Wyniki swych studiów Freud i Breuer opublikowali w 1895 roku w pracy pt. „Studien über Hysterie”.
+Freud i Breuer, mimo że zastosowali w medycynie praktycznej teorię o istnieniu nieświadomego życia psychicznego, nie byli jednak właściwymi odkrywcami tej teorii. Samo pojęcie nieświadomości jest znacznie starsze – jego historia sięga do przyrodoznawcy Carla Gustava Carusa, filozofów Johanna Friedricha Herbarta, Arthura Schopenhauera i Friedricha Nietzschego. Spotkać je można również w dziełach Johanna Wolfganga Goethego i Fiodora Dostojewskiego. W formie jeszcze nieostrej pojęcie to pojawia się również w filozofii Eduarda von Hartmanna.
+Zygmunt Freud jako pierwszy wprowadził pojęcie nieświadomości do psychologii, wynalazł on także metodę badania przejawów nieświadomego życia psychicznego – metodę swobodnych skojarzeń; wyniki zastosowania tej metody powiązał z modelem trzech instancji psyche, z teorią dynamiki popędowej (zasada rozkoszy) oraz z koncepcjami mającymi służyć wyjaśnieniu patologicznych odchyleń od tego ideału.
+
+Podstawowe teorie psychoanalityczne
+Nie można stwierdzić, że psychoanaliza posiada jakąś jednolitą teorię zaakceptowaną przez wszystkie szkoły psychoanalityczne. Można jednak powiedzieć, że wszystkie szkoły psychoanalizy odnoszą się do zbioru podstawowych teorii opracowanych przez Freuda, czy to na zasadzie negacji, czy to rozwijając je lub przekształcając. Ten rdzeń teorii i pojęć psychoanalizy można zebrać w mniej więcej takim oto kanonie:
+
+Model strukturalny aparatu psychicznego
+W swojej teorii metapsychologicznej Freud zaproponował dwa modele opisu struktury i funkcjonowania psychiki, zwane topikami (od gr. topos – miejsce). Pierwszy, model topograficzny, dzieli aparat psychiczny ze względu na dostęp treści do świadomości. Drugi, model strukturalny, opisuje go jako zbiór trzech dynamicznie oddziałujących na siebie instancji.
+
+Pierwsza topika: model topograficzny
+Przedstawiony w Objaśnianiu marzeń sennych (1900) model topograficzny dzieli aparat psychiczny na trzy systemy (lub obszary):
+
+Świadomość (niem. das Bewusste, skrót Bw.) – obejmuje myśli, uczucia i spostrzeżenia, z których zdajemy sobie sprawę w danym momencie. Jest to najmniejsza część aparatu psychicznego.
+Przedświadomość (niem. das Vorbewusste, skrót Vbw.) – zawiera treści, które nie są aktualnie w polu świadomości, ale mogą zostać do niej łatwo przywołane wysiłkiem woli (np. wspomnienia). Działa jako cenzura, uniemożliwiając treściom nieświadomym swobodny dostęp do świadomości.
+Nieświadomość (niem. das Unbewusste, skrót Ubw.) – jest najgłębszym i największym obszarem psychiki, zawierającym wyparte pragnienia, popędy, fantazje i wspomnienia, które są aktywnie niedostępne dla świadomości, ponieważ ich treść byłaby dla niej zagrażająca lub bolesna.
+Treści nieświadome, mimo że wyparte, pozostają dynamiczne i dążą do powrotu do świadomości. Ich zniekształcone przejawy to według Freuda m.in. marzenia senne, czynności pomyłkowe (przejęzyczenia, gubienie przedmiotów) oraz objawy nerwicowe. System nieświadomości rządzi się własnymi prawami, określanymi jako proces pierwotny:
+
+charakteryzuje go brak logiki i sprzeczności,
+nie podlega kategorii czasu (treści z dzieciństwa są tak samo aktualne jak te z wczoraj),
+nie odnosi się do rzeczywistości zewnętrznej,
+jego energia swobodnie przemieszcza się z jednego wyobrażenia na drugie (mechanizmy kondensacji i przemieszczenia).
+
+Druga topika: model strukturalny
+W pracy Ja i to (1923) Freud uzupełnił model topograficzny o nową teorię, opisującą psychikę jako strukturę złożoną z trzech instancji: id, ego i superego.
+
+Id (niem. das Es, „to”) – jest najstarszą, pierwotną i całkowicie nieświadomą częścią osobowości, stanowiącą rezerwuar energii psychicznej. Jest siedliskiem popędów – życia (Eros) i śmierci (Tanatos). Id kieruje się zasadą przyjemności, dążąc do natychmiastowego zaspokojenia potrzeb i redukcji napięcia, bez względu na logikę czy realia świata zewnętrznego. Funkcjonuje zgodnie z logiką procesu pierwotnego.
+Ego (niem. das Ich, „ja”) – wyłania się z id w kontakcie ze światem zewnętrznym. Jest instancją odpowiedzialną za percepcję, myślenie, pamięć i działanie. Ego kieruje się zasadą rzeczywistości, starając się znaleźć realistyczne sposoby zaspokojenia popędów id, uwzględniając jednocześnie ograniczenia społeczne i moralne narzucane przez superego. Pełni rolę mediatora między impulsami id, wymaganiami superego a realiami świata. Funkcjonuje głównie w sferze świadomej i przedświadomej, ale jego mechanizmy obronne (np. wyparcie) są w dużej mierze nieświadome.
+Superego (niem. das Über-Ich, „nad-ja”) – rozwija się jako ostatnia instancja, poprzez internalizację (uwewnętrznienie) norm moralnych, wartości i zakazów przekazywanych przez rodziców i społeczeństwo. Jego ukształtowanie jest ściśle związane z rozwiązaniem kompleksu Edypa. Superego składa się z dwóch podsystemów: sumienia (które karze za złe postępowanie, wywołując poczucie winy) oraz ja idealnego (które nagradza za dobre postępowanie, dając poczucie dumy). Dąży ono do moralnej doskonałości, hamując impulsy id, które są sprzeczne z przyjętymi normami.
+
+Dwie zasady procesu psychicznego
+W teorii psychoanalitycznej funkcjonowanie aparatu psychicznego regulowane jest przez dwie fundamentalne zasady: zasadę przyjemności (niem. Lustprinzip) oraz zasadę rzeczywistości (niem. Realitätsprinzip). Ich dynamiczna relacja i konflikt leżą u podstaw rozwoju osobowości i powstawania objawów nerwicowych. Rozwój psychiczny polega na stopniowym przejściu od dominacji zasady przyjemności do dominacji zasady rzeczywistości. Nie oznacza to jednak całkowitego wyeliminowania tej pierwszej. Jak pisał Freud, ego „uczy się nie ulegać zasadzie przyjemności, lecz kierować się zasadą rzeczywistości”. Zasada rzeczywistości nie znosi zasady przyjemności, lecz ją zabezpiecza, pozwalając na jej zaspokojenie w sposób, który nie prowadzi do konfliktu ze światem zewnętrznym i superego. Konflikt między tymi dwiema zasadami jest stałym elementem życia psychicznego i stanowi źródło wewnętrznych napięć, które leżą u podstaw nerwic i mechanizmów obronnych.
+
+Zasada przyjemności
+Zasada przyjemności jest pierwotnym mechanizmem, który rządzi działaniem nieświadomości, a w szczególności instancji id. Jej celem jest natychmiastowe rozładowanie napięcia psychicznego, które powstaje w wyniku niezaspokojonych popędów. Dąży ona do unikania przykrości (niem. Unlust) i maksymalizacji przyjemności (niem. Lust), ignorując przy tym ograniczenia świata zewnętrznego i normy społeczne. Działanie tej zasady jest najbardziej widoczne u niemowląt, które domagają się natychmiastowego zaspokojenia potrzeb, a także w marzeniach sennych, gdzie nieświadome pragnienia realizują się w formie halucynacyjnej.
+
+Zasada rzeczywistości
+Wraz z rozwojem jednostki i jej konfrontacją z realiami świata zewnętrznego wykształca się zasada rzeczywistości, która modyfikuje i ogranicza działanie zasady przyjemności. Jest ona domeną ego i polega na zdolności do odraczania gratyfikacji oraz poszukiwania realistycznych i społecznie akceptowalnych sposobów zaspokojenia popędów. Ego, kierując się tą zasadą, analizuje otoczenie, przewiduje konsekwencje działań i jest w stanie znieść frustrację wynikającą z odroczenia przyjemności w celu osiągnięcia długoterminowych korzyści.
+
+Teoria popędów i libido
+Teoria popędów stanowi fundament psychoanalitycznego rozumienia motywacji ludzkiego zachowania. Według Freuda, popędy (niem. Trieb) są wrodzonymi, endogennymi siłami motywacyjnymi, które stanowią „miarę żądania dotyczącego wykonania pewnej pracy, które zostało postawione psychice w związku z jej powiązaniami z ciałem”. Libido  oznacza energię psychiczną popędu seksualnego, napędzającą rozwój osobowości, zachowania i relacje z obiektami. Freud rozumiał libido w sensie ekonomicznym – jako siłę, którą można obsadzać wyobrażenia, obiekty lub własne „ja”. Wyróżnił:
+
+libido narcystyczne – skierowane na własne „ja”,
+libido obiektowe – skierowane na osoby i rzeczy zewnętrzne.
+Rozwój libido przebiega fazowo: oralna, analna, falliczna, okres latencji i genitalna; zaburzenia w tym procesie (fiksacje, regresje) mogą prowadzić do neuroz. W późniejszej teorii Freud przeciwstawił libido (energia Erosa, popędu życia) popędowi śmierci (Tanatos).
+
+Teoria rozwoju indywiduum ludzkiego
+Psychoanaliza wychodzi z założenia, że osobowość człowieka rozwija się przez całe życie, przechodząc różne fazy charakteryzujące się różnymi punktami ciężkości. Na proces formowania się psyche szczególny wpływ mają jednak fazy wczesnego rozwoju: zaburzenie procesu rozwoju na tym wczesnym etapie może zadecydować o specyficznym charakterze całej osobowości. Freud skupił się na badaniu rozwoju psychoseksualnego człowieka, uznając, iż dziecko już od samych narodzin (a nawet wcześniej) jest istotą seksualną. Seksualność dziecięcą uznał Freud za polimorficzno-perwersyjną – oznacza to, iż dziecko nie ma jeszcze stabilnej tożsamości seksualnej, praktykuje przeto różne formy zdobywania rozkoszy. Freud uznał, że rozwój libido dziecięcego przebiega w trzech fazach:
+
+fazie oralnej (0-1 rok życia)
+fazie analnej (1-3 rok życia)
+fazie fallicznej (3-6 rok życia).
+Proces rozwoju dziecięcej fazy genitalnej osiąga punkt szczytowy w tzw. kompleksie Edypa (w wypadku chłopca) i kompleksie Elektry (w wypadku dziewczynki), polegającym na tym, że dziecko zwraca się z miłością do rodzica przeciwnej płci, rywalizując z rodzicem tej samej płci o jego względy. Upadek (czy wyparcie) wynikającego z tego konfliktu inicjuje fazę utajenia, charakteryzującą się wyrzeczeniem się tak ukształtowanej miłości oraz ukształtowaniem stabilnego „nad-ja”, z czym związane jest ustanowienie tabu kazirodztwa. W okresie pokwitania wreszcie owe różne popędy cząstkowe znajdą się pod prymatem genitalności.
+
+Teoria traumatyczna
+Do roku 1897, a zatem w tzw. wczesnej fazie psychoanalizy, Freud był pod wielkim wrażeniem pracy z pacjentkami histerycznymi, dzięki ich obserwacji mógł bowiem badać różnorodną, bogatą symptomatykę, ponadto pacjentki te często opowiadały mu o urazach seksualnych z okresu wczesnego dzieciństwa. W konsekwencji Freud przyznał centralne miejsce traumatyzacji w procesie powstawania schorzeń psychicznych, później jednak zrelatywizował to ujęcie, uznając, że w etiologii nerwic mogą też odgrywać ważną rolę inne czynniki. Teoria ta znana jest jako teoria traumatyczna.
+
+Teoria narcyzmu
+Narcyzm to pojęcie wprowadzone przez Zygmunta Freuda do psychoanalizy, oznaczające skierowanie energii psychicznej (libido) na własne „ja”, które staje się obiektem miłości i inwestycji libidinalnej. Freud używał terminu „narcyzm” już pod koniec XIX wieku, początkowo w kontekście energetycznym (jako próba wyjaśnienia mechanizmu wycofania libido w stanach psychotycznych). W 1910 roku odwołał się do niego przy opisie wyboru obiektu pożądania u osób homoseksualnych („miłość do samego siebie jako wzór wyboru obiektu”), a następnie – w kontekście rozwoju psychicznego dzieci – do fenomenu niezwiązanej miłości własnej. Według Freuda narcyzm ujawnia się jako równowaga między „libido związanym z ego” a „libido związanym z obiektem” – energia psychiczna może przepływać pomiędzy tymi dwiema sferami, a wycofanie jej z obiektów zewnętrznych i reinwestycja w ego prowadzi do wzmocnienia narcystycznego „ja”. Freud pisał: „nasze ego uważamy za zbiornik libido, z którego może być ono wysyłane ku obiektom i do którego może powracać”. Narcyzm nie jest więc wyłącznie zjawiskiem patologicznym: stanowi podstawowy mechanizm w budowaniu tożsamości, wyborze obiektów miłości oraz w dynamice relacji z nimi.
+
+Narcyzm pierwotny
+Narcyzm pierwotny to hipotetyczna, wczesna faza rozwoju psychicznego dziecka, w której całe libido skierowane jest na własne „ja”. Jednostka nie odróżnia jeszcze siebie od świata zewnętrznego; doświadcza poczucia pełnej samowystarczalności i zaspokojenia. Freud traktował go jako konieczny etap w rozwoju, poprzedzający nawiązanie relacji z obiektami zewnętrznymi. Nie jest jednak bezpośrednio obserwowalny – pozostaje konstruktem teoretycznym.
+
+Narcyzm wtórny
+Narcyzm wtórny występuje wtedy, gdy libido, wcześniej skierowane na obiekty zewnętrzne (np. rodziców), zostaje z nich wycofane i ponownie zainwestowane w ego. Zjawisko to pojawia się zwłaszcza w stanach regresji i w zaburzeniach psychotycznych, gdy „ja” staje się ponownie centrum świata psychicznego. Freud opisywał narcyzm wtórny jako efekt:
+
+obrony przed utratą obiektu,
+próby odzyskania wszechmocy ego,
+reakcji na zranienie narcystyczne.
+
+Nieświadomość a nerwica
+Podstawowym zadaniem psychoanalizy jest – uważał Freud – likwidowanie złudzeń panujących w życiu indywiduum ludzkiego oraz uświadamianie tych treści psychicznych, które za sprawą traum czy wychowania zostały wyparte do nieświadomości, stając się zarzewiem konfliktów w obrębie instancji życia psychicznego i wywołując tym samym stan niepogodzenia człowieka z samym sobą – stan rozszczepienia nerwicowego. Freud postulował, by psychoanaliza stała się metodą likwidowania związanego z wyparciem cierpienia neurotycznego oraz nonsensownej destruktywności natręctwa powtarzania. W ten sposób – jak twierdził – człowiek będzie się mógł stać „panem we własnym domu”.
+
+Psychoanaliza jako metoda leczenia
+Metoda leczenia zaburzeń psychicznych oparta na założeniach teorii psychoanalizy zakłada, że podstawową przyczyną powstania objawów nerwicowych jest nieświadome odegranie lub przeżycie starych schematów, z którymi wiążą się silne emocje, powstałe w sytuacji traumatycznej. Świadome „ja”, inaczej obrony psychiczne, nie pozwalają na rozważenie i zaakceptowanie sytuacji początkowej i odpowiednie odreagowanie emocji z nią związanych. W efekcie w takim stanie rzeczy emocje te muszą szukać innej drogi ujścia. Tą drogą często okazują się być objawy neurotyczne.
+Zatem celem psychoanalizy jako metody leczenia – w odróżnieniu do terapii, jest przywrócenie do świadomości starych schematów i stłumionych wspomnień. Leczenie prowadzi się poprzez analizę takich tworów psychiki jak czynności pomyłkowe, marzenia senne, objawy nerwicowe, fobie, swobodne skojarzenia, natręctwa myślowe na podstawie przeniesienia i przeciwprzeniesienia jakie mogą się wytworzyć w trakcie stosunku analitycznego. Odpowiednio i etycznie prowadzona analiza może doprowadzić, ale nie zawsze, do uświadomienia sobie i do zrozumienia, kiedyś aktywnej sytuacji pochowanej w nieświadomym wspomnieniu, i niekiedy do usunięcia źródła nerwicy. Metodę i cel psychoanalizy dobrze ilustruje wypowiedź Freuda: „Wo Es war soll Ich werden” – „Gdzie było to, tam mam być ja” (Freud, Wykłady z wprowadzenia do psychoanalizy. Nowy cykl).
+Zgodnie z zasadami klasycznej psychoanalizy, każdy kandydat na analizę przechodzi szacowanie czy może się nadawać do tego procesu, który wymaga minimum inteligencji w odróżnieniu do wykształcenia. Sesje leczenia odbywają się do pięciu razy w tygodniu i każde spotkanie trwa 50 min. Pacjent leży, natomiast analityk siedzi za głową pacjenta. Psychoanaliza jest leczeniem długoterminowym. Może trwać od paru do kilkunastu lat, w zależności od mocy obron psychicznych i zaangażowania się i możliwości (m.in. finansowych) pacjenta.
+
+Psychoanaliza a psychologia
+Psychoanaliza to tzw. „psychologia głębi” (niem. die Tiefenpsychologie), ponieważ zakłada istnienie obszarów psychiki, które nie są dostępne świadomości. Od klasycznej psychologii różni się założeniem istnienia sfery psychiki zwanej nieświadomością charakteryzującej się tym, że procesy tam przebiegające nie są dostępne świadomej refleksji danej osoby. W nieświadomości zgromadzone są bodźce popędowe, których realizacja jest w konflikcie z normami moralnymi danej osoby. Popędy te, mimo że odebrano im bezpośrednią możliwość realizacji, są jednak ciągle aktywne i próbują ujawnić się poprzez tworzenie pewnych tworów zastępczych takich jak czynności pomyłkowe, marzenia senne, objawy nerwicowe itd. Formacje te są pewnego rodzaju kompromisem pomiędzy wymaganiami moralnymi i nieświadomymi popędami.
+Psychoanalizę można uznać za kierunek we współczesnej psychologii. Psychoanaliza, jakkolwiek nie jest systemem filozoficznym w pełnym sensie tego słowa, ociera się często w swych teoriach i rozważaniach o zagadnienia filozoficzne, szczególnie z zakresu teorii poznania.
+
+Pionierzy i przedstawiciele psychoanalizy
+Psychoanaliza w trakcie swej już ponad stuletniej historii rozwijała się, przechodząc proces podziałów i zróżnicowań, w wyniku których powstało wiele szkół psychoanalizy. Procesy te przybierały niekiedy nader gwałtowne formy, a ich dzieje są bardzo burzliwe – w wyniku tego niejednokrotnie dochodziło do powstawania sytuacji, w której przedstawiciele jednej szkoły wykluczali – nawet bardzo wybitnych – przedstawicieli drugiej z międzynarodowych organizacji psychoanalitycznych, odmawiali im prawa do posługiwania się tytułem psychoanalityka itp. Można jednak uznać, że do kręgu najwybitniejszych psychoanalityków wolno zaliczyć tych wszystkich, którzy sami się za takowych (zawsze lub w jakimś okresie swego życia) uważali.
+
+Do najważniejszych przedstawicieli psychoanalityków pierwszego pokolenia należą (poza Freudem): Karl Abraham, Alfred Adler, Siegfried Bernfeld, Helene Deutsch, Paul Federn, Johannes Marcinowski, Otto Fenichel, Sándor Ferenczi, Ernest Jones, Carl Gustav Jung, Sándor Radó, Otto Rank, Theodor Reik i Wilhelm Reich.
+Do przedstawicieli psychoanalitycznej psychologii „ja” należą: Heinz Hartmann, Anna Freud i Erik H. Erikson.
+René A. Spitz i Margaret Mahler powołali do życia zorientowany psychoanalitycznie kierunek doświadczalnych badań okresu niemowlęcego i wieku wczesnodziecięcego.
+John Bowlby stworzył znajdującą zastosowanie także poza psychoanalizą teorię przywarcia i utraty.
+Przedstawicielami teorii odniesienia do obiektu są Melanie Klein, Donald Winnicott, Michael Balint, Harold Searles, W.R.D. Fairbairn, Wilfred Bion i (polskiego pochodzenia) Hanna Segal.
+Psychologię jaźni (ang. self) stworzył Heinz Kohut
+Najważniejsi przedstawiciele psychoanalizy we Francji to: Marie Bonaparte, Jacques Lacan, André Green, Jean Laplanche i Steve Abadie-Rosier.
+Przedstawiciele neopsychoanalizy to: Karen Horney, Harry Stack Sullivan i Erich Fromm.
+Przedstawicielami neuropsychoanalizy są: Mark Solms, Allen Schore i Daniel Siegel.
+Przedstawiciele psychoanalizy dziecięcej (ang. Child analysis) to: Melanie Klein, Anna Freud, Donald Winnicott, Michael Fordham
+Znani psychoanalitycy współcześni: Otto Kernberg, Thomas Ogden, Peter Fonagy, Daniel Stern.
+W Polsce pionierami psychoanalizy byli: Ludwik Jekels, Maurycy Bornsztajn i Gustaw Bychowski, a po II wojnie światowej Jan Malewski, Michał Łapiński i Zbigniew Sokolik.
+
+Krytyka
+Krytycy psychoanalizy jako teorii naukowej twierdzą, że nie da się jej zweryfikować doświadczalnie, więc nie można jej zaliczyć do nauki, a jedynie do literatury, pseudonauki lub paranauki. Ponadto wielu autorów uważa, że Freud w wielu miejscach fałszował swoje obserwacje, aby potwierdzały teorię, a w niektórych miejscach ocierał się o numerologię (np. przy interpretacji marzeń sennych).
+Karl Popper zaczerpnął przykład psychoanalizy jako teorii niefalsyfikowalnej, a więc nienaukowej. Niefalsyfikowalność psychoanalizy można przedstawić na następującym przykładzie. Pewna osoba pali cygaro. Psychoanaliza twierdzi, że w ten sposób osoba zaspokaja swoje potrzeby oralne. Jeżeli osoba ta potwierdzi, będzie to stanowiło dowód na prawdziwość twierdzeń psychoanalizy. Jeżeli natomiast zaprzeczy, to przyczyn tegoż zaprzeczenia należy szukać w nieświadomości i w wyparciu. Zatem to także potwierdza prawdziwość twierdzeń psychoanalizy.
+Pytanie o naukowość psychoanalizy trzeba zadać w kontekście pytania o naukowość całej psychologii. Psychologia bowiem, zdaniem niektórych autorów, musi badać także tzw. „głębsze warstwy umysłu” oraz wszystkie aspekty osobowości człowieka, które wpływają na jego zachowanie i sposób postrzegania świata. Stawianie hipotez oraz wskazywanie popierających je argumentów jest w nauce rzeczą normalną i oczywistą. W innych podejściach np. w psychologii behawioralnej, hipotezy formułowane są w sposób falsyfikowalny. Linia demarkacji pomiędzy nauką a pseudonauką przebiega więc wewnątrz samej psychologii. Chociaż wielu filozofów nauki, tak jak Popper całkowicie odrzuca wszelkie niemożliwe do sprawdzenia (niefalsyfikowalne) teorie około naukowe, należy wziąć pod uwagę fakt, że niefalsyfikowalność nie oznacza fałszywości lecz nienaukowość. Są to jednak takie elementy, będące raczej filozoficzną interpretacją, których formuła sprawia, że nie mogą zostać uznane za naukę – nie oznacza to jednak, że powinny być automatycznie odrzucone. Oderwane od empirii koncepcje zgodnie z podejściem Rudolfa Carnapa powinny być traktowane nie jak nauka lecz jako wyraz prywatnej emocjonalności tak jak literatura lub muzyka.
+Jakkolwiek niektóre koncepcje psychoanalizy przetrwały i zostały potwierdzone to wiele fundamentalnych koncepcji psychoanalizy zostało obalonych (np. nie jest prawdą, że wszystkie popędy sprowadzają się do libido). Mimo to istnieją psychoanalitycy, którzy wciąż się upierają przy ich głoszeniu. Istnieje jednak wiele współczesnych nurtów w psychoanalizie, które biorą pod uwagę krytykę pierwotnych idei Freuda. Wiele szkół psychoanalizy definiuje się też nie jako nauka, lecz raczej rodzaj sztuki terapeutycznej, nie uzurpującej sobie miana nauki. Wpływ teorii Freuda na kulturę popularną i obecny w niej obraz psychologii jest prawdopodobnie większy niż na naukę.
+Jednakże – według niektórych zwolenników – freudowska koncepcja nieświadomości, niedoceniana przez ponad sto lat, jest "koniem trojańskim", rozsadzającym kartezjański system naukowy od wewnątrz.
+
+Przypisy
+Bibliografia
+Henri Ellenberger, Die Entdeckung des Unbewussten.
+Elisabeth Roudinesco, Jacques Lacan. Jego życie i myśl, przełożył Robert Reszke, Wydawnictwo KR, Warszawa 2006.
+Elisabeth Roudinesco, Histoire de psychanalyse, t. 1-3, Paris, Fayard.
+
+Linki zewnętrzne
+Zob. Psychoanaliza – zbiór teorii
+International Psychoanalytical Association. [dostęp 2009-05-31]. [zarchiwizowane z tego adresu (18 stycznia 1998)]. (ang.).
+Polskie Towarzystwo Psychoanalityczne. [dostęp 2009-05-31]. (pol.).
+The International Network of Freud Critics. [dostęp 2009-05-31]. [zarchiwizowane z tego adresu (10 października 2006)]. (ang.).
+Portal Psychologii Analitycznej Carla Gustava Junga. [dostęp 2009-05-31]. (pol.).
+Uczucie oceaniczne

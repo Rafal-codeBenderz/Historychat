@@ -12,6 +12,10 @@ data/chat_history.jsonl
 logs/retrieval.log
 history_chat.db
 
+# Awatary generowane przez backend (DALL-E)
+public/avatars/*.jpg
+public/avatars/*.png
+
 # System
 .DS_Store
 *.swp

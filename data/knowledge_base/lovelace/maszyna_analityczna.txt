@@ -1,0 +1,41 @@
+Źródło: Wikipedia (pl)
+Hasło: maszyna analityczna
+Postać: lovelace (Lovelace)
+Dokument: maszyna_analityczna.txt
+Opis: Prace nad maszyną analityczną Babbage'a
+
+Maszyna analityczna (ang. analytical engine) – wymyślone i zaprojektowane przez Charlesa Babbage’a urządzenie, które można uznać za pierwszy programowalny komputer ogólnego zastosowania. Choć nigdy nie została w pełni zbudowana, jej projekt stał się inspiracją do skonstruowania komputera przez późniejszych twórców.
+
+Konstrukcja
+Maszyna analityczna miała być konstrukcją mechaniczną, napędzaną silnikiem parowym. Program oraz dane miały być wprowadzane za pośrednictwem kart perforowanych (pomysł opracowany wcześniej przez Josepha Jacquarda i zastosowany w krośnie jego konstrukcji). Dane wyjściowe miały być drukowane na drukarce, rysowane przy pomocy urządzenia kreślarskiego (prekursora ploterów) lub zapisywane na kartach perforowanych.
+Konstrukcja maszyny analitycznej zakładała rozdzielenie pamięci („magazynu”, ang. store) i jednostki obliczeniowej („młyna”, ang. mill) – podobnie jak we współczesnych komputerach. Urządzenie pozwalało na wykorzystanie konstrukcji znanych z dzisiejszych języków programowania, takich jak pętle, instrukcje warunkowe czy przetwarzanie równoległe, było więc kompletne w sensie Turinga. Co znamienne, maszyna analityczna – choć nigdy nie skonstruowana – była pierwszym urządzeniem, dla którego zostały napisane programy komputerowe; pierwszy z nich, autorstwa Ady Lovelace, miał obliczać liczby Bernoulliego.
+
+Historia
+Gdy prace Babbage’a nad maszyną różnicową zostały zawieszone w 1833 roku, zajął się on projektowaniem maszyny analitycznej. Po raz pierwszy opublikował projekt swojego nowego urządzenia w 1837 roku. Luigi Menabrea wydał w 1842 szczegółowy opis maszyny w języku francuskim, który został w 1843 przetłumaczony na angielski przez Adę Lovelace. Dodała ona do tekstu swoje uwagi, które są o ponad połowę dłuższe od samego tłumaczenia. Babbage pracował nad maszyną analityczną aż do swojej śmierci w 1871 roku. Ze względu na brak środków finansowych pełna maszyna nie została zbudowana, powstała jedynie mała część „młyna”. W 1878 powstaje raport British Association for the Advancement of Science, który nie rekomenduje jego konstrukcji, z powodu niemożności oszacowania kosztów i niepewności co do jej prawidłowego działania po zbudowaniu.
+W 1880 roku syn wynalazcy, Henry Babbage, rozpoczął prace nad skonstruowaniem „młyna” wraz z drukarką - nie miały być jednak częściami maszyny analitycznej, ale „czymś co było by użyteczne samo w sobie”. Pierwsza próba obliczeń w 1888 zakończyła się niepowodzeniem. Po  przerwie od 1896 do 1906 maszyna została ukończona w 1910. Urządzenie nie było programowalne i umożliwiało wykonywanie czterech podstawowych działań matematycznych.
+
+Wpływ
+Percy Ludgate pisał w artykule Automatic Calculating Machines w 1914 roku o maszynach Babbage’a, wspominając przy tym, że sam zaprojektował maszynę analityczną (tylko plany, nie zbudował prototypu) ok. 1907-1909.
+Torres y Quevedo również poruszył temat maszyn w książce Essays on Automatics (wydanych po raz pierwszy w 1913). Postawił w niej sobie wyzwanie, jako wynalazcy urządzeń elektromechanicznych, zaprojektowania maszyny analitycznej. Tekst zawiera kompletny projekt maszyny elektromechanicznej zdolnej do całkowicie automatycznego obliczenia wartości określonej funkcji. Stworzył co najmniej dwa prototypy takich urządzeń.
+Vannevar Bush – jego artykuł Instrumental Analysis (1936) zawierał odniesienia do prac Babbage’a (zarówno ojca jak i syna), sugerował także w jaki sposób można zbudować elektromechaniczną maszynę, aby osiągnąć cel maszyny analitycznej. W tym samym roku rozpoczął projektowanie Rapid Arithmetical Machine, komputera cyfrowego opartego na lampach próżniowych. Wojna przerwała plany jego budowy w 1942.
+
+Postępy w budowie
+Postępy w projekcie (o nazwie Plan 28) budowy maszyny analitycznej, ogłoszonego w 2010:
+2015 – rozpoczęcie indeksowania i opisywania dokumentów cyfrowych
+2014 – rozpoczęcie prac nad interpretacją języka opisu sprzętu używanego przez Babbage’a
+2012 – Timothy Robinson dołącza do projektu jako członek zarządu
+2011:
+
+Computer Conservation Society zaakceptowało dołączenie budowy maszyny analitycznej do swojego portfolio projektów
+Muzeum Nauki w Londynie rozpoczęło przenoszenie dokumentów Babbage’a do postaci cyfrowej
+oficjalna rejestracja Planu 28 jako organizacji dobroczynnej, John Graham-Cumming i Doron Swade stają się członkami zarządu
+2010:
+
+John Graham-Cumming proponuje konstrukcję maszyny analitycznej
+założenie domeny Plan 28 do zbadania wykonywalności swojego pomysłu
+ogłoszenie terminu ukończenia: do 2021
+Doron Swade dołącza do projektu, był on odpowiedzialny m.in. za zbudowanie maszyny różnicowej nr 2
+
+Przypisy
+Linki zewnętrzne
+The Marvellous Analytical Engine- How It Works, „2D Goggles”, 31 maja 2015 [dostęp 2018-10-30]  (ang.). Opis (po angielsku) działania maszyny analitycznej od strony technicznej

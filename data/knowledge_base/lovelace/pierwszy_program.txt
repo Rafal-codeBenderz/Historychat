@@ -1,0 +1,52 @@
+Źródło: Wikipedia (pl)
+Hasło: Ada Lovelace
+Postać: lovelace (Lovelace)
+Dokument: pierwszy_program.txt
+Opis: Pierwszy program komputerowy (1843)
+
+Augusta Ada King, hrabina Lovelace (ur. 10 grudnia 1815 w Piccadilly Terrace, Middlesex, zm. 27 listopada 1852 w Marylebone) – angielska matematyczka i poetka, znana przede wszystkim z publikacji na temat mechanicznego komputera Charlesa Babbage’a, zwanego maszyną analityczną. Praca zawiera notatki, wśród nich pierwszy opublikowany algorytm napisany z zamiarem wykonania na maszynie, jednak istnieją kontrowersje co do jego autorstwa. Niemniej z tego powodu uważana bywa za pierwszą programistkę.
+
+Życiorys
+Ada Lovelace urodziła się 10 grudnia 1815 jako jedyne ślubne dziecko poety lorda Byrona i Any Isabel (Annabelle) Milbanke. Pięć tygodni po narodzinach dziecka Annabella porzuciła Byrona, oskarżając go o znęcanie się i niewierność. W następnych miesiącach Byron wziął rozwód z Aną Isabel, po czym opuścił Anglię. Zmarł w trakcie wojny o niepodległość Grecji w 1824. Przez długi czas Ada wyrażała niechęć do wszystkiego, co przypominało jej ojca.
+Lovelace często chorowała, począwszy od wczesnego dzieciństwa. W wieku ośmiu lat cierpiała na bóle głowy, które utrudniały jej widzenie. W czerwcu 1829 roku została sparaliżowana po odrze. W 1831 roku mogła już chodzić o kulach. Pomimo chorób, rozwijała swoje zdolności matematyczne i techniczne.
+Matka Ady próbowała odwieść córkę od literatury, skłaniając ją do zainteresowania się naukami ścisłymi, a zwłaszcza matematyką. Ada początkowo poświęcała większość czasu na naukę geografii, jednak z czasem zaczęła wykazywać zainteresowanie matematyką. Jej nauczycielem był m.in. August de Morgan. Ada utrzymywała również kontakt z Mary Somerville.
+W 1835 roku mężem Ady został William King, ósmy baron King, późniejszy pierwszy hrabia Lovelace, z którym miała troje dzieci. Łączyła ich również miłość do koni. Według jednej z hipotez Ada i Babbage mieli być kochankami, jednak plotka ta nie ma wyraźnego potwierdzenia w źródłach. Kontakty pomiędzy nimi uległy ochłodzeniu pod koniec życia Ady.
+Przyjaźniła się z Davidem Brewsterem, Charlesem Wheatstone’em, Charlesem Dickensem i Michaelem Faradayem. Była również hazardzistką. W wyniku przegranych zakładów na wyścigach konnych w chwili śmierci była winna swoim wierzycielom 2 tys. funtów.
+
+Praca
+Lovelace poznała Charlesa Babbage’a w 1833. Babbage zaprosił Lovelace do obejrzenia swojego prototypu maszyny różnicowej, która ją zafascynowała. Zaprezentowana przez Babbage’a maszyna była napędzana silnikiem parowym, dysponowała centralną jednostką przetwarzającą do wykonywania obliczeń oraz pamięcią masową. Do maszyny można było wprowadzić dane oraz ciąg instrukcji. Babbage oraz Ada zostali wkrótce przyjaciółmi i współpracownikami. Babbage był pod wrażeniem intelektu i zdolności analitycznych Lovelace. Nazywał ją „Zaklinaczką Liczb” i „drogą i wielce podziwianą Tłumaczką”.
+W 1841 roku Babbage udał się do Turynu, gdzie próbował uzyskać dofinansowanie na rozwój swojej maszyny analitycznej, która miała być rozwinięciem jego maszyny różnicowej. Odczytany przez Babbage’a referat został spisany po francusku przez włoskiego inżyniera wojskowego, matematyka oraz późniejszego prezesa rady ministrów Włoch Luigiego Menabreę. W 1842 roku Ada Lovelace podjęła się przetłumaczenia i skomentowania artykułu Menabrei na język angielski. Pracę ukończyła rok później.
+Ada Lovelace napisała siedem notatek, których długość była trzykrotnie dłuższa od tłumaczenia tekstu Menabrei. Notatki podpisała inicjałami A.A.L. W notatce G Ada Lovelace przedstawiła ciąg instrukcji, umożliwiający obliczenie liczb Bernoulliego. W innej notatce zawarła pogląd, że maszyna jest w stanie wykonywać wyłącznie zadania nakazane przez jej użytkownika. Podczas prac nad tłumaczeniem Ada Lovelace poprawiła błędy wprowadzone przez Menabreę.
+Wyjaśnienie funkcji maszyny różnicowej było trudnym zadaniem. Wielu naukowców nie rozumiało tej koncepcji, a brytyjskie instytucje nie wykazywały nią większego zainteresowania. Notatki Lovelace’a musiały nawet wyjaśniać, czym Maszyna Analityczna różniła się od oryginalnej Maszyny Różnicowej.
+W 1953, ponad wiek po śmierci Ady, notatki zostały ponownie opublikowane. Maszynę uważa się obecnie za inspirację do skonstruowania późniejszych komputerów, z kolei algorytm uznawany jest przez wielu za pierwszy program komputerowy.
+
+Kontrowersje wokół zakresu pracy
+Ada Lovelace jest określana jako pierwsza programistka komputerowa, jednak kontrowersje wzbudza zakres jej pracy w napisanie pierwszego programu komputerowego. Za sprawą rozwoju informatyki oraz popularyzacji postaci kobiecych w historii postać Ady nabrała wymiarów mitycznych. O ile Babbage uważał swoją maszynę za urządzenie matematyczne, Ada głosiła, że maszyna może mieć o wiele większe zastosowanie, o ile liczby zostaną zastąpione innymi desygnatami.
+Historyk informatyki Allan G. Bromley w publikacji z 1990 Difference and Analytical Engines stwierdził, że wszystko (oprócz jednego z programów wymienionych w jej notatkach) zostało kilka lat wcześniej przygotowane przez Babbage’a. Zdaniem Bromleya nie ma dowodów stwierdzających, że Ada kiedykolwiek przygotowała program dla maszyny analitycznej. Korespondencja z Babbagem wskazuje, że Ada nie miała stosownej wiedzy umożliwiającej jej napisanie programu. Bromley zauważył również, że między 1837 a 1840 rokiem powstało ok. 20 programów dla maszyny analitycznej.
+Dr Bruce Collier z Uniwersytetu Harvarda w opisie biografii Babbage’a z 1970 The Little Engines That Could’ve: The Calculating Machines of Charles Babbage napisał, że choć lady Lovelace była utalentowana i ogólnie rozumiała zamysł Babbage’a, faktycznie przedstawione przez nią pomysły były koncepcjami wymyślonymi przez Babbage’a. Rolę Ady Lovelace określił jako „wniosła znaczący wkład w rozsławienie Maszyny Analitycznej, ale nie ma dowodów na to, że w jakikolwiek sposób rozwinęła jej projekt lub teorię”.
+Doron Swade stwierdził, że Ada jedynie opublikowała pierwszy program komputerowy, zamiast go faktycznie napisać, ale zgadza się, że była jedyną osobą, która dostrzegła potencjał Maszyny Analitycznej jako maszyny zdolnej do wyrażania wartości innych niż ilości.
+W swojej książce „Idea Makers” Stephen Wolfram broni wkładu Lovelace. Przyznając, że Babbage napisał kilka nieopublikowanych algorytmów dla Maszyny Analitycznej przed notatkami Lovelace, Wolfram argumentuje, że „nie ma nic tak wyrafinowanego – ani tak przejrzystego – jak obliczenia liczb Bernoulliego przez Adę. Babbage z pewnością pomógł i nakierowywał Adę, ale to ona była jej siłą napędową”. Wolfram sugeruje następnie, że głównym osiągnięciem Lovelace było wyciągnięcie z korespondencji Babbage’a „jasnego wyjaśnienia abstrakcyjnego działania maszyny – czego Babbage nigdy nie zrobił”.
+
+Śmierć
+Lovelace zmarła 27 listopada 1852 w wieku 36 lat na raka macicy. Aby znieść ból znieczulała się opium i alkoholem. Uczestniczyła również w seansach spirytystycznych. Nad chorą Adą opiekę sprawowała jej matka, która zabroniła córce stosowanie środków znieczulających w ramach pokuty za utrzymywanie romansów i udział w grach hazardowych. Pod koniec życia Ada odkryła, że jej ojciec nie był tak złym człowiekiem, jak przedstawiała go Ana Isabel, co doprowadziło do konfliktu pomiędzy matką a córką.
+Ada została pochowana w pobliżu grobu swojego ojca. Ponad sto listów Ady Lovelace zostało zniszczonych po jej śmierci przez męża. Po jej śmierci Isabel zażądała od Babbage’a przekazania wszystkich notatek Ady w celu ich zniszczenia, na co Babbage nie przystał.
+
+Nawiązania
+W latach 80. XX wieku Departament Obrony Stanów Zjednoczonych zatwierdził opis nowego języka programowania nazwanego Ada.
+10 grudnia 2012 strona główna wyszukiwarki Google z okazji 197. rocznicy jej urodzin została opatrzona grafiką nawiązującą do tej postaci i jej osiągnięć.
+Postać Ady Lovelace pojawiła się w jednym z odcinków serialu Doktor Who (seria 12, odcinek 2: Wszechświat to za mało – część II; ang. Spyfall – Part Two).
+Podobizna Ady występuje także na hologramach certyfikatów autentyczności produktów Microsoftu.
+Architektura zaprezentowanych w 2022 kart graficznych firmy Nvidia otrzymała nazwę Ada Lovelace.
+Ada Lovelace jest jedną z głównych bohaterek projektu pod tytułem „Szyfrodziewczyny”, organizowanego przez Centrum Szyfrów Enigma w Poznaniu, który ma na celu popularyzację wiedzy na temat kobiet w dziedzinie nauk matematycznych, filozoficznych i informatycznych.
+
+Przypisy
+Bibliografia
+A.G.A.G. Bromley A.G.A.G., Difference and Analytical Engines, [w:] WilliamW. Aspray (red.), Computing Before Computers, Iowa State University Press, 1990, ISBN 0-8138-0047-1 [dostęp 2024-11-03] .
+BruceB. Collier BruceB., The Little Engines that Could’ve: The Calculating Machines of Charles Babbage, Harvard University, 1970 [dostęp 2024-11-03] .
+J.J. Fuegi J.J., J.J. Francis J.J., Lovelace & Babbage and the creation of the 1843 ‘notes’, „Annals of the History of Computing”, 25 (4), IEEE, 2003, DOI: 10.1109/MAHC.2003.1253887 [dostęp 2024-11-03] .
+JackJ. Murtagh JackJ., Kamień węgielny informatyki, „Scientific American. Polska edycja” (398), październik 2024, ISSN 0867-6380 .
+JoaquínJ. Navarro JoaquínJ., Kobiety w matematyce. Od Hypatii do Emmy Noether, Barcelona: RBA, 2023, ISBN 978-84-1149-405-2 .
+James Essinger, Algorytm Ady, Znak 2020, ISBN 9788324056620.
+
+Linki zewnętrzne
+ John J. O’Connor; Edmund F. Robertson: Ada Lovelace w MacTutor History of Mathematics archive (ang.)

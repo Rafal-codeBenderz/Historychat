@@ -17,6 +17,7 @@ type ChatSectionProps = {
   input: string;
   setInput: (input: string) => void;
   playAudio: (audioUrl: string) => void;
+  stopAudio: () => void;
 };
 
 export function ChatSection({
@@ -32,6 +33,7 @@ export function ChatSection({
   input,
   setInput,
   playAudio,
+  stopAudio,
 }: ChatSectionProps) {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
@@ -150,7 +152,7 @@ export function ChatSection({
         )}
 
         {messages.map((msg, i) => (
-          <MessageBubble key={i} message={msg} char={selectedChar} onPlayAudio={playAudio} />
+          <MessageBubble key={i} message={msg} char={selectedChar} onPlayAudio={playAudio} onStopAudio={stopAudio} />
         ))}
 
         <AnimatePresence>{loading && <TypingIndicator char={selectedChar} />}</AnimatePresence>
