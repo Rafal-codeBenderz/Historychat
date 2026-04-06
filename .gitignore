@@ -7,6 +7,9 @@ __pycache__/
 venv/
 *.egg-info/
 
+# Coverage / test artifacts
+.coverage
+
 # Dane generowane w runtime
 data/*.db
 data/chat_history.jsonl
