@@ -1,24 +1,21 @@
-import os
 import sys
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
 
 @pytest.fixture()
-def client():
+def client(monkeypatch):
     """
-    Flask test client for the existing monolithic backend/server.py.
-    We intentionally import the module inside the fixture so env vars
-    (feature flags) can be set before import if needed.
+    Flask test client. Env flags forced off so local .env cannot break CI.
     """
     root = Path(__file__).resolve().parents[2]
     if str(root) not in sys.path:
         sys.path.insert(0, str(root))
 
-    # Feature flags baseline: disabled by default
-    os.environ.setdefault("ENABLE_TTS", "false")
-    os.environ.setdefault("ENABLE_AVATAR_GENERATION", "false")
+    monkeypatch.setenv("ENABLE_TTS", "false")
+    monkeypatch.setenv("ENABLE_AVATAR_GENERATION", "false")
 
     from backend.server import app  # noqa: WPS433
 
@@ -34,6 +31,10 @@ def test_health_ok_has_required_fields(client):
     assert isinstance(data, dict)
     assert "rag_mode" in data
     assert "chunks_loaded" in data
+    assert "app_version" in data
+    assert isinstance(data["app_version"], str)
+    assert "avatar_image_generation_enabled" in data
+    assert isinstance(data["avatar_image_generation_enabled"], bool)
 
 
 def test_characters_ok_nonempty_has_id_and_name(client):
@@ -46,7 +47,8 @@ def test_characters_ok_nonempty_has_id_and_name(client):
     assert all("id" in x and "name" in x for x in data)
 
 
-def test_chat_ok_with_valid_character_id(client):
+@patch("backend.api.chat.call_llm", return_value="Historia odpowiedź testowa")
+def test_chat_ok_with_valid_character_id(_mock_llm, client):
     chars = client.get("/api/characters").get_json()
     char_id = chars[0]["id"]
 
@@ -57,8 +59,7 @@ def test_chat_ok_with_valid_character_id(client):
     assert res.status_code == 200
     data = res.get_json()
     assert isinstance(data, dict)
-    assert isinstance(data.get("answer"), str)
-    assert data["answer"].strip() != ""
+    assert data.get("answer") == "Historia odpowiedź testowa"
 
 
 def test_chat_missing_character_id_is_validation_error(client):
@@ -81,7 +82,8 @@ def test_tts_disabled_returns_503(client):
     assert res.status_code == 503
 
 
-def test_chat_fragments_is_list_key_exists(client):
+@patch("backend.api.chat.call_llm", return_value="Historia odpowiedź testowa")
+def test_chat_fragments_is_list_key_exists(_mock_llm, client):
     chars = client.get("/api/characters").get_json()
     char_id = chars[0]["id"]
     res = client.post(
@@ -100,3 +102,11 @@ def test_get_engine_singleton_behavior(client):
     a = get_engine()
     b = get_engine()
     assert a is b
+
+
+def test_list_routes_returns_json(client):
+    res = client.get("/api/routes")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert isinstance(data, list)
+    assert any(isinstance(x, dict) and "rule" in x for x in data)

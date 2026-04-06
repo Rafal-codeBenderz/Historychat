@@ -16,15 +16,21 @@ Base URL (dev): `http://localhost:8000`
 ```json
 {
   "status": "ok",
-  "rag_mode": "faiss | keyword | off",
+  "characters": ["copernicus", "einstein"],
+  "indexes_built": ["copernicus"],
   "chunks_loaded": ["copernicus", "einstein"],
-  "embedder_loaded": true
+  "rag_mode": "faiss | keyword | off",
+  "embedder_loaded": true,
+  "kb_path": "/path/to/data/knowledge_base",
+  "kb_exists": true,
+  "app_version": "dev"
 }
 ```
 
 Notes:
 - `chunks_loaded` is a list of character IDs with KB loaded.
 - `rag_mode` indicates retrieval backend.
+- `app_version` comes from env `APP_VERSION` (default `dev`).
 
 ## `GET /api/characters`
 
@@ -69,6 +75,10 @@ Notes:
 }
 ```
 
+Notes:
+- `history` must be an array of objects; each object requires `role` (`user` or `assistant` only) and `content` (string). Max 40 entries; each `content` max 6000 characters (same order of magnitude as `message`).
+- `sourceStem`, if present, must be a string (or omit / null).
+
 ### Response 200
 
 ```json
@@ -84,6 +94,14 @@ Notes:
 ### Errors
 
 - 400/422: missing/invalid `characterId`, invalid request body
+
+### Brak kluczy LLM (OpenAI / Gemini)
+
+Gdy nie ustawiono ani `OPENAI_API_KEY`, ani `GEMINI_API_KEY`, odpowiedź nadal ma **HTTP 200** (kontrakt bez zmian dla frontu), a pole `answer` zawiera komunikat konfiguracyjny po polsku z instrukcją ustawienia `.env` — nie jest to treść historyczna z RAG.
+
+## `GET /api/routes`
+
+Zwraca **200** i listę reguł URL (diagnostyka): `{ "rule": string, "methods": string[] }[]`.
 
 ## `POST /api/tts`
 

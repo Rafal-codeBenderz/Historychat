@@ -1,6 +1,9 @@
 """
 Regenerate a migrated characters module for the main project.
 
+Utrzymywany skrypt (nie jednorazowa migracja): używaj go przy synchronizacji
+listy postaci z projektu źródłowego do `backend/core/characters_debata_migrated.py`.
+
 Source of truth:
   `debata pozniej na github do wrzucenia/backend/core/characters.py`
 
@@ -65,6 +68,27 @@ def _tokenize(text: str) -> List[str]:
     return re.findall(r"[a-z0-9_]+", s)
 
 
+def overlap_score(q_tokens: set[str], known_tokens: set[str]) -> int:
+    """
+    Best-effort overlap between topic tokens and known tokens.
+    We allow substring matches to handle basic Polish morphology
+    (e.g. 'sojusz' vs 'sojusze').
+    """
+    score = 0
+    known_list = [k for k in known_tokens if len(k) >= 4]
+    for q in q_tokens:
+        if len(q) < 4:
+            continue
+        if any((q in k) or (k in q) for k in known_list):
+            score += 1
+    return score
+
+
+def dump_json(obj: Any) -> str:
+    # Use JSON to keep deterministic formatting and avoid Python repr edge cases.
+    return json.dumps(obj, ensure_ascii=False, indent=2, sort_keys=True)
+
+
 def parse_readme_required_docs(readme_text: str) -> Dict[str, str]:
     """
     Returns mapping: filename -> description.
@@ -124,25 +148,10 @@ def infer_source_stem(character_id: str, question: str) -> str:
     best = ("", 0)
     second = ("", 0)
 
-    def overlap_score(known_tokens: set[str]) -> int:
-        """
-        Best-effort overlap between topic tokens and known tokens.
-        We allow substring matches to handle basic Polish morphology
-        (e.g. 'sojusz' vs 'sojusze').
-        """
-        score = 0
-        known_list = [k for k in known_tokens if len(k) >= 4]
-        for q in q_tokens:
-            if len(q) < 4:
-                continue
-            if any((q in k) or (k in q) for k in known_list):
-                score += 1
-        return score
-
     for c in candidates:
         # Combine description + filename tokens as "what we know this file is about"
         known = c["desc_tokens"].union(c["stem_tokens"])
-        score = overlap_score(known) if known else 0
+        score = overlap_score(q_tokens, known) if known else 0
 
         if score > best[1]:
             second = best
@@ -212,15 +221,11 @@ def render_py_module(
         '"""\n\n'
     )
 
-    def dump(obj: Any) -> str:
-        # Use JSON to keep deterministic formatting and avoid Python repr edge cases.
-        return json.dumps(obj, ensure_ascii=False, indent=2, sort_keys=True)
-
     body = (
         f"{header}"
-        f"QUERY_EXPANSIONS = {dump(query_expansions)}\n\n"
-        f"VOICE_MAP = {dump(voice_map)}\n\n"
-        f"CHARACTERS = {dump(characters)}\n"
+        f"QUERY_EXPANSIONS = {dump_json(query_expansions)}\n\n"
+        f"VOICE_MAP = {dump_json(voice_map)}\n\n"
+        f"CHARACTERS = {dump_json(characters)}\n"
     )
     return body
 

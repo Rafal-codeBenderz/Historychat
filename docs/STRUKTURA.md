@@ -10,7 +10,11 @@ Ten plik opisuje strukturę katalogów po refaktorze. Opis architektury jest w `
 │   ├── __init__.py
 │   ├── server.py                  # entrypoint Flask (create_app + blueprint)
 │   ├── api/
-│   │   └── routes.py              # endpoints /api/*
+│   │   ├── __init__.py            # Blueprint `api` + import modułów tras
+│   │   ├── bootstrap.py           # init RAG, zapis chat_history.jsonl
+│   │   ├── characters.py, chat.py, health_route.py, history_route.py
+│   │   ├── tts_route.py, avatar_route.py, misc_route.py  # /api/routes
+│   │   └── routes.py              # re-eksport blueprintu (kompatybilność importów)
 │   ├── config/
 │   │   ├── __init__.py
 │   │   ├── paths.py               # ROOT, DATA_DIR, LOGS_DIR, KB_PATH, CHAT_HISTORY_PATH...
@@ -22,10 +26,13 @@ Ten plik opisuje strukturę katalogów po refaktorze. Opis architektury jest w `
 │   │   └── rag_engine.py          # FAISS/keyword retrieval
 │   ├── services/
 │   │   ├── llm.py                 # OpenAI/Gemini
-│   │   └── tts.py                 # OpenAI TTS + feature flag
+│   │   ├── tts.py                 # OpenAI TTS + feature flag
+│   │   └── retry_utils.py         # wspólny retry z backoffem
 │   └── tests/
 │       ├── test_api_baseline.py
-│       └── test_rag.py
+│       ├── test_rag.py
+│       ├── test_retry_utils.py
+│       └── test_llm_config.py
 ├── src/
 │   ├── App.tsx
 │   ├── main.tsx
@@ -56,7 +63,7 @@ Ten plik opisuje strukturę katalogów po refaktorze. Opis architektury jest w `
 
 ### Co gdzie zmieniać?
 
-- **Dodanie endpointu**: `backend/api/routes.py` (routing) + logika w `backend/core/*` lub `backend/services/*`.
+- **Dodanie endpointu**: nowy moduł lub istniejący plik w `backend/api/*.py` (routing) + logika w `backend/core/*` lub `backend/services/*`.
 - **Zmiana logiki RAG**: `backend/core/rag_engine.py` (+ ewentualnie parametry w `backend/config/rag_config.py`).
 - **Zmiana promptu**: `backend/core/prompting.py`.
 - **Dodanie/zmiana postaci**: `data/knowledge_base/<id>/` + konfiguracja w `backend/core/characters_debata_migrated.py`.

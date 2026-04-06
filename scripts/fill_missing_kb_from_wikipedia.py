@@ -22,6 +22,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Optional, Tuple
 
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from backend.core.characters_debata_migrated import CHARACTERS  # noqa: E402
+
 try:
     import wikipediaapi  # type: ignore
 except Exception as e:  # pragma: no cover
@@ -32,7 +38,6 @@ except Exception as e:  # pragma: no cover
     )
 
 
-ROOT = Path(__file__).resolve().parent.parent
 KB_ROOT = ROOT / "data" / "knowledge_base"
 
 # Safety / politeness
@@ -49,18 +54,12 @@ class RequiredDoc:
 
 
 def _character_display_name(character_id: str) -> str:
-    # Simple heuristic (no network calls, no extra files).
-    special = {
-        "da_vinci": "Leonardo da Vinci",
-        "joan_of_arc": "Joanna d’Arc",
-        "marie_curie": "Maria Skłodowska-Curie",
-        "vangogh": "Vincent van Gogh",
-        "antoinette": "Marie Antoinette",
-        "confucius": "Konfucjusz",
-        "kahlo": "Frida Kahlo",
-    }
-    if character_id in special:
-        return special[character_id]
+    """Imię i nazwisko z konfiguracji postaci; fallback bez dodatkowych plików."""
+    ch = CHARACTERS.get(character_id)
+    if ch and isinstance(ch.get("name"), str):
+        name = ch["name"].strip()
+        if name:
+            return name
     return character_id.replace("_", " ").title()
 
 
@@ -156,8 +155,9 @@ def fetch_wikipedia_text(wiki: wikipediaapi.Wikipedia, title_candidates: Iterabl
                 time.sleep(SLEEP_SECONDS)
                 continue
             return (title, text)
-        except Exception:
+        except Exception as e:
             # Keep going; we don't want one failure to stop the run.
+            print(f"  [warn] wikipedia fetch failed for title={title!r}: {e}", file=sys.stderr)
             time.sleep(SLEEP_SECONDS)
             continue
         finally:

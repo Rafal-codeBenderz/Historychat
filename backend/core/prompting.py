@@ -1,11 +1,22 @@
-from typing import Optional
+"""
+Prompt builder for LLM calls.
+
+Builds a single prompt that includes:
+- character style/instructions
+- recent chat history
+- retrieved RAG fragments (sources)
+
+Important: do not log raw user content from here; keep privacy in mind.
+"""
+
+from typing import Any, Optional
 
 
 def build_prompt(
-    character: dict,
+    character: dict[str, Any],
     question: str,
-    fragments: list,
-    history: list,
+    fragments: list[dict[str, Any]],
+    history: list[dict[str, Any]],
     pinned_source_label: Optional[str] = None,
 ) -> str:
     char_name = character["name"]
@@ -28,16 +39,14 @@ def build_prompt(
             )
         for i, frag in enumerate(fragments, 1):
             fragments_text += f"\n[Fragment {i} – {frag['source']}]\n{frag['text']}\n"
-    else:
-        fragments_text = "\n\nUWAGA: Brak pasujących fragmentów w bazie wiedzy dla tego pytania."
-
-    rule_when_sources = ""
-    if fragments:
         rule_when_sources = (
             "\n7. Poniżej masz co najmniej jeden fragment źródłowy — NIE używaj wtedy frazy o braku zapisków. "
             "Odpowiedz na podstawie tego, co da się wyczytać z fragmentów (nawet ogólnie lub częściowo). "
             "Formułę o braku informacji stosuj WYŁĄCZNIE gdy fragmenty naprawdę nie dotyczą pytania.\n"
         )
+    else:
+        fragments_text = "\n\nUWAGA: Brak pasujących fragmentów w bazie wiedzy dla tego pytania."
+        rule_when_sources = ""
 
     prompt = f"""Jesteś {char_name}, historyczną postacią z epoki: {char_era}.
 

@@ -74,18 +74,14 @@ export function useAudioPlayer() {
 
         // Cleanup sequence:
         // 1) stop current playback
+        const prevUrl = currentUrlRef.current;
         stopAudio();
 
-        // 2) revoke old blob URL (only if switching to a different one)
-        // Note: message.audioUrl is reused by "Odtwórz ponownie", so revoking it would break replay.
-        if (currentUrlRef.current && currentUrlRef.current !== audioUrl) {
-          URL.revokeObjectURL(currentUrlRef.current);
-          currentUrlRef.current = null;
-        }
-
-        // 3) set new src
         audio.src = audioUrl;
         currentUrlRef.current = audioUrl;
+        if (prevUrl && prevUrl !== audioUrl) {
+          URL.revokeObjectURL(prevUrl);
+        }
 
         const updateVolume = () => {
           if (!analyserRef.current || !audioElRef.current) return;
@@ -115,7 +111,21 @@ export function useAudioPlayer() {
           setVolume(0);
         };
 
-        await audio.play();
+        try {
+          await audio.play();
+        } catch (playErr) {
+          const fallback = new Audio(audioUrl);
+          fallback.onplay = () => setIsSpeaking(true);
+          fallback.onended = () => {
+            setIsSpeaking(false);
+            setVolume(0);
+          };
+          fallback.onerror = () => {
+            setIsSpeaking(false);
+            setVolume(0);
+          };
+          await fallback.play();
+        }
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error('Audio error:', err);

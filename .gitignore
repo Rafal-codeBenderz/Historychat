@@ -19,6 +19,9 @@ history_chat.db
 public/avatars/*.jpg
 public/avatars/*.png
 
+# Duplikat checklisty w root (kanoniczna kopia: docs/checklista_przed_oddaniem.md)
+checklista_przed_oddaniem Uniwersalna.md
+
 # System
 .DS_Store
 *.swp

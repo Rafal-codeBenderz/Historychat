@@ -11,9 +11,9 @@ Frontend (React + Vite)
   └─ Audio: odtwarzanie TTS + analiza głośności do animacji avatara
 
 Backend (Flask)
-  ├─ API (routing): backend/api/routes.py (Blueprint)
+  ├─ API (routing): pakiet `backend/api/` (Blueprint `api`, m.in. `chat.py`, `health_route.py`; `routes.py` tylko re-eksport)
   ├─ Core (logika domenowa): RAG, prompting, postacie
-  ├─ Services (integracje): LLM, TTS
+  ├─ Services (integracje): LLM, TTS, `retry_utils.py` (wspólny retry/backoff)
   └─ Config (ścieżki/ustawienia): backend/config/*
 ```
 
@@ -29,9 +29,9 @@ Backend (Flask)
     - ładuje `.env` z katalogu głównego projektu,
     - konfiguruje logowanie,
     - tworzy `Flask` app (fabryka `create_app`) i rejestruje blueprint API.
-  - **Routing (`backend/api/routes.py`)**:
-    - waliduje wejście,
-    - mapuje request → core/services,
+  - **Routing (`backend/api/*`)**:
+    - moduły per obszar (czat, historia, TTS, health, avatar),
+    - wspólny bootstrap (`before_app_request`, zapis historii),
     - zwraca JSON (API kompatybilne z frontendem).
   - **Core**
     - **Postacie**: `backend/core/characters_debata_migrated.py` (konfiguracja postaci, mapowanie głosów).
@@ -51,7 +51,7 @@ Backend (Flask)
 1. `python -m backend.server` uruchamia `backend/server.py`.
 2. Ładowanie `.env` z rootu projektu (`ROOT/.env`).
 3. Konfiguracja logowania do `logs/retrieval.log`.
-4. `create_app()` rejestruje blueprint `backend.api.routes:api`.
+4. `create_app()` rejestruje blueprint `backend.api:api`.
 5. RAG engine jest inicjalizowany leniwie (pierwsze zapytania).
 
 #### 2) Pobranie listy postaci

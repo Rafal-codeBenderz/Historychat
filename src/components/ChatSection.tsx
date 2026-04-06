@@ -36,7 +36,7 @@ export function ChatSection({
   stopAudio,
 }: ChatSectionProps) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col">
       {/* Header */}
       <div
         style={{

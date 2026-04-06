@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # Advisory: nie blokuje merge przy szumie rejestru / false positives
+      - name: npm audit (high+)
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q backend/tests/
+      # Advisory: CVE w łańcuchu zależności — raport bez twardego gate
+      - name: pip-audit requirements
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt
+        continue-on-error: true
+      # Miękki gate — naprawiać stopniowo
+      - name: mypy backend (informational)
+        run: |
+          pip install mypy
+          mypy backend --ignore-missing-imports
+        continue-on-error: true

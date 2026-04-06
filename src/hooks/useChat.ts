@@ -1,14 +1,18 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Character, Message, SuggestedTopic } from '@types';
-import { API, generateTTS, sendMessage } from '@utils';
+import { backendUrl, generateTTS, sendMessage } from '@utils';
 
-export function useChat(options: { playAudio: (audioUrl: string) => void }) {
-  const { playAudio } = options;
+export function useChat(options: {
+  playAudio: (audioUrl: string) => void;
+  avatarImageGenerationEnabled?: boolean | null;
+}) {
+  const { playAudio, avatarImageGenerationEnabled } = options;
 
   const [selectedChar, setSelectedChar] = useState<Character | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [avatarRefreshKey, setAvatarRefreshKey] = useState(0);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -29,17 +33,23 @@ export function useChat(options: { playAudio: (audioUrl: string) => void }) {
       },
     ]);
 
-    // Background avatar generation (best-effort)
-    if (char.id) {
-      fetch(`${API}/api/generate-avatar`, {
+    if (char.id && avatarImageGenerationEnabled !== false) {
+      void fetch(backendUrl('/api/generate-avatar'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ character_id: char.id }),
-      }).catch(() => null);
+      })
+        .then(async (res) => {
+          const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
+          if (res.ok && data?.success) {
+            setAvatarRefreshKey((k) => k + 1);
+          }
+        })
+        .catch(() => null);
     }
 
     setTimeout(() => inputRef.current?.focus(), 100);
-  }, []);
+  }, [avatarImageGenerationEnabled]);
 
   const submitChat = useCallback(
     async (content: string, opts?: { sourceStem?: string }) => {
@@ -57,12 +67,10 @@ export function useChat(options: { playAudio: (audioUrl: string) => void }) {
         const assistantMessage: Message = { role: 'assistant', content: answer, fragments, timestamp: new Date() };
         setMessages((prev) => [...prev, assistantMessage]);
 
-        if (selectedChar.voice_id) {
-          const audioUrl = await generateTTS(answer, selectedChar.voice_id);
-          if (audioUrl) {
-            setMessages((prev) => prev.map((m) => (m === assistantMessage ? { ...m, audioUrl } : m)));
-            playAudio(audioUrl);
-          }
+        const audioUrl = await generateTTS(answer, selectedChar.voice_id ?? undefined);
+        if (audioUrl) {
+          setMessages((prev) => prev.map((m) => (m === assistantMessage ? { ...m, audioUrl } : m)));
+          playAudio(audioUrl);
         }
       } catch {
         setMessages((prev) => [
@@ -113,6 +121,7 @@ export function useChat(options: { playAudio: (audioUrl: string) => void }) {
     sendMsg,
     sendSuggestedTopic,
     handleKeyDown,
+    avatarRefreshKey,
   };
 }
 

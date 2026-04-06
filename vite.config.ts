@@ -7,6 +7,10 @@ const apiProxy = {
     target: 'http://localhost:8000',
     changeOrigin: true,
   },
+  '/avatars': {
+    target: 'http://localhost:8000',
+    changeOrigin: true,
+  },
 } as const;
 
 export default defineConfig({

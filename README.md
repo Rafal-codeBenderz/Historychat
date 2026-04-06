@@ -18,7 +18,6 @@ HistoryChat pozwala rozmawiać z postaciami historycznymi (m.in. Kopernik, Maria
 - `docs/ARCHITEKTURA.md` — opis architektury po refaktorze (warstwy, przepływy)
 - `docs/STRUKTURA.md` — aktualna struktura katalogów (drzewo + odpowiedzialności)
 - `docs/api_contract.md` — kontrakt API (frontend ↔ backend)
-- `docs/REFAKTORYZACJA_PLAN_v2.md` — plan refaktoryzacji (notatki techniczne)
 
 ## Architektura
 
@@ -115,8 +114,24 @@ npm run start
 | `OPENAI_CHAT_MODEL` | Opcjonalnie inny model czatu OpenAI. |
 | `ENABLE_TTS` | `true/false` — gdy `false`, endpoint `/api/tts` zwraca `503`. |
 | `ENABLE_AVATAR_GENERATION` | `true/false` — gdy `false`, endpoint `/api/generate-avatar` zwraca `503`. |
+| `ENABLE_CHAT_HISTORY` | `true/false` — gdy `false`, backend **nie zapisuje** rozmów do `data/chat_history.jsonl`. |
+| `BACKEND_PORT` | Port serwera Flask przy `python -m backend.server` (domyślnie `8000`). |
+| `LLM_RETRY_ATTEMPTS` | Liczba prób z backoffem przy błędach tymczasowych LLM (np. 429). |
+| `TTS_RETRY_ATTEMPTS` | To samo dla TTS. |
+| `OPENAI_HTTP_TIMEOUT` | Timeout (sekundy) dla czatu OpenAI (domyślnie `60`). |
+| `GEMINI_HTTP_TIMEOUT` | Timeout (sekundy) dla czatu Gemini (domyślnie `60`). |
+| `TTS_HTTP_TIMEOUT` | Timeout (sekundy) dla wywołań TTS OpenAI (domyślnie `60`). |
+| `APP_VERSION` | Opcjonalnie: string widoczny w `GET /api/health` (domyślnie `dev`). |
 
 Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`).
+
+## Dane i prywatność
+
+- Backend może zapisywać **pełną treść wiadomości** użytkownika i asystenta do pliku `data/chat_history.jsonl` (domyślnie włączone: `ENABLE_CHAT_HISTORY=true`). Ścieżka runtime, nie jest commitowana — wpis w `.gitignore`. Aby **wyłączyć zapis**, ustaw `ENABLE_CHAT_HISTORY=false` w `.env`. Aby **wyczyścić historię lokalnie**, zatrzymaj backend i usuń ten plik.
+- Logi retrievalu trafiają do `logs/retrieval.log`; w kodzie RAG oraz w ostrzeżeniach `/api/chat` unika się logowania surowej treści zapytań — używane są m.in. długość i **fingerprint** (skrót hash), nie jawny tekst wiadomości.
+- Przy udostępnianiu aplikacji poza komputerem lokalnym warto rozważyć rotację lub `ENABLE_CHAT_HISTORY=false` oraz politykę retencji danych.
+
+Checklista przed PR / oddaniem: [docs/checklista_przed_oddaniem.md](docs/checklista_przed_oddaniem.md).
 
 ## Testy
 
@@ -132,9 +147,9 @@ pytest backend/tests/
 │   ├── ARCHITEKTURA.md
 │   ├── STRUKTURA.md
 │   ├── api_contract.md
-│   └── REFAKTORYZACJA_PLAN_v2.md
+│   └── checklista_przed_oddaniem.md
 ├── backend/
-│   ├── api/                   # routing Flask (endpoints)
+│   ├── api/                   # Blueprint: chat, health, historia, TTS, avatar (routes.py = re-eksport)
 │   ├── config/                # ścieżki i konfiguracja
 │   ├── core/                  # RAG + prompting + characters
 │   ├── services/              # LLM/TTS (logika bez Flask)
@@ -177,6 +192,7 @@ pytest backend/tests/
 - `chunks_loaded` — postacie z załadowanymi fragmentami
 - `embedder_loaded` — czy działa sentence-transformers
 - `kb_path` / `kb_exists` — ścieżka do bazy wiedzy
+- `app_version` — wartość z `APP_VERSION` w `.env` (domyślnie `dev`)
 
 ## Jak dodać nową postać?
 

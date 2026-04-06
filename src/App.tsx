@@ -6,7 +6,7 @@ import { useChat } from './hooks/useChat';
 
 export default function App() {
   const { playAudio, stopAudio, isSpeaking, volume } = useAudioPlayer();
-  const { characters, backendError } = useCharactersLoader();
+  const { characters, backendError, avatarImageGenerationEnabled } = useCharactersLoader();
   const {
     selectedChar,
     messages,
@@ -20,7 +20,8 @@ export default function App() {
     sendMsg,
     sendSuggestedTopic,
     handleKeyDown,
-  } = useChat({ playAudio });
+    avatarRefreshKey,
+  } = useChat({ playAudio, avatarImageGenerationEnabled });
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -68,8 +69,14 @@ export default function App() {
           ) : (
             <>
               {/* Main Content Area with Avatar and Chat */}
-              <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-                <AvatarSection selectedChar={selectedChar} isSpeaking={isSpeaking} volume={volume} />
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
+                <AvatarSection
+                  selectedChar={selectedChar}
+                  isSpeaking={isSpeaking}
+                  volume={volume}
+                  avatarImageGenerationEnabled={avatarImageGenerationEnabled}
+                  avatarRefreshKey={avatarRefreshKey}
+                />
 
                 <ChatSection
                   selectedChar={selectedChar}

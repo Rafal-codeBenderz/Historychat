@@ -8,10 +8,10 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
 
-from backend.api.routes import api as api_blueprint
+from backend.api import api as api_blueprint
 from backend.config.paths import DATA_DIR, LOGS_DIR, ROOT
 
 # Ensure transformers stack doesn't try to pull in TensorFlow on Windows
@@ -21,8 +21,8 @@ os.environ.setdefault("USE_TORCH", "1")
 os.environ.setdefault("TRANSFORMERS_NO_TF", "1")
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")
 
-load_dotenv(ROOT / ".env")
-load_dotenv()
+# override=True: wartości z pliku .env nadpisują zmienne już ustawione w shellu (np. ENABLE_AVATAR_GENERATION=false).
+load_dotenv(ROOT / ".env", override=True)
 
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -40,17 +40,6 @@ def create_app() -> Flask:
     CORS(app)
     app.register_blueprint(api_blueprint)
 
-    @app.get("/api/routes")
-    def list_routes():
-        rules = []
-        for r in app.url_map.iter_rules():
-            if r.endpoint == "static":
-                continue
-            methods = sorted(m for m in r.methods if m not in {"HEAD", "OPTIONS"})
-            rules.append({"rule": r.rule, "methods": methods})
-        rules.sort(key=lambda x: x["rule"])
-        return jsonify(rules)
-
     return app
 
 
@@ -58,5 +47,6 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    logger.info("Uruchamianie HistoryChat RAG Backend...")
-    app.run(host="0.0.0.0", port=8000, debug=False)
+    port = int(os.environ.get("BACKEND_PORT", "8000") or "8000")
+    logger.info("Uruchamianie HistoryChat RAG Backend na porcie %s...", port)
+    app.run(host="0.0.0.0", port=port, debug=False)

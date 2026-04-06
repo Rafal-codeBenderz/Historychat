@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "backend": "python -m backend.server",
-    "start": "concurrently \"npm run backend\" \"npm run dev\"",
+    "start": "npx concurrently \"npm run backend\" \"npm run dev\"",
     "lint": "tsc --noEmit"
   },
   "dependencies": {

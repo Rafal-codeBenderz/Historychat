@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Character } from '../types';
+import { backendUrl } from '../utils/utils';
 import { Loader2 } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
 import { RealTimeVoiceVisualizer } from './RealTimeVoiceVisualizer';
@@ -9,9 +10,19 @@ interface AvatarProps {
   character: Character;
   isSpeaking: boolean;
   volume: number;
+  /** When false (from /api/health), skip long waits — no DALL-E / generation configured. */
+  avatarImageGenerationEnabled?: boolean | null;
+  /** Bumped when POST /api/generate-avatar succeeds — restarts image load. */
+  avatarRefreshKey?: number;
 }
 
-export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume }) => {
+export const Avatar: React.FC<AvatarProps> = ({
+  character,
+  isSpeaking,
+  volume,
+  avatarImageGenerationEnabled,
+  avatarRefreshKey = 0,
+}) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('Inicjalizacja...');
@@ -24,11 +35,12 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume })
     skippedRef.current = false;
     setImageUrl(null);
     setLoading(true);
-    setStatus('Tworzenie wizerunku...');
+    const generationOn = avatarImageGenerationEnabled !== false;
+    setStatus(generationOn ? 'Tworzenie wizerunku...' : 'Wczytywanie...');
 
-    const baseUrl = `/avatars/${character.id}.jpg`;
-    const maxAttempts = 10;
-    const retryDelayMs = 2000;
+    const baseUrl = backendUrl(`/avatars/${character.id}.jpg`);
+    const maxAttempts = generationOn ? 24 : 2;
+    const retryDelayMs = generationOn ? 2500 : 400;
 
     const tryLoad = (attempt: number) => {
       if (cancelled) return;
@@ -54,7 +66,7 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume })
           setStatus('');
           return;
         }
-        setStatus('Oczekiwanie na wizerunek...');
+        setStatus(generationOn ? 'Oczekiwanie na wizerunek...' : 'Szukanie obrazu...');
         timeoutId = window.setTimeout(() => tryLoad(attempt + 1), retryDelayMs);
       };
 
@@ -69,12 +81,12 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume })
         window.clearTimeout(timeoutId);
       }
     };
-  }, [character]);
+  }, [character, avatarImageGenerationEnabled, avatarRefreshKey]);
 
   const accentColor = character.accentColor || character.avatar_color || '#6b9ec4';
 
   return (
-    <div className="relative w-72 h-72 mx-auto">
+    <div className="relative mx-auto h-44 w-44 sm:h-56 sm:w-56 lg:h-72 lg:w-72">
       {/* Speaking Glow - Driven by Volume */}
       <AnimatePresence>
         {isSpeaking && (
@@ -103,16 +115,18 @@ export const Avatar: React.FC<AvatarProps> = ({ character, isSpeaking, volume })
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold leading-relaxed mb-4">
               {status}
             </p>
-            <button
-              onClick={() => {
-                skippedRef.current = true;
-                setLoading(false);
-                setStatus('Tryb emoji');
-              }}
-              className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-[10px] uppercase tracking-widest text-zinc-400 transition-all mb-4"
-            >
-              Pomiń generowanie
-            </button>
+            {avatarImageGenerationEnabled !== false && (
+              <button
+                onClick={() => {
+                  skippedRef.current = true;
+                  setLoading(false);
+                  setStatus('Tryb emoji');
+                }}
+                className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-[10px] uppercase tracking-widest text-zinc-400 transition-all mb-4"
+              >
+                Pomiń generowanie
+              </button>
+            )}
           </div>
         ) : imageUrl ? (
           <motion.div
