@@ -3,6 +3,18 @@ import { Character, Message, Fragment } from '@types';
 const raw = (import.meta.env.VITE_API_URL as string | undefined)?.trim() ?? '';
 const API_OVERRIDE = raw.replace(/\/$/, '');
 
+/** Pure helper (łatwe testy); produkcja używa `apiAuthHeaders()`. */
+export function buildApiAuthHeaders(viteApiKey: string | undefined | null): Record<string, string> {
+  const key = (viteApiKey ?? '').trim();
+  if (!key) return {};
+  return { Authorization: `Bearer ${key}` };
+}
+
+/** Nagłówki dla endpointów wymagających `API_AUTH_ENABLED` na backendzie. */
+export function apiAuthHeaders(): Record<string, string> {
+  return buildApiAuthHeaders(import.meta.env.VITE_API_KEY as string | undefined);
+}
+
 /**
  * Pełny URL do backendu (np. http://host:8000). Pusty string = ten sam host co strona
  * (Vite proxy: /api, /avatars → port 8000). Ustaw VITE_API_URL tylko gdy API jest na innym originie.
@@ -34,7 +46,7 @@ export async function sendMessage(
   }
   const res = await fetch(backendUrl('/api/chat'), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...apiAuthHeaders() },
     body: JSON.stringify(body),
   });
   if (!res.ok) {
@@ -48,7 +60,7 @@ export async function generateTTS(text: string, voice_id?: string | null): Promi
   try {
     const res = await fetch(backendUrl('/api/tts'), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...apiAuthHeaders() },
       body: JSON.stringify({ text, voice_id }),
     });
 

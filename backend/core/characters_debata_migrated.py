@@ -1,6 +1,8 @@
 """
 Generated characters configuration (migrated from debata project).
 
+Application code should import from `backend.core.characters`, not this module directly.
+
 DO NOT EDIT MANUALLY.
 Regenerate via: `python scripts/regen_characters_module.py`
 """

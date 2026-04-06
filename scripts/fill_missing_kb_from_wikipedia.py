@@ -26,11 +26,11 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from backend.core.characters_debata_migrated import CHARACTERS  # noqa: E402
+from backend.core.characters import CHARACTERS  # noqa: E402
 
 try:
     import wikipediaapi  # type: ignore
-except Exception as e:  # pragma: no cover
+except ImportError as e:  # pragma: no cover
     raise SystemExit(
         "Missing dependency: wikipedia-api. Install backend deps first:\n"
         "  pip install -r requirements.txt\n"
@@ -155,8 +155,12 @@ def fetch_wikipedia_text(wiki: wikipediaapi.Wikipedia, title_candidates: Iterabl
                 time.sleep(SLEEP_SECONDS)
                 continue
             return (title, text)
+        except wikipediaapi.WikipediaException as e:
+            print(f"  [warn] wikipedia API error for title={title!r}: {e}", file=sys.stderr)
+            time.sleep(SLEEP_SECONDS)
+            continue
         except Exception as e:
-            # Keep going; we don't want one failure to stop the run.
+            # Best-effort: nieznane błędy biblioteki / sieci — nie przerywamy całego skryptu.
             print(f"  [warn] wikipedia fetch failed for title={title!r}: {e}", file=sys.stderr)
             time.sleep(SLEEP_SECONDS)
             continue

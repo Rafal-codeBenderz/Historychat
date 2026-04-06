@@ -4,13 +4,40 @@ import json
 import logging
 import os
 
+from flask import jsonify, request
+
 from backend.api import api
 from backend.config.paths import CHAT_HISTORY_PATH, KB_PATH
-from backend.core.characters_debata_migrated import CHARACTERS
+from backend.core.characters import CHARACTERS
 
 logger = logging.getLogger(__name__)
 
 _topics_sources_validated = False
+
+
+@api.before_app_request
+def enterprise_request_guards():
+    """API key auth and optional daily budget for costly endpoints (before other hooks)."""
+    from backend.config.auth import api_auth_enabled, path_requires_api_auth, validate_request_api_key
+    from backend.services.daily_budget import check_and_consume_budget, should_apply_budget_to_request
+
+    path = request.path or ""
+    method = request.method or ""
+
+    if not path_requires_api_auth(path, method):
+        return None
+
+    if api_auth_enabled():
+        ok, err = validate_request_api_key()
+        if not ok:
+            return jsonify({"error": err}), 401
+
+    if should_apply_budget_to_request(path, method):
+        allowed, berr = check_and_consume_budget()
+        if not allowed:
+            return jsonify({"error": berr}), 429
+
+    return None
 
 
 def validate_suggested_topic_sources():

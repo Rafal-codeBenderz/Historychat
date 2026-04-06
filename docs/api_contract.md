@@ -9,6 +9,26 @@ Base URL (dev): `http://localhost:8000`
 - Validation errors use **400** (or **422**) — never **500** due to missing/invalid input.
 - Feature-flagged endpoints return **503** when disabled.
 - When rate limiting is enabled, endpoints may return **429** with `{ "error": string }`.
+- Responses may include header `X-Request-ID` (korelacja logów).
+- When `API_AUTH_ENABLED=true`, costly endpoints require `Authorization: Bearer <key>` or `X-API-Key: <key>` (`HISTORYCHAT_API_KEY` / `HISTORYCHAT_API_KEYS` on server). Missing/invalid key → **401**.
+- When `API_DAILY_REQUEST_BUDGET` is set and exceeded → **429** with a budget message.
+
+## `GET /api/health/live`
+
+Liveness: proces odpowiada. Zawsze **200** `{ "status": "ok" }` gdy aplikacja działa.
+
+## `GET /api/health/ready`
+
+Readiness: KB, silnik RAG, opcjonalnie Redis (gdy wymagany dla rate limit / budżetu), poprawna konfiguracja auth.
+
+- **200**: `{ "status": "ok" }`
+- **503**: `{ "status": "not_ready", "issues": ["kb_missing", ...] }`
+
+## `GET /api/metrics`
+
+Gdy `METRICS_ENABLED=true`: **200** `text/plain` (eksport Prometheus — liczniki żądań i odrzuceń budżetu).
+
+Gdy wyłączone: **404**.
 
 ## `GET /api/health`
 
@@ -95,6 +115,8 @@ Notes:
 ### Errors
 
 - 400/422: missing/invalid `characterId`, invalid request body
+- 401: API authentication required (`API_AUTH_ENABLED=true`)
+- 429: rate limit or daily budget exceeded
 
 ### Brak kluczy LLM (OpenAI / Gemini)
 
@@ -123,6 +145,8 @@ Feature flag: `ENABLE_TTS=true`
 ### Errors
 
 - 503: feature disabled or missing OpenAI key
+- 401: API authentication required (`API_AUTH_ENABLED=true`)
+- 429: rate limit or daily budget exceeded
 
 ## (Optional) `POST /api/generate-avatar`
 
@@ -143,4 +167,6 @@ Feature flag: `ENABLE_AVATAR_GENERATION=true`
 ### Errors
 
 - 503: feature disabled or missing OpenAI key
+- 401: API authentication required (`API_AUTH_ENABLED=true`)
+- 429: rate limit or daily budget exceeded
 

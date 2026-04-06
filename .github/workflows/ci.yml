@@ -14,6 +14,7 @@ jobs:
           node-version: "20"
           cache: npm
       - run: npm ci
+      - run: npm run test
       - run: npm run build
       # Advisory: nie blokuje merge przy szumie rejestru / false positives
       - name: npm audit (high+)
@@ -30,7 +31,10 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - run: python -m pytest -q backend/tests/
+      - name: Backend tests + coverage gate
+        run: python -m pytest -q --cov=backend --cov-config=.coveragerc --cov-report=term --cov-fail-under=55 backend/tests/
+      - name: API smoke (liveness)
+        run: python -c "from backend.server import app; c=app.test_client(); r=c.get('/api/health/live'); assert r.status_code==200, r.data"
       # Advisory: CVE w łańcuchu zależności — raport bez twardego gate
       - name: pip-audit requirements
         run: |

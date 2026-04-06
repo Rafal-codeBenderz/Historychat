@@ -19,3 +19,7 @@ def rate_limit_chat() -> str:
 def rate_limit_tts() -> str:
     return os.environ.get("RATE_LIMIT_TTS", "30 per minute")
 
+
+def rate_limit_avatar() -> str:
+    return os.environ.get("RATE_LIMIT_AVATAR", "10 per minute")
+

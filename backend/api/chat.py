@@ -7,7 +7,7 @@ from backend.api import api
 from backend.api.bootstrap import fingerprint_text, save_chat_history
 from backend.config.limiter import limiter
 from backend.config.limits import rate_limit_chat, rate_limit_enabled
-from backend.core.characters_debata_migrated import CHARACTERS
+from backend.core.characters import CHARACTERS
 from backend.core.prompting import build_llm_messages
 from backend.core.rag_engine import get_engine
 from backend.services.llm import call_llm

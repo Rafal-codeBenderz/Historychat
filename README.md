@@ -18,6 +18,7 @@ HistoryChat pozwala rozmawiać z postaciami historycznymi (m.in. Kopernik, Maria
 - `docs/ARCHITEKTURA.md` — opis architektury po refaktorze (warstwy, przepływy)
 - `docs/STRUKTURA.md` — aktualna struktura katalogów (drzewo + odpowiedzialności)
 - `docs/api_contract.md` — kontrakt API (frontend ↔ backend)
+- `docs/ENTERPRISE_RUNBOOK.md` — auth, Redis, budżet, metryki (produkcja)
 - `docs/KNOWLEDGE_BASE_PROVENANCE.md` — pochodzenie/licencje treści w `data/knowledge_base/`
 
 ## Architektura
@@ -205,7 +206,7 @@ pytest backend/tests/
 
 1. Folder `data/knowledge_base/<id_postaci>/`
 2. Pliki `.txt` z treścią źródeł
-3. Konfiguracja postaci jest generowana w `backend/core/characters_debata_migrated.py` (patrz nagłówek pliku; regeneracja przez `python scripts/regen_characters_module.py`)
+3. Konfiguracja postaci: import w kodzie z `backend/core/characters.py`; plik generowany to `backend/core/characters_debata_migrated.py` (`python scripts/regen_characters_module.py`)
 4. Upewnij się, że postać ma `voice_id` (backend wylicza je z `voiceName` + `VOICE_MAP`)
 5. Restart backendu
 

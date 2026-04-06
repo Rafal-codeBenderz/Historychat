@@ -38,7 +38,11 @@ def _is_gemini_transient(err: Exception) -> bool:
 def call_openai(system_message: str, user_message: str) -> str:
     try:
         import openai
+    except ImportError:
+        logger.error("Brak pakietu openai — zainstaluj zależności backendu.", exc_info=True)
+        return _LLM_FAILURE_USER_MESSAGE
 
+    try:
         api_key = os.environ.get("OPENAI_API_KEY")
         if not api_key:
             return "Błąd: Brak klucza API OPENAI_API_KEY w zmiennych środowiskowych."
@@ -61,6 +65,7 @@ def call_openai(system_message: str, user_message: str) -> str:
         attempts = int(os.environ.get("LLM_RETRY_ATTEMPTS", "3") or "3")
         return retry_transient(_do_call, attempts=max(1, attempts), should_retry=_is_openai_transient)
     except Exception:
+        # SDK / sieć / nieoczekiwane błędy po wyczerpaniu retry — bez szczegółów w odpowiedzi do UI.
         logger.error("Błąd OpenAI API po wyczerpaniu prób", exc_info=True)
         return _LLM_FAILURE_USER_MESSAGE
 
@@ -68,7 +73,11 @@ def call_openai(system_message: str, user_message: str) -> str:
 def call_gemini(system_message: str, user_message: str) -> str:
     try:
         import google.generativeai as genai
+    except ImportError:
+        logger.error("Brak pakietu google-generativeai — zainstaluj zależności backendu.", exc_info=True)
+        return _LLM_FAILURE_USER_MESSAGE
 
+    try:
         api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
             return "Błąd: Brak klucza API GEMINI_API_KEY w zmiennych środowiskowych."
@@ -92,6 +101,7 @@ def call_gemini(system_message: str, user_message: str) -> str:
         attempts = int(os.environ.get("LLM_RETRY_ATTEMPTS", "3") or "3")
         return retry_transient(_do_call, attempts=max(1, attempts), should_retry=_is_gemini_transient)
     except Exception:
+        # SDK / sieć / nieoczekiwane błędy po wyczerpaniu retry — bez szczegółów w odpowiedzi do UI.
         logger.error("Błąd Gemini API po wyczerpaniu prób", exc_info=True)
         return _LLM_FAILURE_USER_MESSAGE
 

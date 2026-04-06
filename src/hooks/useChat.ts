@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Character, Message, SuggestedTopic } from '@types';
-import { backendUrl, generateTTS, sendMessage } from '@utils';
+import { apiAuthHeaders, backendUrl, generateTTS, sendMessage } from '@utils';
 
 export function useChat(options: {
   playAudio: (audioUrl: string) => void;
@@ -36,7 +36,7 @@ export function useChat(options: {
     if (char.id && avatarImageGenerationEnabled !== false) {
       void fetch(backendUrl('/api/generate-avatar'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...apiAuthHeaders() },
         body: JSON.stringify({ character_id: char.id }),
       })
         .then(async (res) => {

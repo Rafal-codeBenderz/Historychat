@@ -1,7 +1,7 @@
 from flask import jsonify
 
 from backend.api import api
-from backend.core.characters_debata_migrated import CHARACTERS, VOICE_MAP
+from backend.core.characters import CHARACTERS, VOICE_MAP
 
 
 @api.get("/api/characters")

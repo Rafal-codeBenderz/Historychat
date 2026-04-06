@@ -17,6 +17,7 @@ from backend.api import (  # noqa: E402,F401
     chat,
     health_route,
     history_route,
+    metrics_route,
     misc_route,
     tts_route,
 )

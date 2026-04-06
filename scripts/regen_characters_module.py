@@ -216,6 +216,8 @@ def render_py_module(
     header = (
         '"""\n'
         "Generated characters configuration (migrated from debata project).\n\n"
+        "Application code should import `CHARACTERS` / `VOICE_MAP` / `QUERY_EXPANSIONS` from\n"
+        "`backend.core.characters` (stable module path), not from this file directly.\n\n"
         "DO NOT EDIT MANUALLY.\n"
         "Regenerate via: `python scripts/regen_characters_module.py`\n"
         '"""\n\n'

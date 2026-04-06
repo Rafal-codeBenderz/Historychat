@@ -1,0 +1,10 @@
+[run]
+source = backend
+omit =
+    backend/tests/*
+    */__pycache__/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:

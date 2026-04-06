@@ -1,17 +1,25 @@
+import base64
 import logging
 import os
 
 from flask import jsonify, request
 
 from backend.api import api
+from backend.config.limiter import limiter
+from backend.config.limits import rate_limit_avatar, rate_limit_enabled
 from backend.config.paths import ROOT
-from backend.core.characters_debata_migrated import CHARACTERS
+from backend.core.characters import CHARACTERS
 from backend.services.avatar_config import is_avatar_image_generation_enabled
 
 logger = logging.getLogger(__name__)
 
+_AVATAR_GENERIC_ERROR = (
+    "Nie udało się wygenerować avatara. Spróbuj ponownie później."
+)
+
 
 @api.post("/api/generate-avatar")
+@limiter.limit(lambda: rate_limit_avatar() if rate_limit_enabled() else "1000000 per minute")
 def generate_avatar():
     if not is_avatar_image_generation_enabled():
         return jsonify({"error": "Avatar generation is disabled (ENABLE_AVATAR_GENERATION=false)"}), 503
@@ -36,11 +44,13 @@ def generate_avatar():
         return jsonify({"error": "Brak OPENAI_API_KEY"}), 503
 
     try:
-        import base64
-
         import openai
         import requests
+    except ImportError:
+        logger.error("[AVATAR] Brak biblioteki openai lub requests", exc_info=True)
+        return jsonify({"error": _AVATAR_GENERIC_ERROR}), 500
 
+    try:
         avatars_dir = ROOT / "public" / "avatars"
         avatars_dir.mkdir(parents=True, exist_ok=True)
 
@@ -80,6 +90,16 @@ def generate_avatar():
 
         logger.info("[AVATAR] Obraz zapisany: %s", avatar_path)
         return jsonify({"success": True, "image_url": f"/avatars/{character_id}.jpg", "cached": False})
-    except Exception as e:
-        logger.error("Błąd generowania avatara: %s", e)
-        return jsonify({"error": str(e)}), 500
+    except requests.RequestException:
+        logger.error("[AVATAR] Błąd sieci przy pobieraniu obrazu", exc_info=True)
+        return jsonify({"error": _AVATAR_GENERIC_ERROR}), 500
+    except openai.APIError:
+        logger.error("[AVATAR] Błąd OpenAI API", exc_info=True)
+        return jsonify({"error": _AVATAR_GENERIC_ERROR}), 500
+    except OSError:
+        logger.error("[AVATAR] Błąd zapisu pliku avatara", exc_info=True)
+        return jsonify({"error": _AVATAR_GENERIC_ERROR}), 500
+    except Exception:
+        # Celowo szerokie: m.in. błąd dekodowania base64, nieoczekiwane typy z SDK — bez str(e) w odpowiedzi.
+        logger.error("[AVATAR] Nieoczekiwany błąd generowania avatara", exc_info=True)
+        return jsonify({"error": _AVATAR_GENERIC_ERROR}), 500

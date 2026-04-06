@@ -45,7 +45,11 @@ def generate_tts_base64(text: str, voice_id: Optional[str]) -> tuple[int, dict]:
 
     try:
         import openai
+    except ImportError:
+        logger.error("Brak pakietu openai — zainstaluj zależności backendu.", exc_info=True)
+        return 500, {"error": "Nie udało się wygenerować audio. Spróbuj ponownie później."}
 
+    try:
         timeout_s = _env_float("TTS_HTTP_TIMEOUT", 60.0)
 
         def _do_call() -> tuple[int, dict]:
@@ -59,6 +63,7 @@ def generate_tts_base64(text: str, voice_id: Optional[str]) -> tuple[int, dict]:
         attempts = int(os.environ.get("TTS_RETRY_ATTEMPTS", "3") or "3")
         return retry_transient(_do_call, attempts=max(1, attempts), should_retry=_is_transient)
     except Exception:
+        # SDK / sieć / nieoczekiwane błędy po wyczerpaniu retry — bez szczegółów w JSON.
         logger.error("Błąd TTS po wyczerpaniu prób", exc_info=True)
         return 500, {"error": "Nie udało się wygenerować audio. Spróbuj ponownie później."}
 

@@ -14,8 +14,11 @@ def retry_transient(
     should_retry: Optional[Callable[[Exception], bool]] = None,
 ) -> T:
     """
-    Wywołuje fn z exponential backoff i jitterem. Ostatni wyjątek jest propagowany,
-    jeśli should_retry nie wyklucza ponowienia lub wyczerpano próby.
+    Wywołuje fn z exponential backoff i jitterem.
+
+    Celowo łapie każdy Exception z wywołania fn(): caller może zwracać dowolny typ błędu
+    (OpenAI, HTTP, itd.). Gdy should_retry zwraca False, wyjątek jest natychmiast propagowany;
+    gdy True lub brak filtra — po ostatniej nieudanej próbie ostatni wyjątek jest ponownie rzucony.
     """
     last_err: Exception | None = None
     for i in range(attempts):

@@ -59,7 +59,8 @@ class RAGEngine:
     def _load_embedder(self):
         try:
             import torch
-        except Exception as torch_error:
+        except (ImportError, OSError) as torch_error:
+            # ImportError: brak torch; OSError: m.in. błąd ładowania DLL na Windows.
             logger.error(
                 "Błąd ładowania PyTorch (wymagany przez sentence-transformers): %s",
                 torch_error,
@@ -79,6 +80,7 @@ class RAGEngine:
             logger.error("Błąd importu biblioteki (sentence-transformers / zależności): %s", e)
             self.embedder = None
         except Exception as e:
+            # Model / runtime / pamięć — po ImportError i tak nie dotyczy braku pakietu.
             logger.error("Błąd ładowania embeddera: %s", e)
             logger.error("Typ błędu: %s", type(e).__name__)
             self.embedder = None
