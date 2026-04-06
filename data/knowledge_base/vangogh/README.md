@@ -12,3 +12,5 @@
 - Autentyczne teksty historyczne
 - Tłumaczenia oryginalnych dzieł
 - Biografie historyczne
+
+> Uwaga: przed publiczną dystrybucją tej bazy zweryfikuj licencje/pochodzenie treści. Zobacz: `docs/KNOWLEDGE_BASE_PROVENANCE.md`.

@@ -34,7 +34,7 @@ def validate_suggested_topic_sources():
 
 
 def _chat_history_persistence_enabled() -> bool:
-    return os.environ.get("ENABLE_CHAT_HISTORY", "true").lower() in {"1", "true", "yes"}
+    return os.environ.get("ENABLE_CHAT_HISTORY", "false").lower() in {"1", "true", "yes"}
 
 
 def save_chat_history(char_id: str, role: str, content: str, sources: list | None = None):

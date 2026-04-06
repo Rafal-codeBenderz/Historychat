@@ -131,5 +131,5 @@ def test_call_openai_returns_user_safe_message_when_api_always_fails(mock_openai
 
     from backend.services.llm import _LLM_FAILURE_USER_MESSAGE, call_openai
 
-    out = call_openai("prompt text")
+    out = call_openai("sys", "prompt text")
     assert out == _LLM_FAILURE_USER_MESSAGE

@@ -5,8 +5,10 @@ from flask import jsonify, request
 
 from backend.api import api
 from backend.api.bootstrap import fingerprint_text, save_chat_history
+from backend.config.limiter import limiter
+from backend.config.limits import rate_limit_chat, rate_limit_enabled
 from backend.core.characters_debata_migrated import CHARACTERS
-from backend.core.prompting import build_prompt
+from backend.core.prompting import build_llm_messages
 from backend.core.rag_engine import get_engine
 from backend.services.llm import call_llm
 
@@ -43,8 +45,8 @@ def _history_validation_error(history: list):
             return jsonify({"error": f"history[{idx}]: treść jest zbyt długa"}), 422
     return None
 
-
 @api.post("/api/chat")
+@limiter.limit(lambda: rate_limit_chat() if rate_limit_enabled() else "1000000 per minute")
 def chat():
     data = request.json or {}
     if not isinstance(data, dict):
@@ -98,8 +100,10 @@ def chat():
     if source_stem:
         pinned_label = Path(source_stem).stem.replace("_", " ").title()
 
-    prompt = build_prompt(character, message, fragments, history, pinned_source_label=pinned_label)
-    answer = call_llm(prompt)
+    system_message, user_message = build_llm_messages(
+        character, message, fragments, history, pinned_source_label=pinned_label
+    )
+    answer = call_llm(system_message, user_message)
 
     save_chat_history(char_id, "user", message)
     save_chat_history(char_id, "assistant", answer, [f["source"] for f in fragments])

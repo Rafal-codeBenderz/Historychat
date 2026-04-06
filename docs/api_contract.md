@@ -8,6 +8,7 @@ Base URL (dev): `http://localhost:8000`
 - Errors return JSON: `{ "error": string }`
 - Validation errors use **400** (or **422**) — never **500** due to missing/invalid input.
 - Feature-flagged endpoints return **503** when disabled.
+- When rate limiting is enabled, endpoints may return **429** with `{ "error": string }`.
 
 ## `GET /api/health`
 

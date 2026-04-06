@@ -8,10 +8,11 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 
 from backend.api import api as api_blueprint
+from backend.config.limiter import limiter
 from backend.config.paths import DATA_DIR, LOGS_DIR, ROOT
 
 # Ensure transformers stack doesn't try to pull in TensorFlow on Windows
@@ -35,10 +36,31 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def _parse_cors_origins(value: str | None) -> list[str]:
+    if value is None:
+        return []
+    raw = str(value).strip()
+    if not raw:
+        return []
+    parts = [p.strip() for p in raw.split(",")]
+    return [p for p in parts if p]
+
+
 def create_app() -> Flask:
     app = Flask(__name__)
-    CORS(app)
+    cors_origins = _parse_cors_origins(os.environ.get("CORS_ORIGINS"))
+    if cors_origins:
+        CORS(app, origins=cors_origins)
+    else:
+        # Dev-friendly default (previous behavior): allow all origins.
+        CORS(app)
+
+    limiter.init_app(app)
     app.register_blueprint(api_blueprint)
+
+    @app.errorhandler(429)
+    def _ratelimit_handler(_e):  # type: ignore[override]
+        return jsonify({"error": "Zbyt wiele żądań (rate limit)"}), 429
 
     return app
 

@@ -17,6 +17,7 @@ Wszystkie istotne zmiany w projekcie warto tu krótko opisywać (PR / release).
 
 - `backend/api/chat.py`: stałe limitów (`MAX_MESSAGE_LENGTH`, `RAG_TOP_K`, historia) oraz walidacja `history` / `sourceStem`.
 - `backend/api/bootstrap.py`: zapis `chat_history` tylko przy `ENABLE_CHAT_HISTORY`; leniwy import silnika RAG w `init_once`.
+- Domyślne `ENABLE_CHAT_HISTORY` zmienione na `false` przy braku zmiennej środowiskowej (zgodne z `.env.example`).
 - `backend/api/__init__.py`: docstring modułu blueprintu API.
 
 ### Notes

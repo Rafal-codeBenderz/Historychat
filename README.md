@@ -18,6 +18,7 @@ HistoryChat pozwala rozmawiać z postaciami historycznymi (m.in. Kopernik, Maria
 - `docs/ARCHITEKTURA.md` — opis architektury po refaktorze (warstwy, przepływy)
 - `docs/STRUKTURA.md` — aktualna struktura katalogów (drzewo + odpowiedzialności)
 - `docs/api_contract.md` — kontrakt API (frontend ↔ backend)
+- `docs/KNOWLEDGE_BASE_PROVENANCE.md` — pochodzenie/licencje treści w `data/knowledge_base/`
 
 ## Architektura
 
@@ -99,6 +100,12 @@ Aplikacja dev: `http://localhost:3000` (host `0.0.0.0` — możliwy dostęp z si
 
 Domyślnie frontend woła API pod `http://localhost:8000`. Możesz nadpisać zmienną **`VITE_API_URL`** (np. inny host/port). W `vite.config.ts` jest proxy `/api` → `localhost:8000` (przydatne, jeśli front woła względne ścieżki `/api`).
 
+### Produkcja: CORS
+
+Backend używa `Flask-CORS`. Domyślnie (dev) CORS jest **otwarty**. Jeśli wystawiasz backend publicznie, ustaw `CORS_ORIGINS` w `.env` jako listę originów rozdzielaną przecinkami, np.:
+
+`CORS_ORIGINS=https://twoja-domena.pl,https://staging.twoja-domena.pl`
+
 ### Backend + frontend naraz
 
 ```bash
@@ -127,7 +134,7 @@ Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`)
 
 ## Dane i prywatność
 
-- Backend może zapisywać **pełną treść wiadomości** użytkownika i asystenta do pliku `data/chat_history.jsonl` (domyślnie włączone: `ENABLE_CHAT_HISTORY=true`). Ścieżka runtime, nie jest commitowana — wpis w `.gitignore`. Aby **wyłączyć zapis**, ustaw `ENABLE_CHAT_HISTORY=false` w `.env`. Aby **wyczyścić historię lokalnie**, zatrzymaj backend i usuń ten plik.
+- Backend może zapisywać **pełną treść wiadomości** użytkownika i asystenta do pliku `data/chat_history.jsonl` (domyślnie **wyłączone**: `ENABLE_CHAT_HISTORY=false`). Ścieżka runtime, nie jest commitowana — wpis w `.gitignore`. Aby **włączyć zapis**, ustaw `ENABLE_CHAT_HISTORY=true` w `.env`. Aby **wyczyścić historię lokalnie**, zatrzymaj backend i usuń ten plik.
 - Logi retrievalu trafiają do `logs/retrieval.log`; w kodzie RAG oraz w ostrzeżeniach `/api/chat` unika się logowania surowej treści zapytań — używane są m.in. długość i **fingerprint** (skrót hash), nie jawny tekst wiadomości.
 - Przy udostępnianiu aplikacji poza komputerem lokalnym warto rozważyć rotację lub `ENABLE_CHAT_HISTORY=false` oraz politykę retencji danych.
 

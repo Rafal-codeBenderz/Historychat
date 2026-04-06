@@ -1,10 +1,13 @@
 from flask import jsonify, request
 
 from backend.api import api
+from backend.config.limiter import limiter
+from backend.config.limits import rate_limit_enabled, rate_limit_tts
 from backend.services.tts import generate_tts_base64
 
 
 @api.post("/api/tts")
+@limiter.limit(lambda: rate_limit_tts() if rate_limit_enabled() else "1000000 per minute")
 def tts():
     data = request.json or {}
     if not isinstance(data, dict):

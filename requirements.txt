@@ -1,5 +1,6 @@
 flask>=3.0.0
 flask-cors>=4.0.0
+Flask-Limiter>=3.8.0
 # Backend: USE_TORCH=1 w server.py wymusza PyTorch w transformers (omija TensorFlow).
 # Jeśli nadal błąd DLL TensorFlow: pip uninstall -y tensorflow tensorflow-intel tensorboard
 sentence-transformers<3.0.0,>=2.7.0

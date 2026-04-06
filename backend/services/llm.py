@@ -35,7 +35,7 @@ def _is_gemini_transient(err: Exception) -> bool:
     return any(s in msg for s in ["rate limit", "429", "timeout", "temporarily", "overloaded", "connection"])
 
 
-def call_openai(prompt: str) -> str:
+def call_openai(system_message: str, user_message: str) -> str:
     try:
         import openai
 
@@ -50,7 +50,10 @@ def call_openai(prompt: str) -> str:
             model = os.environ.get("OPENAI_CHAT_MODEL", "gpt-4o-mini")
             response = client.chat.completions.create(
                 model=model,
-                messages=[{"role": "user", "content": prompt}],
+                messages=[
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": user_message},
+                ],
             )
             content = response.choices[0].message.content
             return (content or "").strip()
@@ -62,7 +65,7 @@ def call_openai(prompt: str) -> str:
         return _LLM_FAILURE_USER_MESSAGE
 
 
-def call_gemini(prompt: str) -> str:
+def call_gemini(system_message: str, user_message: str) -> str:
     try:
         import google.generativeai as genai
 
@@ -74,7 +77,12 @@ def call_gemini(prompt: str) -> str:
 
         def _do_call() -> str:
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-2.0-flash")
+            try:
+                model = genai.GenerativeModel("gemini-2.0-flash", system_instruction=system_message)
+                prompt = user_message
+            except TypeError:
+                model = genai.GenerativeModel("gemini-2.0-flash")
+                prompt = f"{system_message}\n\n{user_message}"
             response = model.generate_content(
                 prompt,
                 request_options={"timeout": timeout_s},
@@ -88,11 +96,11 @@ def call_gemini(prompt: str) -> str:
         return _LLM_FAILURE_USER_MESSAGE
 
 
-def call_llm(prompt: str) -> str:
+def call_llm(system_message: str, user_message: str) -> str:
     if os.environ.get("OPENAI_API_KEY"):
-        return call_openai(prompt)
+        return call_openai(system_message, user_message)
     if os.environ.get("GEMINI_API_KEY"):
-        return call_gemini(prompt)
+        return call_gemini(system_message, user_message)
     return (
         "Błąd: Brak klucza API. Dodaj do pliku .env w katalogu projektu "
         "OPENAI_API_KEY=... lub GEMINI_API_KEY=... i uruchom backend ponownie."
