@@ -68,6 +68,8 @@ def init_once():
 def get_characters():
     out = []
     for ch in CHARACTERS.values():
+        # Keep legacy `voiceName` support until the generated source data stores
+        # `voice_id` natively and all callers stop relying on the transitional shape.
         voice_name = ch.get("voiceName")
         voice_id = None
         if isinstance(voice_name, str) and voice_name:

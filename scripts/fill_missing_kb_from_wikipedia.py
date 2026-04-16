@@ -11,6 +11,8 @@ Notes:
 - This is best-effort. If some pages cannot be found, the script will still try
   to create at least one `.txt` per character (fallback searches).
 - Wikipedia is used as a source of truth to keep KB "source-based".
+- The hardcoded aliases and extra title fallbacks are intentionally non-exhaustive.
+  Characters not listed there still fall back to generic name-based heuristics.
 """
 
 from __future__ import annotations
@@ -50,6 +52,9 @@ class RequiredDoc:
 
 def _character_display_name(character_id: str) -> str:
     # Simple heuristic (no network calls, no extra files).
+    # Keep this mapping short on purpose: the generic fallback below handles
+    # every character ID, while special cases only cover names that are likely
+    # to map poorly to Polish Wikipedia titles.
     special = {
         "da_vinci": "Leonardo da Vinci",
         "joan_of_arc": "Joanna d’Arc",

@@ -7,8 +7,26 @@ import unicodedata
 from pathlib import Path
 from typing import Optional
 
+import numpy as np
+
 from backend.config.paths import KB_PATH
 from backend.config.rag_config import CHUNK_OVERLAP, CHUNK_SIZE, MAX_FRAGMENTS, SIMILARITY_THRESHOLD
+
+try:
+    import faiss  # type: ignore
+except Exception as faiss_import_error:  # pragma: no cover - environment-dependent
+    faiss = None
+    FAISS_IMPORT_ERROR = faiss_import_error
+else:
+    FAISS_IMPORT_ERROR = None
+
+try:
+    import torch  # type: ignore
+except Exception as torch_import_error:  # pragma: no cover - environment-dependent
+    torch = None
+    TORCH_IMPORT_ERROR = torch_import_error
+else:
+    TORCH_IMPORT_ERROR = None
 
 logger = logging.getLogger(__name__)
 
@@ -35,17 +53,14 @@ class RAGEngine:
 
     def _load_embedder(self):
         try:
-            try:
-                import torch
-
-                logger.info("PyTorch wersja: %s", getattr(torch, "__version__", "unknown"))
-            except Exception as torch_error:
+            if torch is None:
                 logger.error(
                     "Błąd ładowania PyTorch (wymagany przez sentence-transformers): %s",
-                    torch_error,
+                    TORCH_IMPORT_ERROR,
                 )
                 self.embedder = None
                 return
+            logger.info("PyTorch wersja: %s", getattr(torch, "__version__", "unknown"))
 
             from sentence_transformers import SentenceTransformer
 
@@ -84,9 +99,6 @@ class RAGEngine:
                 self._build_index(char_id, char_dir)
 
     def _build_index(self, char_id: str, char_dir: Path):
-        import faiss
-        import numpy as np
-
         all_chunks = []
         for file_path in char_dir.glob("*.txt"):
             source_name = file_path.stem.replace("_", " ").title()
@@ -105,6 +117,14 @@ class RAGEngine:
             logger.warning(
                 "[%s] Brak embeddera — chunki w pamięci (%s), wyszukiwanie po słowach.",
                 char_id,
+                len(all_chunks),
+            )
+            return
+        if faiss is None:
+            logger.warning(
+                "[%s] Brak FAISS (%s) — chunki w pamięci (%s), wyszukiwanie po słowach.",
+                char_id,
+                FAISS_IMPORT_ERROR,
                 len(all_chunks),
             )
             return
@@ -136,20 +156,9 @@ class RAGEngine:
         q_words = self._word_set(query)
         target = self._normalize_source_stem(source_stem) if source_stem else None
 
-        def pool_for_stem(stem: Optional[str]):
-            out = []
-            for i, ch in enumerate(chunks):
-                if stem is not None:
-                    if self._stem_from_chunk_source(ch["source"]) != stem:
-                        continue
-                c_words = self._word_set(ch["text"])
-                overlap = len(q_words & c_words) if q_words else 0
-                out.append((overlap, i, ch))
-            return out
-
-        pool = pool_for_stem(target)
+        pool = self._keyword_pool(chunks, q_words, target)
         if not pool and target is not None:
-            pool = pool_for_stem(None)
+            pool = self._keyword_pool(chunks, q_words, None)
 
         pool.sort(key=lambda x: (-x[0], x[1]))
         picked = pool[:top_k] if pool else []
@@ -169,6 +178,25 @@ class RAGEngine:
         )
         return results
 
+    def _keyword_pool(self, chunks: list, q_words: set, stem: Optional[str]) -> list:
+        out = []
+        for i, ch in enumerate(chunks):
+            if stem is not None and self._stem_from_chunk_source(ch["source"]) != stem:
+                continue
+            c_words = self._word_set(ch["text"])
+            overlap = len(q_words & c_words) if q_words else 0
+            out.append((overlap, i, ch))
+        return out
+
+    def _pack_results(self, char_id: str, pairs: list) -> list:
+        out = []
+        for score, idx in pairs:
+            if idx < 0:
+                continue
+            chunk = self.chunks[char_id][idx]
+            out.append({"text": chunk["text"], "source": chunk["source"], "score": float(score)})
+        return out
+
     @staticmethod
     def _normalize_source_stem(stem: str) -> str:
         s = unicodedata.normalize("NFC", stem.strip())
@@ -187,31 +215,19 @@ class RAGEngine:
         top_k: int = MAX_FRAGMENTS,
         source_stem: Optional[str] = None,
     ) -> list:
-        import numpy as np
-
         if char_id not in self.chunks:
             logger.warning("[%s] Brak załadowanych chunków (baza wiedzy?).", char_id)
             return []
 
-        if char_id not in self.indexes or self.embedder is None:
+        if char_id not in self.indexes or self.embedder is None or faiss is None:
             return self._retrieve_keyword(char_id, query, top_k, source_stem)
 
         query_vec = self.embedder.encode([query], convert_to_numpy=True).astype(np.float32)
-        import faiss
 
         faiss.normalize_L2(query_vec)
 
         index = self.indexes[char_id]
         n_total = index.ntotal
-
-        def pack_results(pairs: list) -> list:
-            out = []
-            for score, idx in pairs:
-                if idx < 0:
-                    continue
-                chunk = self.chunks[char_id][idx]
-                out.append({"text": chunk["text"], "source": chunk["source"], "score": float(score)})
-            return out
 
         if source_stem:
             target = self._normalize_source_stem(source_stem)
@@ -226,7 +242,7 @@ class RAGEngine:
                     filtered.append((float(score), idx))
             if filtered:
                 filtered.sort(key=lambda x: -x[0])
-                results = pack_results(filtered[:top_k])
+                results = self._pack_results(char_id, filtered[:top_k])
                 logger.info(
                     "[RETRIEVAL] char=%s source_stem=%s query='%s...' znaleziono=%s fragmentów (filtrowane)",
                     char_id,

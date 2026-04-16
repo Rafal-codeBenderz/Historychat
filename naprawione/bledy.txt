@@ -1,0 +1,181 @@
+backend/core/characters_imported.py
+
+jeśli konfiguracje są gdzie indziej, to po co mają być też tutaj?
+lepiej nie dublować plików, prosiłbym o ujednolicenie, pewnie jeśli robimy oddzielne modułowe konfiguracje to lepiej byłoby je tam trzymać a ten plik usunąć ;)
+
+backend/core/characters_imported.py
+
+przydaby się docstring to tego pliku, bo ja może i zrozumiem czym jest tts, ale stosowanie takich skrótów bez żadnej informacji co zawiera ten moduł jest średnią praktyką
+
+
+backend/core/prompting.py
+
+if fragments:
+        fragments_text = "\n\nDOSTĘPNE ŹRÓDŁA (użyj ich jako podstawy odpowiedzi):\n"
+        if pinned_source_label:
+            fragments_text += (
+                f"\n(Użytkownik wybrał temat powiązany z dziełem / zapisami: „{pinned_source_label}”. "
+                "Traktuj poniższe fragmenty jako właściwe źródło do tego pytania.)\n"
+            )
+        for i, frag in enumerate(fragments, 1):
+            fragments_text += f"\n[Fragment {i} – {frag['source']}]\n{frag['text']}\n"
+    else:
+        fragments_text = "\n\nUWAGA: Brak pasujących fragmentów w bazie wiedzy dla tego pytania."
+
+    rule_when_sources = ""
+    if fragments:
+        rule_when_sources = (
+            "\n7. Poniżej masz co najmniej jeden fragment źródłowy — NIE używaj wtedy frazy o braku zapisków. "
+            "Odpowiedz na podstawie tego, co da się wyczytać z fragmentów (nawet ogólnie lub częściowo). "
+            "Formułę o braku informacji stosuj WYŁĄCZNIE gdy fragmenty naprawdę nie dotyczą pytania.\n"
+        )
+Collaborator
+@jktmal
+jktmal
+2 days ago
+
+powtórzony warunek na if fragments, to zdecydowanie można wszystko spiąć w jeden?
+
+src/types.ts
+
+ voice_id?: string | null;
+  /** Legacy field (kept for backward compatibility). */
+
+jeśli coś jest nieużywane już to można usunąć
+
+backend/core/rag_engine.py
+
+def pack_results(pairs: list) -> list:
+            out = []
+            for score, idx in pairs:
+                if idx < 0:
+                    continue
+                chunk = self.chunks[char_id][idx]
+                out.append({"text": chunk["text"], "source": chunk["source"], "score": float(score)})
+            return out
+
+        if source_stem:
+            target = self._normalize_source_stem(source_stem)
+            search_k = n_total
+            scores, indices = index.search(query_vec, search_k)
+            filtered = []
+            for score, idx in zip(scores[0], indices[0]):
+                if idx < 0:
+                    continue
+                ch = self.chunks[char_id][idx]
+                if self._stem_from_chunk_source(ch["source"]) == target:
+                    filtered.append((float(score), idx))
+            if filtered:
+                filtered.sort(key=lambda x: -x[0])
+                results = pack_results(filtered[:top_k])
+                logger.info(
+                    "[RETRIEVAL] char=%s source_stem=%s query='%s...' znaleziono=%s fragmentów (filtrowane)",
+                    char_id,
+                    target,
+                    (query or "")[:60],
+                    len(results),
+                )
+                return results
+
+funkcja w funkcji to bardzo kiepska praktyka
+przerzuć to na zewnątrz tej funkcji z zachowaniem logiki
+
+backend/core/rag_engine.py
+
+import numpy as np
+
+        if char_id not in self.chunks:
+            logger.warning("[%s] Brak załadowanych chunków (baza wiedzy?).", char_id)
+            return []
+
+        if char_id not in self.indexes or self.embedder is None:
+            return self._retrieve_keyword(char_id, query, top_k, source_stem)
+
+        query_vec = self.embedder.encode([query], convert_to_numpy=True).astype(np.float32)
+        import faiss
+
+te importy też można wrzucić na szczyt pliku w sumie
+
+docs/REFAKTORYZACJA_PLAN_v2.md
+
+czy ten plik jest jeszcze potrzebny? jeśli nie to warto usunąć
+
+scripts/regen_characters_module.py
+
+czy ten plik jest jeszcze potrzebny czy służył do jednorazowej migracji? jeśli to drugie to proszę o usunięcie
+
+scripts/fill_missing_kb_from_wikipedia.py
+
+def _character_display_name(character_id: str) -> str:
+    # Simple heuristic (no network calls, no extra files).
+    special = {
+        "da_vinci": "Leonardo da Vinci",
+        "joan_of_arc": "Joanna d’Arc",
+        "marie_curie": "Maria Skłodowska-Curie",
+        "vangogh": "Vincent van Gogh",
+        "antoinette": "Marie Antoinette",
+        "confucius": "Konfucjusz",
+        "kahlo": "Frida Kahlo",
+    }
+
+czy tu nie powinny być dodane pozostałe postaci?
+
+backend/core/rag_engine.py
+
+        try:
+            try:
+                import torch
+
+                logger.info("PyTorch wersja: %s", getattr(torch, "__version__", "unknown"))
+            except Exception as torch_error:
+                logger.error(
+                    "Błąd ładowania PyTorch (wymagany przez sentence-transformers): %s",
+                    torch_error,
+                )
+                self.embedder = None
+                return
+
+nie podobają mi się te zagnieżdżone klauzule try
+
+backend/core/rag_engine.py
+
+        def pool_for_stem(stem: Optional[str]):
+            out = []
+            for i, ch in enumerate(chunks):
+                if stem is not None:
+                    if self._stem_from_chunk_source(ch["source"]) != stem:
+                        continue
+                c_words = self._word_set(ch["text"])
+                overlap = len(q_words & c_words) if q_words else 0
+                out.append((overlap, i, ch))
+            return out
+
+kolejna funkcja wewnątrz funkcji -> patrz inny komentarz
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

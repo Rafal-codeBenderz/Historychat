@@ -19,6 +19,7 @@ def build_prompt(
             role_label = "Użytkownik" if msg.get("role") == "user" else char_name
             history_text += f"{role_label}: {msg.get('content','')}\n"
 
+    rule_when_sources = ""
     if fragments:
         fragments_text = "\n\nDOSTĘPNE ŹRÓDŁA (użyj ich jako podstawy odpowiedzi):\n"
         if pinned_source_label:
@@ -28,16 +29,13 @@ def build_prompt(
             )
         for i, frag in enumerate(fragments, 1):
             fragments_text += f"\n[Fragment {i} – {frag['source']}]\n{frag['text']}\n"
-    else:
-        fragments_text = "\n\nUWAGA: Brak pasujących fragmentów w bazie wiedzy dla tego pytania."
-
-    rule_when_sources = ""
-    if fragments:
         rule_when_sources = (
             "\n7. Poniżej masz co najmniej jeden fragment źródłowy — NIE używaj wtedy frazy o braku zapisków. "
             "Odpowiedz na podstawie tego, co da się wyczytać z fragmentów (nawet ogólnie lub częściowo). "
             "Formułę o braku informacji stosuj WYŁĄCZNIE gdy fragmenty naprawdę nie dotyczą pytania.\n"
         )
+    else:
+        fragments_text = "\n\nUWAGA: Brak pasujących fragmentów w bazie wiedzy dla tego pytania."
 
     prompt = f"""Jesteś {char_name}, historyczną postacią z epoki: {char_era}.
 
