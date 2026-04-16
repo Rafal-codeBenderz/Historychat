@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+*.pyc
+__pycache__/
+.venv/
+venv/
+*.egg-info/
+
+# Dane generowane w runtime
+data/chat_history.jsonl
+logs/retrieval.log
+history_chat.db
+
+# System
+.DS_Store
+*.swp
