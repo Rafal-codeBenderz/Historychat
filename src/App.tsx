@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
-import { Sidebar, AvatarSection, ChatSection, WelcomeSection } from '@components';
+import { useEffect, useState } from 'react';
+import { Sidebar, AvatarSection, ChatSection, WelcomeSection, DebateSection } from '@components';
 import { useAudioPlayer } from './hooks/useAudioPlayer';
 import { useCharactersLoader } from './hooks/useCharactersLoader';
 import { useChat } from './hooks/useChat';
 
+type AppMode = 'chat' | 'debate';
+
 export default function App() {
+  const [mode, setMode] = useState<AppMode>('chat');
   const { playAudio, stopAudio, isSpeaking, volume } = useAudioPlayer();
   const { characters, backendError } = useCharactersLoader();
   const {
@@ -59,18 +62,22 @@ export default function App() {
           characters={characters}
           selectedChar={selectedChar}
           selectChar={selectChar}
+          mode={mode}
+          onModeChange={setMode}
         />
 
-        {/* ── Chat Area ── */}
+        {/* ── Main Area ── */}
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-          {!selectedChar ? (
+          {mode === 'debate' ? (
+            <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
+              <DebateSection characters={characters} />
+            </div>
+          ) : !selectedChar ? (
             <WelcomeSection />
           ) : (
             <>
-              {/* Main Content Area with Avatar and Chat */}
               <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
                 <AvatarSection selectedChar={selectedChar} isSpeaking={isSpeaking} volume={volume} />
-
                 <ChatSection
                   selectedChar={selectedChar}
                   messages={messages}

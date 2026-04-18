@@ -1,16 +1,21 @@
 import { Info } from './Info';
 import { Logo } from './Logo';
 import { CharacterList } from './CharacterList';
+import { ModeSwitch } from './ModeSwitch';
 import { Character } from '@types';
+
+type AppMode = 'chat' | 'debate';
 
 type SidebarProps = {
   backendError: boolean;
   characters: Character[];
   selectedChar: Character | null;
   selectChar: (char: Character) => void;
+  mode: AppMode;
+  onModeChange: (mode: AppMode) => void;
 };
 
-export function Sidebar({ backendError, characters, selectedChar, selectChar }: SidebarProps) {
+export function Sidebar({ backendError, characters, selectedChar, selectChar, mode, onModeChange }: SidebarProps) {
   return (
     <aside
       style={{
@@ -28,6 +33,8 @@ export function Sidebar({ backendError, characters, selectedChar, selectChar }: 
       }}
     >
       <Logo />
+
+      <ModeSwitch mode={mode} onChange={onModeChange} />
 
       <CharacterList
         backendError={backendError}
