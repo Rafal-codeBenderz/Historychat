@@ -9,6 +9,7 @@ from flask import Blueprint, jsonify, request
 
 from backend.config.paths import CHAT_HISTORY_PATH, KB_PATH, ROOT
 from backend.core.characters_debata_migrated import CHARACTERS, VOICE_MAP
+from backend.core.debate import run_debate_turn
 from backend.core.prompting import build_prompt
 from backend.core.rag_engine import get_engine
 from backend.services.llm import call_llm
@@ -279,4 +280,99 @@ def generate_avatar():
     except Exception as e:
         logger.error("Błąd generowania avatara: %s", e)
         return jsonify({"error": str(e)}), 500
+
+
+# ---------------------------------------------------------------------------
+# Debate endpoints
+# ---------------------------------------------------------------------------
+_VALID_ROLES = {"prosecutor", "defender", "judge"}
+_MAX_TRANSCRIPT_TURNS = 50
+_MAX_THEME_LEN = 1000
+
+
+def _validate_debate_payload(data: dict) -> tuple[str | None, int]:
+    """Zwraca (error_msg, http_code) lub (None, 0) gdy OK."""
+    theme = data.get("theme", "")
+    if not isinstance(theme, str) or not theme.strip():
+        return "Pole theme jest wymagane i nie może być puste", 400
+    if len(theme.strip()) > _MAX_THEME_LEN:
+        return f"Teza zbyt długa (max {_MAX_THEME_LEN} znaków)", 400
+
+    roles = data.get("roles")
+    if not isinstance(roles, dict):
+        return "Pole roles musi być obiektem {prosecutor, defender, judge}", 400
+    for role in _VALID_ROLES:
+        if role not in roles:
+            return f"Brakuje roli: {role}", 400
+        char_id = roles[role]
+        if not isinstance(char_id, str) or char_id not in CHARACTERS:
+            return f"Nieznana postać dla roli {role}: {char_id!r}", 400
+    if len({roles[r] for r in _VALID_ROLES}) != 3:
+        return "Każda rola musi być przypisana do innej postaci", 400
+
+    transcript = data.get("transcript", [])
+    if not isinstance(transcript, list):
+        return "Pole transcript musi być listą", 400
+    if len(transcript) > _MAX_TRANSCRIPT_TURNS:
+        return f"Zbyt długi transkrypt (max {_MAX_TRANSCRIPT_TURNS} tur)", 400
+
+    return None, 0
+
+
+@api.route("/api/debate/turn", methods=["POST"])
+def debate_turn():
+    data = request.json or {}
+
+    err, code = _validate_debate_payload(data)
+    if err:
+        return jsonify({"error": err}), code
+
+    next_role = data.get("next_role")
+    if next_role not in _VALID_ROLES:
+        return jsonify({"error": f"Nieprawidłowa next_role: {next_role!r}"}), 400
+
+    roles = data["roles"]
+    char_id = roles[next_role]
+    theme = data["theme"].strip()
+    transcript = data.get("transcript", [])
+
+    try:
+        result = run_debate_turn(
+            char_id=char_id,
+            role=next_role,
+            theme=theme,
+            transcript=transcript,
+            verdict_mode=False,
+        )
+        return jsonify(result)
+    except Exception as e:
+        logger.error("[debate/turn] Błąd: %s", e)
+        return jsonify({"error": "Błąd serwera podczas tury debaty"}), 500
+
+
+@api.route("/api/debate/verdict", methods=["POST"])
+def debate_verdict():
+    data = request.json or {}
+
+    err, code = _validate_debate_payload(data)
+    if err:
+        return jsonify({"error": err}), code
+
+    roles = data["roles"]
+    theme = data["theme"].strip()
+    transcript = data.get("transcript", [])
+    judge_id = roles["judge"]
+
+    try:
+        result = run_debate_turn(
+            char_id=judge_id,
+            role="judge",
+            theme=theme,
+            transcript=transcript,
+            verdict_mode=True,
+        )
+        return jsonify(result)
+    except Exception as e:
+        logger.error("[debate/verdict] Błąd: %s", e)
+        return jsonify({"error": "Błąd serwera podczas werdyktu"}), 500
 
