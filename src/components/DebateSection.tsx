@@ -11,10 +11,12 @@ const ROLE_COLORS: Record<DebateRole, string> = {
 };
 
 const ROLE_LABELS: Record<DebateRole, string> = {
-  prosecutor: 'Oskarzyciel',
-  defender: 'Obronce',
-  judge: 'Sedzia',
+  prosecutor: 'Oskarżyciel',
+  defender: 'Obrońca',
+  judge: 'Sędzia',
 };
+
+const OPTION_STYLE = { background: '#1a1a1a', color: 'rgba(255,255,255,0.9)' } as const;
 
 interface DebateSectionProps {
   characters: Character[];
@@ -45,9 +47,9 @@ function RoleSelect({
           fontFamily: "'Outfit', sans-serif", cursor: 'pointer',
         }}
       >
-        <option value="">-- wybierz --</option>
+        <option value="" style={OPTION_STYLE}>-- wybierz --</option>
         {characters.map((c) => (
-          <option key={c.id} value={c.id} disabled={usedIds.includes(c.id) && c.id !== value}>
+          <option key={c.id} value={c.id} disabled={usedIds.includes(c.id) && c.id !== value} style={OPTION_STYLE}>
             {c.name}
           </option>
         ))}
@@ -104,7 +106,7 @@ export function DebateSection({ characters }: DebateSectionProps) {
         <textarea
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
-          placeholder="Teza debaty, np. Nauka niszczy wartosci moralne..."
+          placeholder="Teza debaty, np. Nauka niszczy wartości moralne..."
           rows={2}
           style={{
             width: '100%', padding: '10px 12px', borderRadius: '8px', resize: 'vertical',
@@ -128,12 +130,12 @@ export function DebateSection({ characters }: DebateSectionProps) {
         </AnimatePresence>
         {isLoading && (
           <div style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic', fontSize: '13px' }}>
-            Trwa generowanie odpowiedzi...
+            Trwa generowanie odpowiedzi…
           </div>
         )}
         {error && (
           <div style={{ color: '#e57373', fontSize: '13px', padding: '8px', borderRadius: '6px', background: 'rgba(229,115,115,0.1)' }}>
-            Blad: {error}
+            Błąd: {error}
           </div>
         )}
       </div>
@@ -147,7 +149,7 @@ export function DebateSection({ characters }: DebateSectionProps) {
             color: isReady && !verdictDone ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.25)',
             fontFamily: "'Outfit', sans-serif", fontSize: '13px', fontWeight: 500,
           }}>
-          Nastepna tura
+          Następna tura
         </button>
         <button onClick={requestVerdict} disabled={!isReady || isLoading || verdictDone || transcript.length < 3}
           style={{
@@ -155,7 +157,7 @@ export function DebateSection({ characters }: DebateSectionProps) {
             background: verdictDone ? 'rgba(255,213,79,0.08)' : 'rgba(255,213,79,0.06)',
             color: ROLE_COLORS.judge, fontFamily: "'Outfit', sans-serif", fontSize: '13px', fontWeight: 500,
           }}>
-          {verdictDone ? 'Werdykt wydany' : 'Zadaj werdykt'}
+          {verdictDone ? 'Werdykt wydany' : 'Wydaj werdykt'}
         </button>
         <button onClick={resetDebate}
           style={{

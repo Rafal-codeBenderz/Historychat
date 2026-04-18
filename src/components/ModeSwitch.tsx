@@ -9,7 +9,7 @@ interface ModeSwitchProps {
 
 const MODES: { value: Mode; label: string; icon: string }[] = [
   { value: 'chat', label: 'Rozmowa', icon: '💬' },
-  { value: 'debate', label: 'Sad historyczny', icon: '⚖️' },
+  { value: 'debate', label: 'Sąd historyczny', icon: '⚖️' },
 ];
 
 export function ModeSwitch({ mode, onChange }: ModeSwitchProps) {
