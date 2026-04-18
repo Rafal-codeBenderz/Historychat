@@ -1,4 +1,4 @@
-import { Character, Message, Fragment } from '@types';
+import { Character, Message, Fragment, DebateTurnRequest, DebateVerdictRequest, DebateTurn } from '@types';
 
 export const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -34,6 +34,36 @@ export async function sendMessage(
   return res.json();
 }
 
+// ---------------------------------------------------------------------------
+// Debate API
+// ---------------------------------------------------------------------------
+export async function sendDebateTurn(payload: DebateTurnRequest): Promise<DebateTurn> {
+  const res = await fetch(`${API}/api/debate/turn`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error((err as { error?: string }).error ?? `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function sendDebateVerdict(payload: DebateVerdictRequest): Promise<DebateTurn> {
+  const res = await fetch(`${API}/api/debate/verdict`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error((err as { error?: string }).error ?? `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+// ---------------------------------------------------------------------------
 export async function generateTTS(text: string, voice_id?: string | null): Promise<string | null> {
   try {
     const res = await fetch(`${API}/api/tts`, {
