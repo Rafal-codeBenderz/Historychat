@@ -1,0 +1,21 @@
+Isaac Newton (1643-1727) był angielskim fizykiem, matematykiem, astronomem i filozofem, uważanym za jednego z największych umysłów w historii nauki. Jego dzieło "Philosophiæ Naturalis Principia Mathematica" (Matematyczne zasady filozofii przyrody), opublikowane w 1687 roku, jest jednym z najważniejszych dzieł w historii nauki.
+
+Newton sformułował trzy prawa dynamiki, które do dziś stanowią fundament mechaniki klasycznej. Pierwsze prawo, zwane prawem bezwładności, stwierdza, że ciało pozostaje w spoczynku lub porusza się ruchem jednostajnym prostoliniowym, dopóki nie zadziała na nie siła zewnętrzna. Drugie prawo opisuje związek między siłą, masą i przyspieszeniem: F = ma. Trzecie prawo głosi, że każde działanie wywołuje równe i przeciwnie skierowane przeciwdziałanie.
+
+Najsłynniejszym osiągnięciem Newtona jest prawo powszechnego ciążenia, które opisuje siłę przyciągania między dwoma ciałami. Prawo to, wyrażone wzorem F = G(m₁m₂)/r², wyjaśniało zarówno spadanie jabłka na Ziemię, jak i ruch planet wokół Słońca. Newton pokazał, że te same prawa fizyczne rządzą ruchem ciał na Ziemi i w kosmosie.
+
+Newton dokonał przełomowych odkryć w optyce. W 1666 roku przeprowadził eksperymenty z pryzmatem, które wykazały, że białe światło składa się z różnych kolorów. Zbudował pierwszy teleskop zwierciadlany, który eliminował aberrację chromatyczną występującą w teleskopach soczewkowych. Jego teoria kolorów, opisana w "Optice" (1704), wyjaśniała zjawiska optyczne w sposób, który przetrwał do czasów współczesnych.
+
+W matematyce Newton, niezależnie od Gottfrieda Leibniza, rozwinął rachunek różniczkowy i całkowy. Chociaż obaj naukowcy odkryli te metody niezależnie, spór o pierwszeństwo doprowadził do długotrwałego konfliktu. Newton nazwał swoją metodę "metodą fluxji", podczas gdy Leibniz używał notacji, która jest powszechnie stosowana do dziś.
+
+Newton był również głęboko zaangażowany w alchemię i teologię. Spędził więcej czasu na badaniach alchemicznych niż na fizyce i matematyce. Wierzył w możliwość transmutacji metali i poszukiwał kamienia filozoficznego. Jego pisma teologiczne, które przez długi czas pozostawały niepublikowane, pokazują, że był unitarianinem i wierzył, że doktryna Trójcy Świętej została sfałszowana w IV wieku.
+
+W 1696 roku Newton został nadzorcą, a następnie mistrzem mennicy królewskiej, gdzie nadzorował przebicie angielskiej monety i walczył z fałszerzami. Jego praca w mennicy była tak skuteczna, że został uhonorowany tytułem szlacheckim w 1705 roku.
+
+Newton był również prezesem Royal Society od 1703 roku do swojej śmierci. Podczas jego kadencji towarzystwo stało się wiodącą instytucją naukową w Europie. Jego autorytarny styl zarządzania doprowadził do konfliktów z innymi naukowcami, w tym z Robertem Hooke'em, z którym miał długotrwały spór o pierwszeństwo w odkryciu prawa grawitacji.
+
+Newton był znany ze swojej skrytości i niechęci do publikowania swoich odkryć. Często odkładał publikację na lata, czasem pod wpływem krytyki lub obawy przed kontrowersjami. Jego słynne powiedzenie "Jeśli widziałem dalej, to tylko dlatego, że stałem na ramionach gigantów" pokazuje jego uznanie dla poprzedników, choć jednocześnie był bardzo wrażliwy na krytykę.
+
+Jego wpływ na naukę jest nie do przecenienia. Prawa Newtona rządzą ruchem ciał od najmniejszych cząstek po największe galaktyki. Jego metody matematyczne stały się narzędziami używanymi przez wszystkich naukowców. Einstein powiedział, że "Newton był pierwszym, który stworzył system mechaniki, którego logika i zwięzłość są tak doskonałe, że jego teoria mechaniki jest podstawą całej fizyki teoretycznej aż do dziś".
+
+Newton zmarł w 1727 roku i został pochowany w Opactwie Westminsterskim, gdzie spoczywa obok innych wielkich Brytyjczyków. Jego epitafium głosi: "Niech się cieszą śmiertelnicy, że istniał tak wielki ozdoba rodzaju ludzkiego".

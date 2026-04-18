@@ -1,0 +1,145 @@
+Źródło: Wikipedia (pl)
+Hasło: Fibonacci
+Postać: fibonacci (Fibonacci)
+Dokument: listy_i_korespondencja.txt
+Opis: Listy i korespondencja
+
+Fibonacci, Leonardo z Pizy (ur. ok. 1175 w Pizie, zm. 1250), znany jako Leonardo Fibonacci, Filius Bonacci (syn Bonacciego), Leonardo Pisano (z Pizy) – włoski matematyk.
+
+Życiorys
+Jego ojciec, Guglielmo z rodziny Bonacci, zajmował stanowisko dyplomatyczne w Afryce północnej i Fibonacci tam właśnie się kształcił. Pierwsze lekcje matematyki pobierał od arabskiego nauczyciela w mieście Boużia (dziś algierska Bidżaja). Dużo podróżował najpierw razem z ojcem, później samodzielnie, odwiedzając i kształcąc się w takich miejscach jak Egipt, Syria, Prowansja, Grecja i Sycylia. W czasie swych podróży po Europie i po krajach Wschodu miał okazję poznać osiągnięcia matematyków arabskich i hinduskich, między innymi dziesiętny system liczbowy.
+Około 1200 roku Fibonacci zakończył podróże i powrócił do Pizy.
+
+Dzieła
+Napisał szereg rozpraw matematycznych, z których wiele zaginęło. Wśród prac, których kopie zachowały się do czasów współczesnych znajdują się:
+
+Liber Abaci (1202), gdzie opisał system pozycyjny liczb i wyłożył podstawy arytmetyki,
+Practica geometriae (1220), będące połączeniem algebry i geometrii, oraz
+Flos (1225) i Liber quadratorum.
+
+Problemy i zadania
+Prace Fibonacciego zawierają szereg matematycznych problemów:
+
+Dwa ptaki wylatują w tym samym momencie ze szczytów dwóch wież, odległych od siebie o 50 metrów. Wysokość jednej wieży wynosi 30 metrów, a drugiej 40 metrów. Lecąc z tą samą prędkością dolatują w tym samym momencie do fontanny, usytuowanej na prostej pomiędzy dwiema wieżami (na poziomie gruntu). W jakiej odległości od podstawy każdej wieży znajduje się fontanna?
+Kupiec podczas swojej podróży handlowej do Wenecji podwoił tam swój początkowy kapitał, a następnie wydał 12 denarów. Potem udał się do Florencji, gdzie znowu podwoił liczbę posiadanych denarów i wydał 12. Po powrocie do Pizy po raz kolejny podwoił swój majątek, wydał dwanaście denarów i ... został bez grosza. Ile denarów miał na początku?
+Trzech mężczyzn znalazło sakiewkę zawierającą 23 denary. Pierwszy powiedział do drugiego: Jeżeli dodam te pieniądze do swoich, to będę miał dwa razy więcej od ciebie. Drugi podobnie zwrócił się do trzeciego: Ja zaś, jeżeli wezmę te pieniądze, będę miał trzy razy więcej od ciebie. W końcu trzeci powiedział do pierwszego: Ja dodając te pieniądze do swoich będę miał cztery razy więcej niż ty. Ile denarów miał każdy z nich?
+(Zagadka Jana z Palermo) Trzech dworzan miało swoje udziały w pewnej kwocie pieniędzy: udział pierwszego wynosił 1/2, drugiego – 1/3, a trzeciego – 1/6 całości. Każdy ze współudziałowców pobrał ze wspólnej kasy pieniądze – niezbyt uczciwie: nie zostało nic. Następnie pierwszy z nich zwrócił połowę tego, co zabrał, drugi – jedna trzecią, a trzeci – jedną szóstą. Powstałą kwotę podzielono na trzy równe części i dano po jednej trzem dworzanom. Okazało się, że każdy z nich miał wówczas dokładnie tyle pieniędzy ile mu przysługiwało. Ile pieniędzy było w kasie na początku, ile pobrał każdy z nich?
+Spadek: Bliski śmierci człowiek wezwał swych synów i powiedział do najstarszego: Weź jednego denara z mego majątku i siódmą część tego, co zostanie. Do drugiego powiedział Weź dwa denary i siódmą część tego, co zostanie. Do trzeciego: Weź trzy denary i siódmą część tego, co pozostanie. Każdemu synowi zapisywał więc jednego denara więcej od poprzedniego i siódmą część reszty. Po podziale majątku okazało się, że każdy z synów dostał tyle samo. Ilu było synów i jak duży był spadek?
+Znaleźć liczbę podzielną przez 7, która przy dzieleniu przez 2,3,4,5,6 daje resztę r=1.
+Znaleźć liczbę podzielną przez 7, która przy dzieleniu przez 2,3,4,5,6 daje odpowiednio reszty 
+  
+    
+      
+        
+          r
+          
+            2
+          
+        
+        =
+        1
+        ,
+         
+        
+          r
+          
+            3
+          
+        
+        =
+        2
+        ,
+         
+        
+          r
+          
+            4
+          
+        
+        =
+        3
+        ,
+         
+        
+          r
+          
+            5
+          
+        
+        =
+        4
+        ,
+         
+        
+          r
+          
+            6
+          
+        
+        =
+        5.
+      
+    
+    {\displaystyle r_{2}=1,\ r_{3}=2,\ r_{4}=3,\ r_{5}=4,\ r_{6}=5.}
+  
+
+Znaleźć taką liczbę, której kwadrat, powiększony lub pomniejszony o 5, da kwadrat liczby wymiernej. Lub uogólnione: znaleźć rozwiązanie układu równań:
+  
+    
+      
+        
+          
+            {
+            
+              
+                
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  +
+                  a
+                  =
+                  
+                    u
+                    
+                      2
+                    
+                  
+                
+              
+              
+                
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  −
+                  a
+                  =
+                  
+                    v
+                    
+                      2
+                    
+                  
+                
+              
+            
+            
+          
+        
+      
+    
+    {\displaystyle {\begin{cases}x^{2}+a=u^{2}\\x^{2}-a=v^{2}\end{cases}}}
+
+Zobacz też
+ciąg Fibonacciego
+poziomy Fibonacciego
+
+Linki zewnętrzne
+ John J. O’Connor; Edmund F. Robertson: Fibonacci w MacTutor History of Mathematics archive (ang.)

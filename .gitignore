@@ -1,0 +1,24 @@
+node_modules/
+dist/
+.env
+*.pyc
+__pycache__/
+.venv/
+venv/
+*.egg-info/
+
+# Dane generowane w runtime
+data/*.db
+data/chat_history.jsonl
+logs/
+*.log
+logs/retrieval.log
+history_chat.db
+
+# Awatary generowane przez backend (DALL-E)
+public/avatars/*.jpg
+public/avatars/*.png
+
+# System
+.DS_Store
+*.swp
