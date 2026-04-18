@@ -11,3 +11,5 @@ export * from './Sidebar';
 export * from './AvatarSection';
 export * from './ChatSection';
 export * from './WelcomeSection';
+export * from './ModeSwitch';
+export * from './DebateSection';
