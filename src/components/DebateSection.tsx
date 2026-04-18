@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Character, DebateTurn, DebateRoles, DebateRole } from '@types';
-import { useDebate } from '../hooks/useDebate';
+import { useDebate, DEBATE_TURN_SEQUENCE } from '../hooks/useDebate';
 import { SourceBadge } from './SourceBadge';
 
 // Kolory rol wg spec (PLAN_DEBATA_v1.md)
@@ -141,33 +141,59 @@ export function DebateSection({ characters }: DebateSectionProps) {
       </div>
 
       {/* Controls */}
-      <div style={{ display: 'flex', gap: '8px' }}>
-        <button onClick={nextTurn} disabled={!isReady || isLoading || verdictDone}
-          style={{
-            flex: 2, padding: '10px', borderRadius: '8px', border: 'none', cursor: isReady && !isLoading && !verdictDone ? 'pointer' : 'not-allowed',
-            background: isReady && !verdictDone ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.04)',
-            color: isReady && !verdictDone ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.25)',
-            fontFamily: "'Outfit', sans-serif", fontSize: '13px', fontWeight: 500,
-          }}>
-          Następna tura
-        </button>
-        <button onClick={requestVerdict} disabled={!isReady || isLoading || verdictDone || transcript.length < 3}
-          style={{
-            flex: 2, padding: '10px', borderRadius: '8px', border: `1px solid ${ROLE_COLORS.judge}44`, cursor: 'pointer',
-            background: verdictDone ? 'rgba(255,213,79,0.08)' : 'rgba(255,213,79,0.06)',
-            color: ROLE_COLORS.judge, fontFamily: "'Outfit', sans-serif", fontSize: '13px', fontWeight: 500,
-          }}>
-          {verdictDone ? 'Werdykt wydany' : 'Wydaj werdykt'}
-        </button>
-        <button onClick={resetDebate}
-          style={{
-            flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)',
-            background: 'transparent', color: 'rgba(255,255,255,0.3)', cursor: 'pointer',
-            fontFamily: "'Outfit', sans-serif", fontSize: '13px',
-          }}>
-          Reset
-        </button>
-      </div>
+      {(() => {
+        const sequenceComplete = transcript.length >= DEBATE_TURN_SEQUENCE.length;
+        const canNextTurn = isReady && !isLoading && !verdictDone && !sequenceComplete;
+        const canVerdict = isReady && !isLoading && !verdictDone && transcript.length >= 4;
+        return (
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              onClick={nextTurn}
+              disabled={!canNextTurn}
+              style={{
+                flex: 2, padding: '10px', borderRadius: '8px', border: 'none',
+                cursor: canNextTurn ? 'pointer' : 'not-allowed',
+                background: canNextTurn ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.04)',
+                color: canNextTurn ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.25)',
+                fontFamily: "'Outfit', sans-serif", fontSize: '13px', fontWeight: 500,
+              }}
+            >
+              {isLoading
+                ? 'Generowanie…'
+                : sequenceComplete
+                  ? 'Sekwencja zakończona'
+                  : `Następna tura (${transcript.length + 1}/${DEBATE_TURN_SEQUENCE.length})`}
+            </button>
+            <button
+              onClick={requestVerdict}
+              disabled={!canVerdict}
+              title={transcript.length < 4 ? 'Werdykt dostępny po wymianie argumentów' : ''}
+              style={{
+                flex: 2, padding: '10px', borderRadius: '8px',
+                border: `1px solid ${ROLE_COLORS.judge}44`,
+                cursor: canVerdict ? 'pointer' : 'not-allowed',
+                background: verdictDone ? 'rgba(255,213,79,0.08)' : 'rgba(255,213,79,0.06)',
+                color: canVerdict || verdictDone ? ROLE_COLORS.judge : 'rgba(255,213,79,0.3)',
+                fontFamily: "'Outfit', sans-serif", fontSize: '13px', fontWeight: 500,
+              }}
+            >
+              {verdictDone
+                ? 'Werdykt wydany'
+                : sequenceComplete
+                  ? 'Wydaj werdykt'
+                  : `Wydaj werdykt (${transcript.length}/${DEBATE_TURN_SEQUENCE.length})`}
+            </button>
+            <button onClick={resetDebate}
+              style={{
+                flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)',
+                background: 'transparent', color: 'rgba(255,255,255,0.3)', cursor: 'pointer',
+                fontFamily: "'Outfit', sans-serif", fontSize: '13px',
+              }}>
+              Reset
+            </button>
+          </div>
+        );
+      })()}
     </div>
   );
 }

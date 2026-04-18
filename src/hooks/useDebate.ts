@@ -2,7 +2,19 @@ import { useState, useCallback } from 'react';
 import type { DebateRoles, DebateRole, DebateTurn, DebateState } from '@types';
 import { sendDebateTurn, sendDebateVerdict } from '../utils/utils';
 
-const ROLE_ORDER: DebateRole[] = ['prosecutor', 'defender', 'judge'];
+// Sztywna sekwencja 7 tur sądowych:
+// 0,2 = oskarżyciel, 1,3 = obrońca (wymiany), 4 = sędzia (pytania), 5-6 = odpowiedzi na pytania
+const TURN_SEQUENCE: DebateRole[] = [
+  'prosecutor', // 0: oskarżenie otwierające
+  'defender',   // 1: obrona — ODPOWIADA na oskarżenie
+  'prosecutor', // 2: replika
+  'defender',   // 3: replika obrony
+  'judge',      // 4: sędzia ZADAJE PYTANIA (nie werdykt)
+  'prosecutor', // 5: oskarżyciel odpowiada na pytania sędziego
+  'defender',   // 6: obrońca odpowiada na pytania sędziego
+];
+
+export const DEBATE_TURN_SEQUENCE = TURN_SEQUENCE;
 
 const INITIAL_STATE: DebateState = {
   theme: '',
@@ -33,7 +45,10 @@ export function useDebate() {
 
     setState((prev) => {
       const turnIndex = prev.transcript.length;
-      const next_role: DebateRole = ROLE_ORDER[turnIndex % ROLE_ORDER.length];
+      if (turnIndex >= TURN_SEQUENCE.length) {
+        return { ...prev, isLoading: false, error: 'Sekwencja debaty zakończona — wydaj werdykt' };
+      }
+      const next_role: DebateRole = TURN_SEQUENCE[turnIndex];
 
       sendDebateTurn({
         theme: prev.theme,
