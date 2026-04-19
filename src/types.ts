@@ -17,6 +17,50 @@ export interface Message {
   audioUrl?: string;
 }
 
+// ---------------------------------------------------------------------------
+// Debate types
+// ---------------------------------------------------------------------------
+export type DebateRole = 'prosecutor' | 'defender' | 'judge';
+
+export interface DebateRoles {
+  prosecutor: string;   // char_id
+  defender: string;
+  judge: string;
+}
+
+export interface DebateTurn {
+  speaker: string;        // char_id
+  speakerName: string;
+  role: DebateRole;
+  content: string;
+  fragments: Fragment[];
+}
+
+export interface DebateState {
+  theme: string;
+  roles: DebateRoles;
+  transcript: DebateTurn[];
+  isLoading: boolean;
+  error: string | null;
+  verdictDone: boolean;
+}
+
+export interface DebateTurnRequest {
+  theme: string;
+  roles: DebateRoles;
+  next_role: DebateRole;
+  transcript: DebateTurn[];
+}
+
+export interface DebateVerdictRequest {
+  theme: string;
+  roles: DebateRoles;
+  transcript: DebateTurn[];
+}
+
+// ---------------------------------------------------------------------------
+// Existing types
+// ---------------------------------------------------------------------------
 export interface Character {
   id: string;
   name: string;
