@@ -4,13 +4,22 @@
 
 ## Co to jest?
 
-HistoryChat pozwala rozmawiać z postaciami historycznymi (m.in. Kopernik, Maria Skłodowska-Curie, Napoleon, Leonardo da Vinci, Kleopatra, Einstein, Joanna d’Arc). Model językowy dostaje do promptu **wybrane fragmenty źródeł**; instrukcje w backendzie wymuszają trzymanie się tej treści (z możliwością odmowy, gdy fragmentów brak lub nie pasują).
+HistoryChat pozwala rozmawiać z **24 postaciami historycznymi** obejmującymi różne epoki i dziedziny — m.in. nauka (Kopernik, Einstein, Newton, Darwin, Tesla, Maria Skłodowska-Curie, Galileusz, Fibonacci, Lovelace), filozofia i medycyna (Arystoteles, Konfucjusz, Hipokrates, Freud), sztuka (Leonardo da Vinci, Chopin, Van Gogh, Frida Kahlo), historia i polityka (Cezar, Kleopatra, Napoleon, Joanna d'Arc, Maria Antonina, Churchill), edukacja (Montessori). Model językowy dostaje do promptu **wybrane fragmenty źródeł**; instrukcje w backendzie wymuszają trzymanie się tej treści (z możliwością odmowy, gdy fragmentów brak lub nie pasują).
+
+Pełna lista identyfikatorów postaci (`char_id`):
+
+```
+antoinette, aristotle, caesar, chopin, churchill, cleopatra, confucius,
+copernicus, da_vinci, darwin, einstein, fibonacci, freud, galileo,
+hippocrates, joan_of_arc, kahlo, lovelace, marie_curie, montessori,
+napoleon, newton, tesla, vangogh
+```
 
 ## Funkcje (v2)
 
 - **Text-to-Speech (TTS)** — odczyt odpowiedzi (OpenAI `tts-1`, sterowane flagą `ENABLE_TTS`)
-- **Awatary** — placeholdery z ikoną / gradientem i animacją przy odtwarzaniu audio + opcjonalne generowanie obrazów (sterowane flagą `ENABLE_AVATAR_GENERATION`)
-- **7 postaci** i **sugerowane tematy** (z opcjonalnym `sourceStem` dla węższego retrievalu)
+- **Awatary** — domyślnie Reactowy komponent `Avatar.tsx` (gradient + ikona Lucide + animacja Framer Motion przy odtwarzaniu audio); opcjonalne generowanie obrazów przez **OpenAI DALL-E 3** (sterowane flagą `ENABLE_AVATAR_GENERATION`).
+- **24 postaci** z różnych epok (patrz sekcja *Co to jest?*) i **sugerowane tematy** (z opcjonalnym `sourceStem` dla węższego retrievalu)
 - **UI** — React, Framer Motion, style m.in. z Tailwind (`index.css`)
 
 ## Dokumentacja
@@ -54,57 +63,19 @@ HistoryChat pozwala rozmawiać z postaciami historycznymi (m.in. Kopernik, Maria
 
 ## Uruchomienie
 
-### Wymagania
+Pełna, krok-po-kroku instrukcja instalacji i startu znajduje się w osobnym pliku: **[`URUCHOMIENIE.md`](URUCHOMIENIE.md)**.
 
-- Python 3.10+
-- Node.js 18+
-
-### Backend
-
-Z katalogu **głównego projektu** (tam gdzie leżą `package.json`, `data/`, `backend/`):
+**TL;DR:**
 
 ```bash
 pip install -r requirements.txt
-```
-
-Skopiuj konfigurację (Linux/macOS):
-
-```bash
-cp .env.example .env
-```
-
-Windows (PowerShell):
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Uzupełnij `.env` — zobacz sekcję [Klucze API](#klucze-api) poniżej.
-
-```bash
-python -m backend.server
-```
-
-Backend: `http://localhost:8000`. Ścieżki `data/` i `logs/` są liczone względem katalogu projektu (`ROOT` w `backend/config/paths.py`), więc uruchamiaj polecenie z rootu projektu.
-
-Przy starcie ładowane są pliki `.txt` z `data/knowledge_base/<id_postaci>/` i — gdy działa embedder — budowany jest indeks FAISS.
-
-### Frontend
-
-```bash
 npm install
-npm run dev
+cp .env.example .env     # Windows: Copy-Item .env.example .env
+# uzupełnij OPENAI_API_KEY w .env
+npm run start            # backend (:8000) + frontend (:3000)
 ```
 
-Aplikacja dev: `http://localhost:3000` (host `0.0.0.0` — możliwy dostęp z sieci lokalnej).
-
-Domyślnie frontend woła API pod `http://localhost:8000`. Możesz nadpisać zmienną **`VITE_API_URL`** (np. inny host/port). W `vite.config.ts` jest proxy `/api` → `localhost:8000` (przydatne, jeśli front woła względne ścieżki `/api`).
-
-### Backend + frontend naraz
-
-```bash
-npm run start
-```
+Wymagania: Python 3.10+, Node.js 18+.
 
 ## Klucze API i feature flagi
 
@@ -114,7 +85,7 @@ npm run start
 | `GEMINI_API_KEY` | Używane **tylko gdy brak** `OPENAI_API_KEY` — czat przez Gemini 2.0 Flash. |
 | `OPENAI_CHAT_MODEL` | Opcjonalnie inny model czatu OpenAI. |
 | `ENABLE_TTS` | `true/false` — gdy `false`, endpoint `/api/tts` zwraca `503`. |
-| `ENABLE_AVATAR_GENERATION` | `true/false` — gdy `false`, endpoint `/api/generate-avatar` zwraca `503`. |
+| `ENABLE_AVATAR_GENERATION` | `true/false` — gdy `false`, endpoint `/api/generate-avatar` (DALL-E 3) zwraca `503`. |
 
 Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`).
 
@@ -214,7 +185,7 @@ pip uninstall -y tensorflow tensorflow-intel tensorboard
 | Wektory | faiss-cpu |
 | LLM (czat) | OpenAI Chat API **lub** Google Gemini 2.0 Flash |
 | TTS | OpenAI Audio (`tts-1`) |
-| Awatar UI | Gradient + ikona, animacja przy audio (bez DALL-E w kodzie) |
+| Grafika / Awatary | React (komponent `Avatar.tsx`): gradient + ikona Lucide + animacja Framer Motion. Opcjonalnie generowanie obrazów przez OpenAI DALL-E 3 (za flagą `ENABLE_AVATAR_GENERATION`). Bez Stable Diffusion. |
 
 ## Cele jakości (projektowe)
 
