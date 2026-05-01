@@ -7,7 +7,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from backend.core.characters_debata_migrated import CHARACTERS
+from backend.core.characters import CHARACTERS
 from backend.core.rag_engine import get_engine
 from backend.services.llm import call_llm
 

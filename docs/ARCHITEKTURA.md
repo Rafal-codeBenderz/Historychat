@@ -34,7 +34,7 @@ Backend (Flask)
     - mapuje request → core/services,
     - zwraca JSON (API kompatybilne z frontendem).
   - **Core**
-    - **Postacie**: `backend/core/characters_debata_migrated.py` (konfiguracja postaci, mapowanie głosów).
+    - **Postacie**: `backend/core/characters.py` (konfiguracja postaci, mapowanie głosów).
     - **RAG**: `backend/core/rag_engine.py` (budowa indeksów, retrieval; fallback keyword przy braku embeddera).
     - **Prompting**: `backend/core/prompting.py` (składanie promptu z instrukcjami postaci, historią i fragmentami źródeł).
   - **Services**

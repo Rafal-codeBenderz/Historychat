@@ -17,7 +17,7 @@ Ten plik opisuje strukturę katalogów po refaktorze. Opis architektury jest w `
 │   │   └── rag_config.py          # parametry RAG (jeśli używane)
 │   ├── core/
 │   │   ├── __init__.py
-│   │   ├── characters_debata_migrated.py  # konfiguracja postaci + mapy głosów
+│   │   ├── characters.py          # konfiguracja postaci + mapy głosów
 │   │   ├── prompting.py           # budowanie promptu
 │   │   └── rag_engine.py          # FAISS/keyword retrieval
 │   ├── services/
@@ -59,6 +59,6 @@ Ten plik opisuje strukturę katalogów po refaktorze. Opis architektury jest w `
 - **Dodanie endpointu**: `backend/api/routes.py` (routing) + logika w `backend/core/*` lub `backend/services/*`.
 - **Zmiana logiki RAG**: `backend/core/rag_engine.py` (+ ewentualnie parametry w `backend/config/rag_config.py`).
 - **Zmiana promptu**: `backend/core/prompting.py`.
-- **Dodanie/zmiana postaci**: `data/knowledge_base/<id>/` + konfiguracja w `backend/core/characters_debata_migrated.py`.
+- **Dodanie/zmiana postaci**: `data/knowledge_base/<id>/` + konfiguracja w `backend/core/characters.py`.
 - **Zmiana UI**: `src/components/*`, stan/logika: `src/hooks/*`.
 

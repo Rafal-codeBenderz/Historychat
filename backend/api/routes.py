@@ -8,7 +8,7 @@ from typing import Optional
 from flask import Blueprint, jsonify, request
 
 from backend.config.paths import CHAT_HISTORY_PATH, KB_PATH, ROOT
-from backend.core.characters_debata_migrated import CHARACTERS, VOICE_MAP
+from backend.core.characters import CHARACTERS, VOICE_MAP
 from backend.core.debate import run_debate_turn
 from backend.core.prompting import build_prompt
 from backend.core.rag_engine import get_engine

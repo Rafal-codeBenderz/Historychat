@@ -153,7 +153,7 @@ pytest backend/tests/
 
 1. Folder `data/knowledge_base/<id_postaci>/`
 2. Pliki `.txt` z treścią źródeł
-3. Konfiguracja postaci jest generowana w `backend/core/characters_debata_migrated.py` (patrz nagłówek pliku; regeneracja przez `python scripts/regen_characters_module.py`)
+3. Konfiguracja postaci jest generowana w `backend/core/characters.py` (patrz nagłówek pliku; regeneracja przez `python scripts/regen_characters_module.py`)
 4. Upewnij się, że postać ma `voice_id` (backend wylicza je z `voiceName` + `VOICE_MAP`)
 5. Restart backendu
 
