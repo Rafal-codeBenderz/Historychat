@@ -5,7 +5,7 @@ Source of truth:
   `debata pozniej na github do wrzucenia/backend/core/characters.py`
 
 Target output:
-  `backend/core/characters_debata_migrated.py`
+  `backend/core/characters.py`
 
 Key conversion:
 - suggestedTopics from `list[str]` -> `list[{'question': str, 'sourceStem': str}]`
@@ -33,7 +33,7 @@ from typing import Any, Dict, List
 ROOT = Path(__file__).resolve().parent.parent
 SRC_CHARACTERS_FILE = ROOT / "debata pozniej na github do wrzucenia" / "backend" / "core" / "characters.py"
 KB_ROOT = ROOT / "data" / "knowledge_base"
-OUT_FILE = ROOT / "backend" / "core" / "characters_debata_migrated.py"
+OUT_FILE = ROOT / "backend" / "core" / "characters.py"
 
 
 def load_characters_module_from_file(py_file: Path):
