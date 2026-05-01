@@ -8,7 +8,7 @@ from typing import Optional
 from flask import Blueprint, jsonify, request
 
 from backend.config.paths import CHAT_HISTORY_PATH, KB_PATH, ROOT
-from backend.core.characters_debata_migrated import CHARACTERS, VOICE_MAP
+from backend.core.characters_debata_migrated import CHARACTERS
 from backend.core.debate import run_debate_turn
 from backend.core.prompting import build_prompt
 from backend.core.rag_engine import get_engine
@@ -69,14 +69,9 @@ def init_once():
 def get_characters():
     out = []
     for ch in CHARACTERS.values():
-        # Keep legacy `voiceName` support until the generated source data stores
-        # `voice_id` natively and all callers stop relying on the transitional shape.
-        voice_name = ch.get("voiceName")
-        voice_id = None
-        if isinstance(voice_name, str) and voice_name:
-            voice_id = VOICE_MAP.get(voice_name)
+        # Keep legacy `voiceName` support in the payload, but expose `voice_id`
+        # from the canonical characters module (avoid re-deriving it here).
         item = dict(ch)
-        item["voice_id"] = voice_id
         out.append(item)
     return jsonify(out)
 
