@@ -118,16 +118,19 @@ Przy starcie backendu:
 3. Jeśli embedder zawiedzie — RAG przechodzi w tryb zapasowy (dopasowanie słów).
 
 Status można zobaczyć w: `GET http://localhost:8000/api/health`:
-- `rag_mode`: `faiss` / `keyword` / `off`
-- `chunks_loaded` — liczba załadowanych fragmentów per postać
-- `embedder_loaded` — `true` / `false`
+- `characters`, `chunks_loaded`, `indexes_built`, `rag_mode`, `embedder_loaded`, `kb_path`, `kb_exists`
+
+Pełny opis pól: `docs/api_contract.md`.
 
 ---
 
 ## 7. Testy
 
+Z katalogu głównego repozytorium:
+
 ```bash
 pytest backend/tests/
+python -m pytest backend/tests/
 ```
 
 ---
