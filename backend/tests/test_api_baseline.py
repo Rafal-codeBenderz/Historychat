@@ -36,6 +36,17 @@ def test_health_ok_has_required_fields(client):
     assert "chunks_loaded" in data
 
 
+def test_routes_list_returns_sorted_rules(client):
+    res = client.get("/api/routes")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert isinstance(data, list)
+    assert len(data) > 0
+    assert all("rule" in x and "methods" in x for x in data)
+    rules_sorted = sorted(data, key=lambda x: x["rule"])
+    assert data == rules_sorted
+
+
 def test_characters_ok_nonempty_has_id_and_name(client):
     res = client.get("/api/characters")
     assert res.status_code == 200

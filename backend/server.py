@@ -8,7 +8,7 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
 
 from backend.api.routes import api as api_blueprint
@@ -39,17 +39,6 @@ def create_app() -> Flask:
     app = Flask(__name__)
     CORS(app)
     app.register_blueprint(api_blueprint)
-
-    @app.get("/api/routes")
-    def list_routes():
-        rules = []
-        for r in app.url_map.iter_rules():
-            if r.endpoint == "static":
-                continue
-            methods = sorted(m for m in r.methods if m not in {"HEAD", "OPTIONS"})
-            rules.append({"rule": r.rule, "methods": methods})
-        rules.sort(key=lambda x: x["rule"])
-        return jsonify(rules)
 
     return app
 

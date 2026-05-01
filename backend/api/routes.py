@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from typing import Optional
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, current_app, jsonify, request
 
 from backend.config.paths import CHAT_HISTORY_PATH, KB_PATH, ROOT
 from backend.core.characters_debata_migrated import CHARACTERS, VOICE_MAP
@@ -171,8 +171,14 @@ def health():
 
 @api.get("/api/routes")
 def list_routes():
-    # populated by app url_map, so keep in server.py for now if needed
-    return jsonify({"error": "Not implemented in blueprint"}), 501
+    rules = []
+    for r in current_app.url_map.iter_rules():
+        if r.endpoint == "static":
+            continue
+        methods = sorted(m for m in r.methods if m not in {"HEAD", "OPTIONS"})
+        rules.append({"rule": r.rule, "methods": methods})
+    rules.sort(key=lambda x: x["rule"])
+    return jsonify(rules)
 
 
 @api.get("/api/history/<char_id>")
