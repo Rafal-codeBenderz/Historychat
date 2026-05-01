@@ -1,8 +1,7 @@
-import datetime
 import logging
-import os
 import re
 import threading
+import time
 import unicodedata
 from pathlib import Path
 from typing import Optional
@@ -10,7 +9,21 @@ from typing import Optional
 import numpy as np
 
 from backend.config.paths import KB_PATH
-from backend.config.rag_config import CHUNK_OVERLAP, CHUNK_SIZE, MAX_FRAGMENTS, SIMILARITY_THRESHOLD
+from backend.config.rag_config import (
+    CHUNK_OVERLAP,
+    CHUNK_SIZE,
+    EMBEDDING_MODEL_NAME,
+    FAISS_SEARCH_MIN_POOL,
+    FAISS_SEARCH_TOPK_MULTIPLIER,
+    KEYWORD_OVERLAP_WORD_CAP,
+    KEYWORD_SCORE_BASE_WITH_OVERLAP,
+    KEYWORD_SCORE_CAP,
+    KEYWORD_SCORE_NO_QUERY_OVERLAP,
+    KEYWORD_SCORE_PER_OVERLAP,
+    MAX_FRAGMENTS,
+    MIN_CHUNK_TEXT_LEN,
+    SIMILARITY_THRESHOLD,
+)
 
 try:
     import faiss  # type: ignore
@@ -51,6 +64,17 @@ class RAGEngine:
                 "Tryb RAG bez FAISS — używane jest dopasowanie słów (zepsuty import embeddera?)."
             )
 
+    @staticmethod
+    def _retrieval_metrics(char_id: str, mode: str, retrieval_time_ms: float, fragments_found: int, query: str) -> None:
+        logger.info(
+            "[RETRIEVAL_METRICS] char=%s mode=%s retrieval_time_ms=%.2f fragments_found=%d query_prefix=%r",
+            char_id,
+            mode,
+            retrieval_time_ms,
+            fragments_found,
+            (query or "")[:80],
+        )
+
     def _load_embedder(self):
         try:
             if torch is None:
@@ -64,8 +88,8 @@ class RAGEngine:
 
             from sentence_transformers import SentenceTransformer
 
-            logger.info("Ładowanie modelu embeddingów: paraphrase-multilingual-MiniLM-L12-v2")
-            self.embedder = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+            logger.info("Ładowanie modelu embeddingów: %s", EMBEDDING_MODEL_NAME)
+            self.embedder = SentenceTransformer(EMBEDDING_MODEL_NAME)
             logger.info("Model embeddingów załadowany pomyślnie.")
         except ImportError as e:
             logger.error("Błąd importu biblioteki (sentence-transformers / zależności): %s", e)
@@ -79,10 +103,11 @@ class RAGEngine:
         words = text.split()
         chunks = []
         i = 0
+        min_len = MIN_CHUNK_TEXT_LEN
         while i < len(words):
             chunk_words = words[i : i + chunk_size]
             chunk_text = " ".join(chunk_words)
-            if len(chunk_text.strip()) > 50:
+            if len(chunk_text.strip()) > min_len:
                 chunks.append({"text": chunk_text, "source": source})
             i += chunk_size - overlap
         return chunks
@@ -152,6 +177,7 @@ class RAGEngine:
         top_k: int,
         source_stem: Optional[str],
     ) -> list:
+        t0 = time.perf_counter()
         chunks = self.chunks[char_id]
         q_words = self._word_set(query)
         target = self._normalize_source_stem(source_stem) if source_stem else None
@@ -165,17 +191,19 @@ class RAGEngine:
         if not picked:
             picked = [(0, i, ch) for i, ch in enumerate(chunks[:top_k])]
 
+        cap_o = KEYWORD_OVERLAP_WORD_CAP
+        base_w = KEYWORD_SCORE_BASE_WITH_OVERLAP
+        per_w = KEYWORD_SCORE_PER_OVERLAP
+        no_ov = KEYWORD_SCORE_NO_QUERY_OVERLAP
+        score_cap = KEYWORD_SCORE_CAP
+
         results = []
         for overlap, _i, ch in picked[:top_k]:
-            base = 0.35 + min(overlap, 8) * 0.08 if overlap else 0.22
-            results.append({"text": ch["text"], "source": ch["source"], "score": min(0.95, base)})
+            base = base_w + min(overlap, cap_o) * per_w if overlap else no_ov
+            results.append({"text": ch["text"], "source": ch["source"], "score": min(score_cap, base)})
 
-        logger.info(
-            "[RETRIEVAL-keyword] char=%s query='%s...' znaleziono=%s fragmentów",
-            char_id,
-            (query or "")[:60],
-            len(results),
-        )
+        elapsed_ms = (time.perf_counter() - t0) * 1000.0
+        self._retrieval_metrics(char_id, "keyword", elapsed_ms, len(results), query)
         return results
 
     def _keyword_pool(self, chunks: list, q_words: set, stem: Optional[str]) -> list:
@@ -217,17 +245,21 @@ class RAGEngine:
     ) -> list:
         if char_id not in self.chunks:
             logger.warning("[%s] Brak załadowanych chunków (baza wiedzy?).", char_id)
+            self._retrieval_metrics(char_id, "off", 0.0, 0, query)
             return []
 
         if char_id not in self.indexes or self.embedder is None or faiss is None:
             return self._retrieve_keyword(char_id, query, top_k, source_stem)
 
+        t0 = time.perf_counter()
         query_vec = self.embedder.encode([query], convert_to_numpy=True).astype(np.float32)
 
         faiss.normalize_L2(query_vec)
 
         index = self.indexes[char_id]
         n_total = index.ntotal
+        mult = FAISS_SEARCH_TOPK_MULTIPLIER
+        min_pool = FAISS_SEARCH_MIN_POOL
 
         if source_stem:
             target = self._normalize_source_stem(source_stem)
@@ -243,13 +275,8 @@ class RAGEngine:
             if filtered:
                 filtered.sort(key=lambda x: -x[0])
                 results = self._pack_results(char_id, filtered[:top_k])
-                logger.info(
-                    "[RETRIEVAL] char=%s source_stem=%s query='%s...' znaleziono=%s fragmentów (filtrowane)",
-                    char_id,
-                    target,
-                    (query or "")[:60],
-                    len(results),
-                )
+                elapsed_ms = (time.perf_counter() - t0) * 1000.0
+                self._retrieval_metrics(char_id, "faiss_stem_filtered", elapsed_ms, len(results), query)
                 return results
             logger.warning(
                 "[%s] Brak chunków dla source_stem='%s' — fallback globalny.",
@@ -257,7 +284,7 @@ class RAGEngine:
                 target,
             )
 
-        search_k = min(max(top_k * 4, 16), n_total)
+        search_k = min(max(top_k * mult, min_pool), n_total)
         scores, indices = index.search(query_vec, search_k)
         candidates = []
         for score, idx in zip(scores[0], indices[0]):
@@ -271,8 +298,10 @@ class RAGEngine:
 
         above = [c for c in candidates if c["score"] > SIMILARITY_THRESHOLD]
         results = above[:top_k]
+        mode = "faiss_dense"
         if not results and candidates:
             results = candidates[:top_k]
+            mode = "faiss_dense_fallback"
             logger.info(
                 "[RETRIEVAL] char=%s query='%s...' fallback best-effort (kandydatów=%s)",
                 char_id,
@@ -280,12 +309,8 @@ class RAGEngine:
                 len(candidates),
             )
 
-        logger.info(
-            "[RETRIEVAL] char=%s query='%s...' znaleziono=%s fragmentów",
-            char_id,
-            (query or "")[:60],
-            len(results),
-        )
+        elapsed_ms = (time.perf_counter() - t0) * 1000.0
+        self._retrieval_metrics(char_id, mode, elapsed_ms, len(results), query)
         return results
 
 
@@ -300,4 +325,3 @@ def get_engine() -> RAGEngine:
             if _engine is None:
                 _engine = RAGEngine()
     return _engine
-
