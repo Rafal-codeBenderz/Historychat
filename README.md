@@ -29,6 +29,10 @@ napoleon, newton, tesla, vangogh
 - `docs/api_contract.md` — kontrakt API (frontend ↔ backend)
 - `docs/REFAKTORYZACJA_PLAN_v2.md` — plan refaktoryzacji (notatki techniczne)
 
+### Refaktoryzacja — usunięte archiwum (Etap 0 / ADR-00)
+
+Zgodnie z planem w `REFAKTORYZACJA_PLAN_v2.md`, folder roboczy **`debata pozniej na github do wrzucenia/`** nie należy do drzewa głównego repozytorium — treść należy trzymać w **osobnym archiwum (repo/ZIP)**; pełna historia pozostaje w **git**, jeśli kiedyś był commitowany. Dzięki temu build i importy nie zależą od zduplikowanego kodu.
+
 ## Architektura
 
 ```
@@ -91,9 +95,14 @@ Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`)
 
 ## Testy
 
+Uruchamiaj z **katalogu głównego repozytorium** (tam, gdzie jest `README.md`):
+
 ```bash
 pytest backend/tests/
+python -m pytest backend/tests/
 ```
+
+Są m.in. testy API (`test_api_baseline.py`), RAG (`test_rag.py`) i debaty (`test_debate.py`).
 
 ## Struktura projektu
 
@@ -105,12 +114,14 @@ pytest backend/tests/
 │   ├── api_contract.md
 │   └── REFAKTORYZACJA_PLAN_v2.md
 ├── backend/
-│   ├── api/                   # routing Flask (endpoints)
-│   ├── config/                # ścieżki i konfiguracja
-│   ├── core/                  # RAG + prompting + characters
-│   ├── services/              # LLM/TTS (logika bez Flask)
-│   ├── tests/                 # pytest baseline
-│   └── server.py              # entrypoint Flask (create_app + blueprint)
+│   ├── api/                   # routing Flask (`routes.py` — Blueprint `/api/*`)
+│   ├── config/                # `paths.py`, `rag_config.py`
+│   ├── core/                  # RAG (`rag_engine.py`), prompty (`prompting.py`),
+│   │                          # postacie (`characters_debata_migrated.py`),
+│   │                          # debata (`debate.py`)
+│   ├── services/              # LLM (`llm.py`), TTS (`tts.py`) — bez Flask
+│   ├── tests/                 # pytest: API, RAG, debata
+│   └── server.py              # entrypoint Flask (`create_app` + rejestracja Blueprint)
 ├── data/
 │   ├── knowledge_base/        # Źródła: wyłącznie .txt (PDF nie są czytane automatycznie)
 │   │   ├── copernicus/
@@ -144,10 +155,15 @@ pytest backend/tests/
 
 `GET http://localhost:8000/api/health` zwraca m.in.:
 
+- `status`, `characters` — lista `char_id`
 - `rag_mode`: `faiss` | `keyword` | `off`
-- `chunks_loaded` — postacie z załadowanymi fragmentami
+- `indexes_built` / `chunks_loaded` — postacie z indeksem / z załadowanymi chunkami
 - `embedder_loaded` — czy działa sentence-transformers
-- `kb_path` / `kb_exists` — ścieżka do bazy wiedzy
+- `kb_path` / `kb_exists`
+
+`GET http://localhost:8000/api/routes` — lista zarejestrowanych ścieżek i metod (diagnostyka routingu).
+
+Szczegóły pól i pozostałe endpointy: `docs/api_contract.md`.
 
 ## Jak dodać nową postać?
 
