@@ -73,7 +73,5 @@ export interface Character {
   imagePrompt?: string;
   /** New API contract: voice_id is ready for OpenAI TTS. */
   voice_id?: string | null;
-  /** Legacy field (kept for backward compatibility). */
-  voiceName?: string;
   suggestedTopics?: SuggestedTopic[];
 }

@@ -44,6 +44,7 @@ def test_characters_ok_nonempty_has_id_and_name(client):
     assert len(data) > 0
     assert all(isinstance(x, dict) for x in data)
     assert all("id" in x and "name" in x for x in data)
+    assert all("voice_id" in x for x in data)
 
 
 def test_chat_ok_with_valid_character_id(client):

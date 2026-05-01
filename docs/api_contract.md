@@ -9,22 +9,89 @@ Base URL (dev): `http://localhost:8000`
 - Validation errors use **400** (or **422**) — never **500** due to missing/invalid input.
 - Feature-flagged endpoints return **503** when disabled.
 
+## Observability (minimal)
+
+- Plik `logs/retrieval.log` — m.in. komunikaty RAG i błędy serwera (nie umieszczaj w logach pełnych promptów użytkownika ani kluczy API).
+- Diagnostyka routingu: `GET /api/routes` (patrz sekcja poniżej).
+
 ## `GET /api/health`
+
+Diagnostyczny stan backendu i RAG.
 
 ### Response 200
 
 ```json
 {
   "status": "ok",
-  "rag_mode": "faiss | keyword | off",
+  "characters": ["antoinette", "aristotle", "copernicus"],
+  "indexes_built": ["copernicus", "einstein"],
   "chunks_loaded": ["copernicus", "einstein"],
-  "embedder_loaded": true
+  "rag_mode": "faiss",
+  "embedder_loaded": true,
+  "kb_path": "<abs path>/data/knowledge_base",
+  "kb_exists": true
 }
 ```
 
 Notes:
-- `chunks_loaded` is a list of character IDs with KB loaded.
-- `rag_mode` indicates retrieval backend.
+- `characters`: wszystkie znane backendowi identyfikatory postaci.
+- `indexes_built`: postacie z gotowym indeksem wektorowym (FAISS); może być puste w trybie słów.
+- `chunks_loaded`: postacie z załadowanymi fragmentami KB.
+- `rag_mode`: `faiss` (embeddings + indeks), `keyword` (heurystyka słowami), lub `off` (brak danych).
+- `kb_path` / `kb_exists`: lokalna ścieżka do katalogu bazy wiedzy.
+
+---
+
+## `GET /api/routes`
+
+Lista tras zarejestrowanych w aplikacji (debug / smoke test routingu).
+
+### Response 200
+
+Posortowany po `rule` JSON array:
+
+```json
+[
+  { "rule": "/api/chat", "methods": ["POST"] },
+  { "rule": "/api/health", "methods": ["GET"] }
+]
+```
+
+Wpisy dla `OPTIONS`/`HEAD` są pomijane w odpowiedzi.
+
+---
+
+## `GET /api/history/<char_id>`
+
+Historia czatu dla danej postaci (rekordy z pliku runtime `data/chat_history.jsonl` przefiltrowane po `character_id`).
+
+### Response 200
+
+Array wpisów (każdy co najmniej: `timestamp`, `character_id`, `role`, `content`; opcjonalnie `sources`).
+
+```json
+[
+  {
+    "timestamp": "2025-01-01T12:00:00",
+    "character_id": "copernicus",
+    "role": "user",
+    "content": "…",
+    "sources": []
+  }
+]
+```
+
+---
+
+## `DELETE /api/history/<char_id>/clear`
+
+Usuwa z historii (plik JSONL) wszystkie wpisy dla wskazanego `char_id`; pozostałe wpisy zostają bez zmian.
+
+### Response 200
+
+```json
+{ "success": true }
+```
 
 ## `GET /api/characters`
 
@@ -51,6 +118,7 @@ Array of characters:
 
 Notes:
 - `voice_id` is ready to be sent to OpenAI TTS.
+- `voiceName` may be present as a legacy field for backward compatibility; new clients should rely on `voice_id`.
 - `suggestedTopics[].sourceStem` can be empty string when not pinned.
 
 ## `POST /api/chat`

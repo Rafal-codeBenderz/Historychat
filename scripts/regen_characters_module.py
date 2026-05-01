@@ -2,7 +2,12 @@
 Regenerate a migrated characters module for the main project.
 
 Source of truth:
-  `debata pozniej na github do wrzucenia/backend/core/characters.py`
+  By default this script expects the legacy path:
+    `debata pozniej na github do wrzucenia/backend/core/characters.py`
+
+  In this repo that legacy tree is intentionally kept outside the main project.
+  To regenerate from an external checkout/archive, set:
+    `HISTORYCHAT_CHARACTERS_SOURCE_PY=/abs/path/to/characters.py`
 
 Target output:
   `backend/core/characters_debata_migrated.py`
@@ -31,7 +36,12 @@ from typing import Any, Dict, List
 
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC_CHARACTERS_FILE = ROOT / "debata pozniej na github do wrzucenia" / "backend" / "core" / "characters.py"
+_SRC_ENV = "HISTORYCHAT_CHARACTERS_SOURCE_PY"
+SRC_CHARACTERS_FILE = (
+    Path(__import__("os").environ[_SRC_ENV]).expanduser()
+    if _SRC_ENV in __import__("os").environ
+    else ROOT / "debata pozniej na github do wrzucenia" / "backend" / "core" / "characters.py"
+)
 KB_ROOT = ROOT / "data" / "knowledge_base"
 OUT_FILE = ROOT / "backend" / "core" / "characters_debata_migrated.py"
 
@@ -227,7 +237,10 @@ def render_py_module(
 
 def main() -> int:
     if not SRC_CHARACTERS_FILE.is_file():
-        raise SystemExit(f"Missing source characters file: {SRC_CHARACTERS_FILE}")
+        raise SystemExit(
+            f"Missing source characters file: {SRC_CHARACTERS_FILE}\n"
+            f"Set {_SRC_ENV} to point at an external characters.py if needed."
+        )
     if not (ROOT / "backend").is_dir():
         raise SystemExit(f"Run from project root; backend/ not found at: {ROOT}")
 
