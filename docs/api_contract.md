@@ -118,6 +118,7 @@ Array of characters:
 
 Notes:
 - `voice_id` is ready to be sent to OpenAI TTS.
+- `voiceName` may be present as a legacy field for backward compatibility; new clients should rely on `voice_id`.
 - `suggestedTopics[].sourceStem` can be empty string when not pinned.
 
 ## `POST /api/chat`
