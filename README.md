@@ -169,8 +169,9 @@ Szczegóły pól i pozostałe endpointy: `docs/api_contract.md`.
 
 1. Folder `data/knowledge_base/<id_postaci>/`
 2. Pliki `.txt` z treścią źródeł
-3. Konfiguracja postaci jest generowana w `backend/core/characters_debata_migrated.py` (patrz nagłówek pliku; regeneracja przez `python scripts/regen_characters_module.py`)
-4. Upewnij się, że postać ma `voice_id` (backend wylicza je z `voiceName` + `VOICE_MAP`)
+3. Konfiguracja postaci jest generowana w `backend/core/characters_debata_migrated.py` (patrz nagłówek pliku; regeneracja przez `python scripts/regen_characters_module.py`).
+   - Jeśli źródłowy `characters.py` jest poza repo (archiwum / osobny checkout), ustaw `HISTORYCHAT_CHARACTERS_SOURCE_PY` na ścieżkę do pliku.
+4. Upewnij się, że postać ma `voice_id` (pole kanoniczne dla TTS; w danych jest wyliczane z `voiceName` + `VOICE_MAP`).
 5. Restart backendu
 
 ## Jak działa RAG?

@@ -177,7 +177,8 @@ W każdym terminalu: **Ctrl + C**.
    ```bash
    python scripts/regen_characters_module.py
    ```
-4. Upewnij się, że postać ma `voice_id` (wyliczany z `voiceName` + `VOICE_MAP`).
+   Jeśli źródłowy `characters.py` jest poza repo (archiwum / osobny checkout), ustaw `HISTORYCHAT_CHARACTERS_SOURCE_PY` na ścieżkę do pliku.
+4. Upewnij się, że postać ma `voice_id` (pole kanoniczne dla TTS; w danych jest wyliczane z `voiceName` + `VOICE_MAP`).
 5. Restart backendu.
 
 ---
