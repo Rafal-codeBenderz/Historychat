@@ -1,6 +1,4 @@
 import os
-import sys
-from pathlib import Path
 
 import pytest
 
@@ -12,10 +10,6 @@ def client():
     We intentionally import the module inside the fixture so env vars
     (feature flags) can be set before import if needed.
     """
-    root = Path(__file__).resolve().parents[2]
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-
     # Feature flags baseline: disabled by default
     os.environ.setdefault("ENABLE_TTS", "false")
     os.environ.setdefault("ENABLE_AVATAR_GENERATION", "false")
@@ -34,6 +28,16 @@ def test_health_ok_has_required_fields(client):
     assert isinstance(data, dict)
     assert "rag_mode" in data
     assert "chunks_loaded" in data
+    assert "rag_ready" in data
+    if data["rag_ready"]:
+        assert data["rag_mode"] in ("faiss", "keyword", "off")
+        assert isinstance(data["chunks_loaded"], list)
+        assert isinstance(data["indexes_built"], list)
+    else:
+        assert data["rag_mode"] == "loading"
+        assert data["indexes_built"] == []
+        assert data["chunks_loaded"] == []
+        assert data.get("embedder_loaded") is False
 
 
 def test_characters_ok_nonempty_has_id_and_name(client):

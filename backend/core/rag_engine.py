@@ -293,6 +293,11 @@ _engine: Optional[RAGEngine] = None
 _engine_lock = threading.Lock()
 
 
+def peek_engine() -> Optional[RAGEngine]:
+    """Zwraca silnik bez inicjalizacji — do szybkiego /health (unika wolnego pierwszego requestu)."""
+    return _engine
+
+
 def get_engine() -> RAGEngine:
     global _engine
     if _engine is None:
