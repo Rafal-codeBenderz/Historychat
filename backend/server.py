@@ -6,6 +6,7 @@ Keeps the same HTTP API while splitting implementation into modules.
 
 import logging
 import os
+import threading
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify
@@ -35,10 +36,29 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def _start_rag_warmup_background() -> None:
+    """Ładuje embedder/indeksy w tle, żeby pierwszy chat nie płacił kosztu cold start."""
+
+    def _worker() -> None:
+        try:
+            from backend.core.rag_engine import get_engine as _get_engine
+
+            logger.info("RAG warmup (thread): start")
+            _get_engine()
+            logger.info("RAG warmup (thread): zakończono")
+        except Exception:
+            logger.exception("RAG warmup (thread): błąd")
+
+    threading.Thread(target=_worker, name="rag-warmup", daemon=True).start()
+
+
 def create_app() -> Flask:
     app = Flask(__name__)
     CORS(app)
     app.register_blueprint(api_blueprint)
+
+    if os.environ.get("HISTORYCHAT_RAG_WARMUP", "1").strip().lower() in {"1", "true", "yes"}:
+        _start_rag_warmup_background()
 
     @app.get("/api/routes")
     def list_routes():

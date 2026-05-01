@@ -11,7 +11,7 @@ from backend.config.paths import CHAT_HISTORY_PATH, KB_PATH, ROOT
 from backend.core.characters_debata_migrated import CHARACTERS, VOICE_MAP
 from backend.core.debate import run_debate_turn
 from backend.core.prompting import build_prompt
-from backend.core.rag_engine import get_engine
+from backend.core.rag_engine import get_engine, peek_engine
 from backend.services.llm import call_llm
 from backend.services.tts import generate_tts_base64
 
@@ -58,8 +58,7 @@ def save_chat_history(char_id: str, role: str, content: str, sources: list | Non
 @api.before_app_request
 def init_once():
     global _topics_sources_validated
-    # Ensure RAG engine exists (lazy singleton) and validate topics once.
-    _ = get_engine()
+    # Nie wywołuj get_engine() tutaj — blokuje /health i lekkie endpointy do czasu załadowania RAG.
     if not _topics_sources_validated:
         validate_suggested_topic_sources()
         _topics_sources_validated = True
@@ -152,21 +151,37 @@ def tts():
 
 @api.get("/api/health")
 def health():
-    eng = get_engine()
-    return jsonify(
+    eng = peek_engine()
+    base = {
+        "status": "ok",
+        "characters": list(CHARACTERS.keys()),
+        "kb_path": str(KB_PATH),
+        "kb_exists": KB_PATH.is_dir(),
+    }
+    if eng is None:
+        base.update(
+            {
+                "rag_ready": False,
+                "indexes_built": [],
+                "chunks_loaded": [],
+                "rag_mode": "loading",
+                "embedder_loaded": False,
+            }
+        )
+        return jsonify(base)
+
+    base.update(
         {
-            "status": "ok",
-            "characters": list(CHARACTERS.keys()),
-            "indexes_built": list(eng.indexes.keys()) if eng else [],
-            "chunks_loaded": list(eng.chunks.keys()) if eng else [],
+            "rag_ready": True,
+            "indexes_built": list(eng.indexes.keys()),
+            "chunks_loaded": list(eng.chunks.keys()),
             "rag_mode": "faiss"
-            if (eng and eng.indexes)
-            else ("keyword" if (eng and eng.chunks) else "off"),
-            "embedder_loaded": eng.embedder is not None if eng else False,
-            "kb_path": str(KB_PATH),
-            "kb_exists": KB_PATH.is_dir(),
+            if eng.indexes
+            else ("keyword" if eng.chunks else "off"),
+            "embedder_loaded": eng.embedder is not None,
         }
     )
+    return jsonify(base)
 
 
 @api.get("/api/routes")
