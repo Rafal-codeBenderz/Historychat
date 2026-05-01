@@ -1,6 +1,4 @@
 import os
-import sys
-from pathlib import Path
 
 import pytest
 
@@ -12,10 +10,6 @@ def client():
     We intentionally import the module inside the fixture so env vars
     (feature flags) can be set before import if needed.
     """
-    root = Path(__file__).resolve().parents[2]
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-
     # Feature flags baseline: disabled by default
     os.environ.setdefault("ENABLE_TTS", "false")
     os.environ.setdefault("ENABLE_AVATAR_GENERATION", "false")

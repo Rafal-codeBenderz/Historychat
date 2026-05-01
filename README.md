@@ -120,6 +120,14 @@ Plik `.env` szukany jest w **katalogu głównym projektu** (obok `.env.example`)
 
 ## Testy
 
+Z katalogu głównego projektu (po `pip install -r requirements.txt`):
+
+```bash
+pytest
+```
+
+To uruchamia testy z `backend/tests/` (ustawione w `pytest.ini`, root repo na `pythonpath` — bez ręcznego `PYTHONPATH`). Możesz też podać ścieżkę wprost:
+
 ```bash
 pytest backend/tests/
 ```
@@ -128,6 +136,7 @@ pytest backend/tests/
 
 ```
 <katalog-projektu>/
+├── pytest.ini                # konfiguracja pytest (pythonpath, testpaths)
 ├── docs/
 │   ├── ARCHITEKTURA.md
 │   ├── STRUKTURA.md
