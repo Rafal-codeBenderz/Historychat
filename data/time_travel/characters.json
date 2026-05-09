@@ -1,0 +1,457 @@
+{
+  "antoinette": {
+    "start_year": 1755,
+    "end_year": 1793,
+    "locations": [
+      "wersal",
+      "versailles",
+      "paris",
+      "paryż",
+      "paryz",
+      "wiedeń",
+      "wieden",
+      "francja",
+      "france",
+      "austria"
+    ],
+    "perspective": "ruler",
+    "scene_hint": "Dwór Wersalu i polityka Ancien Régime.",
+    "suggested_places": ["Wersal", "Paryż", "Wiedeń"]
+  },
+  "aristotle": {
+    "start_year": -384,
+    "end_year": -322,
+    "locations": [
+      "ateny",
+      "athens",
+      "stagira",
+      "grecja",
+      "greece",
+      "macedonia"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Lykejon i filozofia polis w starożytnej Grecji.",
+    "suggested_places": ["Ateny", "Stagira", "Macedonia"]
+  },
+  "caesar": {
+    "start_year": -100,
+    "end_year": -44,
+    "locations": [
+      "rzym",
+      "rome",
+      "galia",
+      "gaul",
+      "egipt",
+      "egypt",
+      "aleksandria",
+      "hiszpania",
+      "italia"
+    ],
+    "perspective": "ruler",
+    "scene_hint": "Republika rzymska w przełomie: Galia, Rubikon, dyktatura.",
+    "suggested_places": ["Rzym", "Galia", "Aleksandria"],
+    "era_tags": ["late_republic", "rome", "politics"]
+  },
+  "chopin": {
+    "start_year": 1810,
+    "end_year": 1849,
+    "locations": [
+      "warszawa",
+      "warsaw",
+      "paryż",
+      "paryz",
+      "paris",
+      "polska",
+      "poland",
+      "francja",
+      "niemcy",
+      "wiedeń",
+      "wieden"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Salony i koncertowe trasy emigracji polskiej.",
+    "suggested_places": ["Warszawa", "Paryż", "Wiedeń"],
+    "era_tags": ["romanticism", "music", "poland"]
+  },
+  "churchill": {
+    "start_year": 1874,
+    "end_year": 1965,
+    "locations": [
+      "londyn",
+      "london",
+      "anglia",
+      "england",
+      "dover",
+      "chartwell",
+      "afryka",
+      "south africa",
+      "paryż",
+      "paryz",
+      "paris",
+      "francja",
+      "france"
+    ],
+    "perspective": "ruler",
+    "scene_hint": "Brytyjskie rządy, wojna i dyplomacja dwudziestolecia.",
+    "suggested_places": ["Londyn", "Chartwell", "Dover"]
+  },
+  "cleopatra": {
+    "start_year": -69,
+    "end_year": -30,
+    "locations": [
+      "aleksandria",
+      "alexandria",
+      "egipt",
+      "egypt",
+      "rzym",
+      "rome",
+      "syria"
+    ],
+    "perspective": "ruler",
+    "scene_hint": "Ptolemeuszki w Aleksandrii i polityka wobec Rzymu.",
+    "suggested_places": ["Aleksandria", "Egipt", "Rzym"]
+  },
+  "confucius": {
+    "start_year": -551,
+    "end_year": -479,
+    "locations": [
+      "qufu",
+      "lu",
+      "chiny",
+      "china",
+      "shandong"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Nauka o etyce i porządku społecznym w starożytnych Chinach.",
+    "suggested_places": ["Qufu", "Lu", "Chiny"]
+  },
+  "copernicus": {
+    "start_year": 1473,
+    "end_year": 1543,
+    "locations": [
+      "toruń",
+      "torun",
+      "frombork",
+      "kraków",
+      "krakow",
+      "padwa",
+      "padua",
+      "bolonia",
+      "bologna",
+      "polska",
+      "poland",
+      "włochy",
+      "italia"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Astronom na Pomorzu, reforma modelu wszechświata.",
+    "suggested_places": [
+      "Frombork",
+      "Toruń",
+      "Kraków"
+    ],
+    "era_tags": ["renaissance", "astronomy", "poland"]
+  },
+  "da_vinci": {
+    "start_year": 1452,
+    "end_year": 1519,
+    "locations": [
+      "florencja",
+      "florence",
+      "mediolan",
+      "milan",
+      "rzym",
+      "rome",
+      "francja",
+      "włochy",
+      "italia",
+      "venezia"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Renesansowe pracownie: anatomia, inżynieria, malarstwo.",
+    "suggested_places": ["Florencja", "Mediolan", "Rzym"]
+  },
+  "darwin": {
+    "start_year": 1809,
+    "end_year": 1882,
+    "locations": [
+      "londyn",
+      "london",
+      "down",
+      "cambridge",
+      "galapagos",
+      "beagle",
+      "anglia",
+      "england",
+      "paryż",
+      "paryz",
+      "paris",
+      "francja",
+      "france"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Wiktoriańska nauka: podróż Beagle i ewolucja gatunków.",
+    "suggested_places": ["Londyn", "Cambridge", "Galapagos"]
+  },
+  "einstein": {
+    "start_year": 1879,
+    "end_year": 1955,
+    "locations": [
+      "ulm",
+      "bern",
+      "berlin",
+      "zurych",
+      "zurich",
+      "princeton",
+      "usa",
+      "niemcy",
+      "germany",
+      "szwajcaria",
+      "paryż",
+      "paryz",
+      "paris",
+      "francja",
+      "france",
+      "londyn",
+      "london",
+      "anglia",
+      "england"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Relatywność i kwanty: od szwajcarskich patentów po Princeton.",
+    "suggested_places": ["Zurych", "Berlin", "Princeton"]
+  },
+  "fibonacci": {
+    "start_year": 1170,
+    "end_year": 1250,
+    "locations": [
+      "piza",
+      "pisa",
+      "algieria",
+      "algeria",
+      "włochy",
+      "italia"
+    ],
+    "perspective": "citizen",
+    "scene_hint": "Liczby i handel w średniowiecznych miastach włoskich.",
+    "suggested_places": ["Piza", "Algieria", "Włochy"]
+  },
+  "freud": {
+    "start_year": 1856,
+    "end_year": 1939,
+    "locations": [
+      "wiedeń",
+      "wieden",
+      "vienna",
+      "austria",
+      "londyn",
+      "london",
+      "paryż",
+      "paryz",
+      "paris",
+      "francja",
+      "france"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Wiedeńska szkoła psychiki i kultura fin de siècle.",
+    "suggested_places": ["Wiedeń", "Londyn"]
+  },
+  "galileo": {
+    "start_year": 1564,
+    "end_year": 1642,
+    "locations": [
+      "piza",
+      "pisa",
+      "florencja",
+      "florence",
+      "padwa",
+      "padua",
+      "wenecja",
+      "venice",
+      "włochy",
+      "italia"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Teleskop, sąd i konflikt z cenzurą — nowa astronomia.",
+    "suggested_places": ["Padwa", "Florencja", "Wenecja"]
+  },
+  "hippocrates": {
+    "start_year": -460,
+    "end_year": -370,
+    "locations": [
+      "kos",
+      "grecja",
+      "greece",
+      "aegean"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Medycyna starożytna: szkoła na Kos i praktyka kliniczna.",
+    "suggested_places": ["Kos", "Grecja"]
+  },
+  "joan_of_arc": {
+    "start_year": 1412,
+    "end_year": 1431,
+    "locations": [
+      "orlean",
+      "orleans",
+      "francja",
+      "france",
+      "rouen",
+      "reims"
+    ],
+    "perspective": "soldier",
+    "scene_hint": "Wojna stuletnia: Orlean, koronacja, proces.",
+    "suggested_places": ["Orlean", "Reims", "Rouen"]
+  },
+  "kahlo": {
+    "start_year": 1907,
+    "end_year": 1954,
+    "locations": [
+      "meksyk",
+      "mexico",
+      "coyoacan",
+      "miasto meksyk",
+      "mexico city",
+      "detroit",
+      "usa"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Sztuka i tożsamość Meksyku — Coyoacán i awangarda.",
+    "suggested_places": ["Meksyk", "Coyoacán", "Miasto Meksyk"]
+  },
+  "lovelace": {
+    "start_year": 1815,
+    "end_year": 1852,
+    "locations": [
+      "londyn",
+      "london",
+      "anglia",
+      "england",
+      "orkney"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Maszyna analityczna i wyobraźnia matematyczna XIX w.",
+    "suggested_places": ["Londyn", "Anglia"]
+  },
+  "marie_curie": {
+    "start_year": 1867,
+    "end_year": 1934,
+    "locations": [
+      "warszawa",
+      "warsaw",
+      "paryż",
+      "paryz",
+      "paris",
+      "polska",
+      "poland",
+      "francja",
+      "france"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Laboratorium i dwa Nobla — Polska i Francja.",
+    "suggested_places": ["Paryż", "Warszawa", "Francja"]
+  },
+  "montessori": {
+    "start_year": 1870,
+    "end_year": 1952,
+    "locations": [
+      "rzym",
+      "rome",
+      "barcelona",
+      "włochy",
+      "italia",
+      "indie",
+      "india",
+      "holandia",
+      "paryż",
+      "paryz",
+      "paris",
+      "francja",
+      "france",
+      "londyn",
+      "london"
+    ],
+    "perspective": "citizen",
+    "scene_hint": "Pedagogika i dziecko: Casa dei Bambini i światowy ruch.",
+    "suggested_places": ["Rzym", "Barcelona", "Włochy"]
+  },
+  "napoleon": {
+    "start_year": 1769,
+    "end_year": 1821,
+    "locations": [
+      "korsyka",
+      "corsica",
+      "paryż",
+      "paryz",
+      "paris",
+      "francja",
+      "egipt",
+      "moskwa",
+      "moscow",
+      "waterloo",
+      "włochy"
+    ],
+    "perspective": "ruler",
+    "scene_hint": "Europa epoki wojen napoleońskich.",
+    "suggested_places": ["Paryż", "Moskwa", "Korsyka"]
+  },
+  "newton": {
+    "start_year": 1643,
+    "end_year": 1727,
+    "locations": [
+      "cambridge",
+      "londyn",
+      "london",
+      "woolsthorpe",
+      "anglia",
+      "england"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Mechanika, optyka i matematyka oświecenia angielskiego.",
+    "suggested_places": ["Cambridge", "Londyn", "Woolsthorpe"],
+    "era_tags": ["early_modern", "england", "science"]
+  },
+  "tesla": {
+    "start_year": 1856,
+    "end_year": 1943,
+    "locations": [
+      "smiljan",
+      "zagreb",
+      "zagrzeb",
+      "nowy jork",
+      "new york",
+      "paryż",
+      "paryz",
+      "colorado springs",
+      "usa",
+      "londyn",
+      "london",
+      "francja",
+      "france",
+      "anglia",
+      "england"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Elektryczność, prąd przemienny, wynalazki.",
+    "suggested_places": ["Nowy Jork", "Colorado Springs", "Paryż"]
+  },
+  "vangogh": {
+    "start_year": 1853,
+    "end_year": 1890,
+    "locations": [
+      "holandia",
+      "netherlands",
+      "amsterdam",
+      "arles",
+      "paryż",
+      "paryz",
+      "belgia",
+      "belgium",
+      "francja",
+      "france"
+    ],
+    "perspective": "artist",
+    "scene_hint": "Postimpresjonizm: Holandia, Paryż, południowe światło.",
+    "suggested_places": ["Arles", "Amsterdam", "Paryż"]
+  }
+}

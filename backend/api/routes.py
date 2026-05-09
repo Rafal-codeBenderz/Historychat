@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Optional
 
@@ -12,6 +13,15 @@ from backend.core.characters_debata_migrated import CHARACTERS, VOICE_MAP
 from backend.core.debate import run_debate_turn
 from backend.core.prompting import build_prompt
 from backend.core.rag_engine import get_engine
+from backend.core.time_travel import (
+    TIME_TRAVEL_LOCATION_MAX,
+    TIME_TRAVEL_MESSAGE_MAX,
+    TIME_TRAVEL_YEAR_MAX,
+    TIME_TRAVEL_YEAR_MIN,
+    load_time_travel_meta,
+    suggest_places_for_year,
+    time_travel_payload_for_character,
+)
 from backend.services.llm import call_llm
 from backend.services.tts import generate_tts_base64
 
@@ -68,7 +78,7 @@ def init_once():
 @api.get("/api/characters")
 def get_characters():
     out = []
-    for ch in CHARACTERS.values():
+    for cid, ch in CHARACTERS.items():
         # Keep legacy `voiceName` support until the generated source data stores
         # `voice_id` natively and all callers stop relying on the transitional shape.
         voice_name = ch.get("voiceName")
@@ -77,8 +87,58 @@ def get_characters():
             voice_id = VOICE_MAP.get(voice_name)
         item = dict(ch)
         item["voice_id"] = voice_id
+        # Pole `time_travel`: dict z metadanymi LUB False, gdy postac nie ma wpisu w time_travel/characters.json.
+        item["time_travel"] = time_travel_payload_for_character(cid)
         out.append(item)
     return jsonify(out)
+
+
+@api.get("/api/characters/time-travel-meta")
+def get_time_travel_meta():
+    """Mapa char_id -> meta TT (start_year/end_year/locations + opcjonalne pola)."""
+    payload = load_time_travel_meta()
+    resp = jsonify(payload)
+    resp.headers["Cache-Control"] = "public, max-age=60"
+    return resp
+
+
+_REGION_TOKEN_MAX_LEN = 64
+_REGION_TOKEN_RE = re.compile(r"^[a-z0-9_-]{1,64}$")
+
+
+@api.post("/api/time-travel/suggest-scene")
+def suggest_scene():
+    """
+    Sugestie miejsc dla podanego `year` (opcjonalnie filtrowane po `regionToken`/`region`).
+    Bez zewnetrznych API — wylacznie heurystyka po metadanych z data/time_travel/characters.json.
+    Odpowiedz: {"places": [...]}.
+    """
+    data = request.json or {}
+    if not isinstance(data, dict):
+        return jsonify({"error": "Nieprawidlowe dane wejsciowe (JSON)"}), 400
+
+    year_raw = data.get("year")
+    region_raw = data.get("regionToken") or data.get("region") or ""
+
+    try:
+        year = int(year_raw)
+    except (TypeError, ValueError):
+        return jsonify({"error": "Pole year musi byc liczba calkowita"}), 400
+    if year < TIME_TRAVEL_YEAR_MIN or year > TIME_TRAVEL_YEAR_MAX:
+        return jsonify(
+            {"error": f"Rok poza dopuszczalnym zakresem ({TIME_TRAVEL_YEAR_MIN}-{TIME_TRAVEL_YEAR_MAX})"}
+        ), 422
+
+    if not isinstance(region_raw, str):
+        return jsonify({"error": "Pole regionToken musi byc stringiem"}), 400
+    region_token = region_raw.strip().lower()
+    if len(region_token) > _REGION_TOKEN_MAX_LEN:
+        return jsonify({"error": "regionToken jest zbyt dlugi"}), 422
+    if region_token and not _REGION_TOKEN_RE.match(region_token):
+        return jsonify({"error": "regionToken ma niedozwolony format (tylko a-z, 0-9, _, -)"}), 422
+
+    places = suggest_places_for_year(year, region_token)
+    return jsonify({"places": places})
 
 
 @api.post("/api/chat")
