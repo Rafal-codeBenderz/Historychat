@@ -97,3 +97,38 @@ Backend (Flask)
 - **`logs/retrieval.log`**: logi retrievalu i diagnostyki.
 - **`data/chat_history.jsonl`**: historia rozmów (append-only).
 
+### Tryb „Podróż w czasie" (TT)
+
+Drugi nested-toggle nad istniejącymi trybami `chat` / `debate` — pełny opis produktowy w `docs/PLAN_WDROZENIE_PODROZ_W_CZASIE.md`, kontrakt HTTP w `api_contract.md`.
+
+#### Stany UI
+
+- **`surface`: `classic` | `timeTravel`** — najwyższy wymiar nawigacji.
+  - `classic`: dotychczasowy model (`mode`: `chat` | `debate`, `Sidebar` z `ModeSwitch`).
+  - `timeTravel`: w main renderowany jest `TimeTravelSection`; lista postaci po lewej **ukryta**, `ModeSwitch` (Rozmowa / Sąd) **ukryty** (debata i TT naraz są mylące).
+- **URL:** synchronizacja `?mode=tt` ↔ `surface === "timeTravel"`. Powrót do `classic` przywraca ostatni `mode`.
+- **`Sidebar`:** przyciski: przełączenie Podróż w czasie ↔ tryb klasyczny **oraz** (tylko w `classic`) **`ModeSwitch`**.
+
+#### Backend — nowy moduł
+
+- **`backend/core/time_travel.py`**: wczytanie `data/time_travel/characters.json`, dopasowanie miejsca (substring, case-insensitive), walidacja sceny (`year` w oknie postaci + dopasowanie `location`), opcjonalna heurystyka `suggest_scene` korzystająca z `public/data/scenes-catalog.json` (lustrzana kopia w `data/`).
+- **`backend/core/prompting.py`**: nowa funkcja `build_prompt_time_travel` — ten sam blok fragmentów RAG co w zwykłym czacie, dodatkowo kontekst roku, miejsca, perspektywy i (opcjonalnie) „returning visitor".
+- **`backend/api/routes.py`**: trzy nowe endpointy (`GET /api/characters/time-travel-meta`, `POST /api/chat/time-travel`, `POST /api/time-travel/suggest-scene`) + enrich pola `time_travel` w `GET /api/characters` (bez edycji wygenerowanego `backend/core/characters_debata_migrated.py`).
+
+#### Frontend — nowe pliki / scalanie
+
+- **Nowe (`src/`):** `components/TimeTravelSection.tsx` (+ `TimeTravelEraTimeline`, `TimeTravelRegionMap`, `TimeTravelAmbient`), `hooks/useTimeTravelChat.ts`, `constants/timeTravel.ts`, `utils/timeTravel*.ts`, `utils/installTimeTravelAnalytics.ts`.
+- **Scalanie:** `src/types.ts` (pole `time_travel` na `Character`), `src/utils/utils.ts` (`fetchTimeTravelMeta`, `filterCharacterIdsForTimeTravel`, `suggestTimeTravelPlaces`, `sendTimeTravelMessage`, `SceneNotAllowedError`), `src/components/index.ts`, `src/App.tsx` (`surface` + `?mode=tt`), `src/components/Sidebar.tsx` (TT ↔ classic), `src/main.tsx` (analytics bridge).
+
+#### Spójność stałych
+
+- Limity roku / długości muszą być takie same po obu stronach: `src/constants/timeTravel.ts` ↔ stałe w `backend/api/routes.py` (`TIME_TRAVEL_YEAR_MIN/MAX`, `TIME_TRAVEL_LOCATION_MAX`, `TIME_TRAVEL_MESSAGE_MAX`). Komentarze krzyżowe „zgodnie z …".
+
+#### Główny przepływ TT
+
+1. Front wykrywa `?mode=tt` w URL → `surface = "timeTravel"`, `Sidebar` i lista postaci znikają.
+2. `TimeTravelSection` pobiera `GET /api/characters/time-travel-meta`, filtruje postacie pasujące do (rok, miejsce) lokalnie (`filterCharacterIdsForTimeTravel`).
+3. (Opcjonalnie) `POST /api/time-travel/suggest-scene` proponuje listę miejsc dla wybranego roku.
+4. Po wybraniu sceny + napisaniu wiadomości: `POST /api/chat/time-travel` → backend waliduje scenę → jeśli OK woła LLM z promptem TT, jeśli nie zwraca **422 `scene_not_allowed`** (bez wywołania LLM).
+5. Powrót do `classic` przywraca ostatnio aktywny `mode` (`chat` lub `debate`).
+

@@ -1,0 +1,222 @@
+{
+  "version": 8,
+  "scenes": [
+    {
+      "id": "francja-1810",
+      "year": 1810,
+      "place": "Francja",
+      "label": "Salony, nauka i epoka napoleońska",
+      "coverage_count": 3
+    },
+    {
+      "id": "paryz-1815",
+      "year": 1815,
+      "place": "Paryż",
+      "label": "Kongres i zaranie restauracji",
+      "coverage_count": 3
+    },
+    {
+      "id": "londyn-1858",
+      "year": 1858,
+      "place": "Londyn",
+      "label": "Wiktoriańska metropolia i preludium rewolucji naukowej",
+      "coverage_count": 3
+    },
+    {
+      "id": "paryz-1868",
+      "year": 1868,
+      "place": "Paryż",
+      "label": "Druga Republika i laboratoria idei",
+      "coverage_count": 5
+    },
+    {
+      "id": "francja-1864",
+      "year": 1864,
+      "place": "Francja",
+      "label": "Między wojnami i pierwszymi falami nowoczesności",
+      "coverage_count": 4
+    },
+    {
+      "id": "londyn-1870",
+      "year": 1870,
+      "place": "Londyn",
+      "label": "Imperium, kable i codzienność metropolii",
+      "coverage_count": 4
+    },
+    {
+      "id": "londyn-1875",
+      "year": 1875,
+      "place": "Londyn",
+      "label": "Szczyt epoki wiktoriańskiej",
+      "coverage_count": 5
+    },
+    {
+      "id": "paryz-1878",
+      "year": 1878,
+      "place": "Paryż",
+      "label": "Trzecia Republika — światło gazowe i nauka",
+      "coverage_count": 7
+    },
+    {
+      "id": "francja-1882",
+      "year": 1882,
+      "place": "Francja",
+      "label": "Elektryczność, psychika i sztuka w jednym rytmie",
+      "coverage_count": 8
+    },
+    {
+      "id": "paryz-1886",
+      "year": 1886,
+      "place": "Paryż",
+      "label": "Belle Époque — kolory i prąd",
+      "coverage_count": 7
+    },
+    {
+      "id": "francja-1888",
+      "year": 1888,
+      "place": "Francja",
+      "label": "Fin de siècle w pełnym napięciu",
+      "coverage_count": 7
+    },
+    {
+      "id": "paryz-1890",
+      "year": 1890,
+      "place": "Paryż",
+      "label": "Laboratorium sztuki i myśli przed XX wiekiem",
+      "coverage_count": 7
+    },
+    {
+      "id": "francja-1892",
+      "year": 1892,
+      "place": "Francja",
+      "label": "Narastające tarcia epoki — nauka i kultura",
+      "coverage_count": 6
+    },
+    {
+      "id": "paryz-1896",
+      "year": 1896,
+      "place": "Paryż",
+      "label": "Przed nowym stuleciem — stolica idei",
+      "coverage_count": 6
+    },
+    {
+      "id": "francja-1900",
+      "year": 1900,
+      "place": "Francja",
+      "label": "Próg wieku — światło i energia",
+      "coverage_count": 6
+    },
+    {
+      "id": "paryz-1904",
+      "year": 1904,
+      "place": "Paryż",
+      "label": "Fizyka i sztuka tuż przed burzą",
+      "coverage_count": 6
+    },
+    {
+      "id": "usa-1908",
+      "year": 1908,
+      "place": "USA",
+      "label": "Nowy Świat — dynamika i nauka",
+      "coverage_count": 3
+    },
+    {
+      "id": "anglia-1910",
+      "year": 1910,
+      "place": "Anglia",
+      "label": "Wyspa tuż przed wielką wojną",
+      "coverage_count": 3
+    },
+    {
+      "id": "paryz-1912",
+      "year": 1912,
+      "place": "Paryż",
+      "label": "Ostatnie lata Belle Époque",
+      "coverage_count": 6
+    },
+    {
+      "id": "usa-1918",
+      "year": 1918,
+      "place": "USA",
+      "label": "Koniec wojny — nowy ład w Ameryce",
+      "coverage_count": 3
+    },
+    {
+      "id": "londyn-1922",
+      "year": 1922,
+      "place": "Londyn",
+      "label": "Dwudziestolecie międzywojenne",
+      "coverage_count": 5
+    },
+    {
+      "id": "usa-1924",
+      "year": 1924,
+      "place": "USA",
+      "label": "Lata 20. — energia i wynalazek",
+      "coverage_count": 3
+    },
+    {
+      "id": "paryz-1928",
+      "year": 1928,
+      "place": "Paryż",
+      "label": "Międzywojenna stolica kultury",
+      "coverage_count": 6
+    },
+    {
+      "id": "francja-1930",
+      "year": 1930,
+      "place": "Francja",
+      "label": "Chmury nad Europą — nauka mimo kryzysu",
+      "coverage_count": 6
+    },
+    {
+      "id": "usa-1932",
+      "year": 1932,
+      "place": "USA",
+      "label": "Wielki kryzys i laboratoria",
+      "coverage_count": 3
+    },
+    {
+      "id": "londyn-1936",
+      "year": 1936,
+      "place": "Londyn",
+      "label": "Tuż przed burzą 1939",
+      "coverage_count": 5
+    },
+    {
+      "id": "usa-1938",
+      "year": 1938,
+      "place": "USA",
+      "label": "Wojna domów i atomowe marzenia",
+      "coverage_count": 3
+    },
+    {
+      "id": "usa-1940",
+      "year": 1940,
+      "place": "USA",
+      "label": "Wojna i nauka w Nowym Świecie",
+      "coverage_count": 3
+    },
+    {
+      "id": "anglia-1942",
+      "year": 1942,
+      "place": "Anglia",
+      "label": "Wyspa w ogniu wojny światowej",
+      "coverage_count": 3
+    },
+    {
+      "id": "francja-1946",
+      "year": 1946,
+      "place": "Francja",
+      "label": "Powojenna rekonstrukcja i nowe pytania",
+      "coverage_count": 3
+    },
+    {
+      "id": "paryz-1950",
+      "year": 1950,
+      "place": "Paryż",
+      "label": "Zimna wojna w europejskiej perspektywie",
+      "coverage_count": 3
+    }
+  ]
+}

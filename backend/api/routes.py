@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Optional
 
@@ -10,8 +11,19 @@ from flask import Blueprint, jsonify, request
 from backend.config.paths import CHAT_HISTORY_PATH, KB_PATH, ROOT
 from backend.core.characters_debata_migrated import CHARACTERS, VOICE_MAP
 from backend.core.debate import run_debate_turn
-from backend.core.prompting import build_prompt
+from backend.core.prompting import build_prompt, build_prompt_time_travel
 from backend.core.rag_engine import get_engine
+from backend.core.time_travel import (
+    TIME_TRAVEL_LOCATION_MAX,
+    TIME_TRAVEL_MESSAGE_MAX,
+    TIME_TRAVEL_YEAR_MAX,
+    TIME_TRAVEL_YEAR_MIN,
+    is_scene_allowed,
+    load_time_travel_meta,
+    scene_not_allowed_response,
+    suggest_places_for_year,
+    time_travel_payload_for_character,
+)
 from backend.services.llm import call_llm
 from backend.services.tts import generate_tts_base64
 
@@ -68,7 +80,7 @@ def init_once():
 @api.get("/api/characters")
 def get_characters():
     out = []
-    for ch in CHARACTERS.values():
+    for cid, ch in CHARACTERS.items():
         # Keep legacy `voiceName` support until the generated source data stores
         # `voice_id` natively and all callers stop relying on the transitional shape.
         voice_name = ch.get("voiceName")
@@ -77,8 +89,164 @@ def get_characters():
             voice_id = VOICE_MAP.get(voice_name)
         item = dict(ch)
         item["voice_id"] = voice_id
+        # Pole `time_travel`: dict z metadanymi LUB False, gdy postac nie ma wpisu w time_travel/characters.json.
+        item["time_travel"] = time_travel_payload_for_character(cid)
         out.append(item)
     return jsonify(out)
+
+
+@api.get("/api/characters/time-travel-meta")
+def get_time_travel_meta():
+    """Mapa char_id -> meta TT (start_year/end_year/locations + opcjonalne pola)."""
+    payload = load_time_travel_meta()
+    resp = jsonify(payload)
+    resp.headers["Cache-Control"] = "public, max-age=60"
+    return resp
+
+
+@api.post("/api/chat/time-travel")
+def chat_time_travel():
+    """
+    Czat z postacia osadzony w scenie (year + location).
+    Walidacja sceny dzieje sie PRZED wywolaniem LLM:
+      - rok musi miescic sie w oknie meta postaci,
+      - location musi pasowac (substring case-insensitive obie strony) do meta.locations.
+    Scena niedozwolona -> 422 + error_code='scene_not_allowed' (bez wywolania LLM).
+    """
+    data = request.json or {}
+    if not isinstance(data, dict):
+        return jsonify({"error": "Nieprawidlowe dane wejsciowe (JSON)"}), 400
+
+    char_id = data.get("characterId")
+    message = data.get("message", "")
+    history = data.get("history", [])
+    year_raw = data.get("year")
+    location_raw = data.get("location", "")
+    source_stem = data.get("sourceStem") or None
+    if isinstance(source_stem, str):
+        source_stem = source_stem.strip() or None
+    returning_visitor = data.get("returningVisitor") is True
+
+    if not char_id or not isinstance(char_id, str):
+        return jsonify({"error": "Brak characterId"}), 400
+    if char_id not in CHARACTERS:
+        return jsonify({"error": "Nieznana postac"}), 400
+
+    if not isinstance(message, str):
+        return jsonify({"error": "Pole message musi byc stringiem"}), 400
+    message = message.strip()
+    if not message:
+        return jsonify({"error": "Pusta wiadomosc"}), 400
+    if len(message) > TIME_TRAVEL_MESSAGE_MAX:
+        return jsonify({"error": "Wiadomosc jest zbyt dluga"}), 422
+
+    if not isinstance(history, list):
+        return jsonify({"error": "Pole history musi byc lista"}), 400
+
+    if year_raw is None:
+        return jsonify({"error": "Brak pola year"}), 400
+    try:
+        year = int(year_raw)
+    except (TypeError, ValueError):
+        return jsonify({"error": "Pole year musi byc liczba calkowita"}), 400
+    if year < TIME_TRAVEL_YEAR_MIN or year > TIME_TRAVEL_YEAR_MAX:
+        return jsonify(
+            {"error": f"Rok poza dopuszczalnym zakresem ({TIME_TRAVEL_YEAR_MIN}-{TIME_TRAVEL_YEAR_MAX})"}
+        ), 422
+
+    if not isinstance(location_raw, str):
+        return jsonify({"error": "Pole location musi byc stringiem"}), 400
+    location = location_raw.strip()
+    if not location:
+        return jsonify({"error": "Pusta lokalizacja"}), 400
+    if len(location) > TIME_TRAVEL_LOCATION_MAX:
+        return jsonify({"error": "Lokalizacja jest zbyt dluga"}), 422
+
+    if not is_scene_allowed(char_id, year, location):
+        body, status = scene_not_allowed_response()
+        return jsonify(body), status
+
+    character = CHARACTERS[char_id]
+    rag_engine = get_engine()
+
+    fragments = rag_engine.retrieve(char_id, message, top_k=4, source_stem=source_stem)
+    if not fragments and char_id in rag_engine.chunks:
+        logger.warning(
+            "[time-travel] char=%s puste fragmenty mimo chunkow — query_len=%d sourceStem=%r",
+            char_id,
+            len(message or ""),
+            source_stem,
+        )
+    elif not fragments and char_id not in rag_engine.chunks:
+        logger.warning("[time-travel] char=%s brak chunkow w pamieci (brak plikow KB?)", char_id)
+
+    pinned_label = None
+    if source_stem:
+        pinned_label = Path(source_stem).stem.replace("_", " ").title()
+
+    prompt = build_prompt_time_travel(
+        character,
+        message,
+        fragments,
+        history,
+        year,
+        location,
+        pinned_source_label=pinned_label,
+        returning_visitor=returning_visitor,
+    )
+    answer = call_llm(prompt)
+
+    save_chat_history(char_id, "user", message)
+    save_chat_history(char_id, "assistant", answer, [f["source"] for f in fragments])
+
+    logger.info(
+        "[time-travel] char=%s year=%s loc_len=%d msg_len=%d",
+        char_id,
+        year,
+        len(location),
+        len(message),
+    )
+
+    return jsonify({"answer": answer, "fragments": fragments, "character": character})
+
+
+_REGION_TOKEN_MAX_LEN = 64
+_REGION_TOKEN_RE = re.compile(r"^[a-z0-9_-]{1,64}$")
+
+
+@api.post("/api/time-travel/suggest-scene")
+def suggest_scene():
+    """
+    Sugestie miejsc dla podanego `year` (opcjonalnie filtrowane po `regionToken`/`region`).
+    Bez zewnetrznych API — wylacznie heurystyka po metadanych z data/time_travel/characters.json.
+    Odpowiedz: {"places": [...]}.
+    """
+    data = request.json or {}
+    if not isinstance(data, dict):
+        return jsonify({"error": "Nieprawidlowe dane wejsciowe (JSON)"}), 400
+
+    year_raw = data.get("year")
+    region_raw = data.get("regionToken") or data.get("region") or ""
+
+    try:
+        year = int(year_raw)
+    except (TypeError, ValueError):
+        return jsonify({"error": "Pole year musi byc liczba calkowita"}), 400
+    if year < TIME_TRAVEL_YEAR_MIN or year > TIME_TRAVEL_YEAR_MAX:
+        return jsonify(
+            {"error": f"Rok poza dopuszczalnym zakresem ({TIME_TRAVEL_YEAR_MIN}-{TIME_TRAVEL_YEAR_MAX})"}
+        ), 422
+
+    if not isinstance(region_raw, str):
+        return jsonify({"error": "Pole regionToken musi byc stringiem"}), 400
+    region_token = region_raw.strip().lower()
+    if len(region_token) > _REGION_TOKEN_MAX_LEN:
+        return jsonify({"error": "regionToken jest zbyt dlugi"}), 422
+    if region_token and not _REGION_TOKEN_RE.match(region_token):
+        return jsonify({"error": "regionToken ma niedozwolony format (tylko a-z, 0-9, _, -)"}), 422
+
+    places = suggest_places_for_year(year, region_token)
+    return jsonify({"places": places})
 
 
 @api.post("/api/chat")
