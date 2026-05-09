@@ -13,3 +13,4 @@ export * from './ChatSection';
 export * from './WelcomeSection';
 export * from './ModeSwitch';
 export * from './DebateSection';
+export * from './TimeTravelSection';

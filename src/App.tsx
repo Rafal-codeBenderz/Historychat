@@ -1,12 +1,41 @@
-import { useEffect, useState } from 'react';
-import { Sidebar, AvatarSection, ChatSection, WelcomeSection, DebateSection } from '@components';
+import { useCallback, useEffect, useState } from 'react';
+import { Sidebar, AvatarSection, ChatSection, WelcomeSection, DebateSection, TimeTravelSection } from '@components';
 import { useAudioPlayer } from './hooks/useAudioPlayer';
 import { useCharactersLoader } from './hooks/useCharactersLoader';
 import { useChat } from './hooks/useChat';
 
 type AppMode = 'chat' | 'debate';
+type AppSurface = 'classic' | 'timeTravel';
+
+/** Synchronizacja `?mode=tt` <-> surface === 'timeTravel'. */
+function readSurfaceFromUrl(): AppSurface {
+  if (typeof window === 'undefined') return 'classic';
+  try {
+    const url = new URL(window.location.href);
+    return url.searchParams.get('mode') === 'tt' ? 'timeTravel' : 'classic';
+  } catch {
+    return 'classic';
+  }
+}
+
+function writeSurfaceToUrl(surface: AppSurface): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const url = new URL(window.location.href);
+    if (surface === 'timeTravel') {
+      url.searchParams.set('mode', 'tt');
+    } else {
+      url.searchParams.delete('mode');
+    }
+    const next = url.pathname + (url.search ? url.search : '') + url.hash;
+    window.history.replaceState(null, '', next);
+  } catch {
+    /* ignore */
+  }
+}
 
 export default function App() {
+  const [surface, setSurface] = useState<AppSurface>(() => readSurfaceFromUrl());
   const [mode, setMode] = useState<AppMode>('chat');
   const { playAudio, stopAudio, isSpeaking, volume } = useAudioPlayer();
   const { characters, backendError } = useCharactersLoader();
@@ -28,6 +57,23 @@ export default function App() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
+
+  useEffect(() => {
+    writeSurfaceToUrl(surface);
+  }, [surface]);
+
+  // Reaguj na nawigacje przegladarki (back/forward) zmieniajaca ?mode=tt.
+  useEffect(() => {
+    const onPop = () => setSurface(readSurfaceFromUrl());
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  const handleSurfaceChange = useCallback((next: AppSurface) => {
+    setSurface(next);
+  }, []);
+
+  const goClassic = useCallback(() => setSurface('classic'), []);
 
   return (
     <>
@@ -64,11 +110,20 @@ export default function App() {
           selectChar={selectChar}
           mode={mode}
           onModeChange={setMode}
+          surface={surface}
+          onSurfaceChange={handleSurfaceChange}
         />
 
         {/* ── Main Area ── */}
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-          {mode === 'debate' ? (
+          {surface === 'timeTravel' ? (
+            <TimeTravelSection
+              characters={characters}
+              onBackToClassic={goClassic}
+              playAudio={playAudio}
+              stopAudio={stopAudio}
+            />
+          ) : mode === 'debate' ? (
             <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
               <DebateSection characters={characters} />
             </div>

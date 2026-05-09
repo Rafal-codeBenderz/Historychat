@@ -61,6 +61,22 @@ export interface DebateVerdictRequest {
 // ---------------------------------------------------------------------------
 // Existing types
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Time-travel meta (zgodne z backend/core/time_travel.py i docs/api_contract.md)
+// ---------------------------------------------------------------------------
+export type TimeTravelPerspective = 'ruler' | 'citizen' | 'artist' | 'soldier';
+
+export interface TimeTravelMeta {
+  start_year: number;
+  end_year: number;
+  /** Tokeny lokalizacji (substring match case-insensitive obie strony). */
+  locations: string[];
+  perspective?: TimeTravelPerspective;
+  scene_hint?: string;
+  suggested_places?: string[];
+  era_tags?: string[];
+}
+
 export interface Character {
   id: string;
   name: string;
@@ -76,4 +92,9 @@ export interface Character {
   /** Legacy field (kept for backward compatibility). */
   voiceName?: string;
   suggestedTopics?: SuggestedTopic[];
+  /**
+   * Time-travel metadata. `false` (lub brak) — postac niedostepna w trybie TT.
+   * Obiekt — pelne metadane wedlug `data/time_travel/characters.json`.
+   */
+  time_travel?: false | TimeTravelMeta;
 }

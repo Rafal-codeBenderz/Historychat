@@ -8,15 +8,21 @@ export function MessageBubble({
   char,
   onPlayAudio,
   onStopAudio,
+  variant,
+  travelSceneLine,
 }: {
   message: Message;
   char: Character;
   onPlayAudio?: (audioUrl: string) => void;
   onStopAudio?: () => void;
+  /** 'travel' renderuje dodatkowa linijke "dziennika podrozy" nad wiadomoscia (TT). */
+  variant?: 'classic' | 'travel';
+  travelSceneLine?: string;
 }) {
   const isUser = message.role === 'user';
   const [showSources, setShowSources] = useState(false);
   const hasSources = message.fragments && message.fragments.length > 0;
+  const isTravel = variant === 'travel';
 
   return (
     <motion.div
@@ -33,6 +39,20 @@ export function MessageBubble({
       {!isUser && <CharacterAvatar char={char} size={42} />}
 
       <div style={{ maxWidth: '74%', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        {isTravel && travelSceneLine && (
+          <div
+            style={{
+              fontSize: '10px',
+              color: 'rgba(200,170,120,0.65)',
+              fontFamily: "'EB Garamond', serif",
+              fontStyle: 'italic',
+              letterSpacing: '0.04em',
+              marginLeft: '4px',
+            }}
+          >
+            {travelSceneLine}
+          </div>
+        )}
         {!isUser && (
           <div
             style={{
