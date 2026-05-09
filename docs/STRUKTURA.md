@@ -18,6 +18,7 @@ Ten plik opisuje strukturę katalogów po refaktorze. Opis architektury jest w `
 │   ├── core/
 │   │   ├── __init__.py
 │   │   ├── characters_debata_migrated.py  # konfiguracja postaci + mapy głosów
+│   │   ├── time_travel.py          # metadane TT, dopasowanie miejsca, suggest scen
 │   │   ├── prompting.py           # budowanie promptu
 │   │   └── rag_engine.py          # FAISS/keyword retrieval
 │   ├── services/
@@ -38,10 +39,14 @@ Ten plik opisuje strukturę katalogów po refaktorze. Opis architektury jest w `
 │   │   └── useChat.ts
 │   └── components/                # UI (Sidebar, ChatSection, AvatarSection, itd.)
 ├── public/
+│   ├── data/
+│   │   └── scenes-catalog.json    # katalog scen (TT suggest / UI)
 │   └── avatars/
 │       └── README.md              # opis katalogu na wygenerowane avatary (runtime)
 ├── data/
 │   ├── knowledge_base/            # źródła .txt (per postać)
+│   ├── time_travel/
+│   │   └── characters.json        # metadane roku/miejsca dla TT (źródło prawdy)
 │   └── chat_history.jsonl         # runtime (generowane)
 ├── logs/
 │   └── retrieval.log              # runtime (generowane)

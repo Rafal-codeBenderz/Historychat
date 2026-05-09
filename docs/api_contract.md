@@ -227,3 +227,159 @@ Pole `role` w odpowiedzi zawsze `"judge"`.
 `prosecutor → defender → judge → prosecutor → ...` (indeks tury modulo 3).
 Werdykt można zażądać w dowolnym momencie (zalecane min. 3 tury).
 
+---
+
+## Tryb „Podróż w czasie"
+
+Zestaw trzech endpointów obsługujących tryb TT (frontend: `surface === "timeTravel"`).
+Źródło prawdy metadanych: `data/time_travel/characters.json` (mapa `char_id → { start_year, end_year, locations, ... }`).
+
+Stałe walidacji muszą być zgodne z `src/constants/timeTravel.ts`:
+
+| Pole | Limit |
+|------|-------|
+| `year` | `-3000` … `2100` (`TIME_TRAVEL_YEAR_MIN/MAX`) |
+| `location` | max 200 znaków (`TIME_TRAVEL_LOCATION_MAX`) |
+| `message` | max 6000 znaków (`TIME_TRAVEL_MESSAGE_MAX`) |
+
+### Rozszerzenie `GET /api/characters` (pole `time_travel`)
+
+Dla postaci, które mają wpis w `data/time_travel/characters.json`, odpowiedź `GET /api/characters` zawiera dodatkowe pole `time_travel`:
+
+```json
+{
+  "id": "copernicus",
+  "name": "Mikołaj Kopernik",
+  "time_travel": {
+    "start_year": 1473,
+    "end_year": 1543,
+    "locations": ["Toruń", "Frombork", "Kraków"]
+  }
+}
+```
+
+Postacie bez wpisu nie mają tego pola (back-compat — pole opcjonalne).
+
+---
+
+## `GET /api/characters/time-travel-meta`
+
+Zwraca mapę metadanych TT dla wszystkich postaci, które mają wpis w `data/time_travel/characters.json`.
+
+### Response 200
+
+```json
+{
+  "copernicus": {
+    "start_year": 1473,
+    "end_year": 1543,
+    "locations": ["Toruń", "Frombork", "Kraków"]
+  },
+  "einstein": {
+    "start_year": 1879,
+    "end_year": 1955,
+    "locations": ["Ulm", "Bern", "Princeton"]
+  }
+}
+```
+
+### Errors
+
+- 500: błąd odczytu / parsowania `characters.json` (logowane; w odpowiedzi `{ "error": "..." }`).
+
+---
+
+## `POST /api/chat/time-travel`
+
+Generuje odpowiedź postaci osadzoną w wybranej scenie (rok + miejsce). Walidacja sceny dzieje się **przed** wywołaniem LLM.
+
+### Request body
+
+```json
+{
+  "characterId":      "copernicus",
+  "message":          "Co teraz robisz?",
+  "history":          [
+    { "role": "user", "content": "..." },
+    { "role": "assistant", "content": "..." }
+  ],
+  "year":             1510,
+  "location":         "Frombork",
+  "sourceStem":       "de_revolutionibus",
+  "returningVisitor": false
+}
+```
+
+### Walidacja
+
+- `characterId` — wymagany, znany `char_id`.
+- `message` — wymagany, niepusty, max `TIME_TRAVEL_MESSAGE_MAX`.
+- `year` — wymagany, integer, w zakresie `TIME_TRAVEL_YEAR_MIN…MAX`.
+- `location` — wymagany, niepusty string, max `TIME_TRAVEL_LOCATION_MAX`.
+- `sourceStem` — opcjonalny (jak w `POST /api/chat`).
+- `returningVisitor` — opcjonalny boolean (sterowanie tonem promptu).
+
+### Reguła sceny
+
+Scena jest dozwolona, gdy łącznie:
+
+1. `year` mieści się w oknie życia/aktywności postaci z `time_travel.start_year` … `time_travel.end_year`.
+2. `location` pasuje (substring, case-insensitive, w obie strony) do choć jednego wpisu z `time_travel.locations` (heurystyka jak w `filterCharacterIdsForTimeTravel` na froncie).
+
+### Response 200
+
+```json
+{
+  "answer":    "…",
+  "fragments": [
+    { "text": "…", "source": "De Revolutionibus", "score": 0.42 }
+  ],
+  "character": { "id": "copernicus", "name": "Mikołaj Kopernik" },
+  "scene":     { "year": 1510, "location": "Frombork" }
+}
+```
+
+### Errors
+
+- **400** — brak / nieprawidłowy typ pola wejściowego.
+- **422** — pola w złych zakresach (`year`, długości); szczególny przypadek: scena niedozwolona — **bez wywołania LLM**:
+
+```json
+{
+  "error":        "Scena niedozwolona dla wybranej postaci.",
+  "error_code":   "scene_not_allowed",
+  "user_message": "Mikołaj Kopernik nie żył w roku 1510 w mieście Berlin. Wybierz inny rok lub miejsce."
+}
+```
+
+Frontend (`useTimeTravelChat`) wykrywa `error_code === "scene_not_allowed"` i pokazuje `user_message` użytkownikowi (zamiast generycznego błędu).
+
+---
+
+## `POST /api/time-travel/suggest-scene`
+
+Sugeruje listę miejsc dla wskazanego roku — bez wywołań zewnętrznych API. Heurystyka łączy metadane z `data/time_travel/characters.json` z opcjonalnym lokalnym `public/data/scenes-catalog.json`.
+
+### Request body
+
+| Pole | Typ | Wymagane | Opis |
+|------|-----|----------|------|
+| `year` | integer | tak | Zakres `TIME_TRAVEL_YEAR_MIN…MAX` |
+| `regionToken` | string | nie | Token regionu (alias: `region`); dozwolone `^[a-z0-9_-]{1,64}$`, pusty dozwolony |
+
+### Response 200
+
+```json
+{
+  "places": ["Frombork", "Toruń", "Kraków"]
+}
+```
+
+Lista jest deduplikowana, posortowana, ograniczona do sensownego rozmiaru (do 20 pozycji).
+
+### Errors
+
+- **400** — nie-JSON, `year` nie jest integerem, `regionToken` nie jest stringiem.
+- **422** — `year` poza zakresem; `regionToken` zbyt długi lub o niedozwolonym formacie.
+
+
